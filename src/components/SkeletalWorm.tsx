@@ -154,34 +154,47 @@ export const SkeletalWorm: React.FC = () => {
     const floatingScores: FloatingScore[] = [];
 
     let isTabHidden = false;
+    let isMouseInside = false;
 
     const handleMouseMove = (e: MouseEvent) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
       lastMouseMoveTime = performance.now();
       isIdle = false;
+      // Must be safely inside the browser viewport, not at browser edges/tabs
+      isMouseInside = e.clientX > 15 && e.clientX < width - 15 && e.clientY > 15 && e.clientY < height - 15;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
       if (e.touches.length > 0) {
-        mouse.x = e.touches[0].clientX;
-        mouse.y = e.touches[0].clientY;
+        const touch = e.touches[0];
+        mouse.x = touch.clientX;
+        mouse.y = touch.clientY;
         lastMouseMoveTime = performance.now();
         isIdle = false;
+        isMouseInside = touch.clientX > 15 && touch.clientX < width - 15 && touch.clientY > 15 && touch.clientY < height - 15;
       }
     };
 
     const handleTouchStart = (e: TouchEvent) => {
       if (e.touches.length > 0) {
-        mouse.x = e.touches[0].clientX;
-        mouse.y = e.touches[0].clientY;
+        const touch = e.touches[0];
+        mouse.x = touch.clientX;
+        mouse.y = touch.clientY;
         lastMouseMoveTime = performance.now();
         isIdle = false;
+        isMouseInside = touch.clientX > 15 && touch.clientX < width - 15 && touch.clientY > 15 && touch.clientY < height - 15;
       }
+    };
+
+    const handleTouchEnd = () => {
+      isMouseInside = false;
+      isIdle = true;
     };
 
     const handleMouseLeave = () => {
       // Smoothly transition creature to idle orbit if cursor exits browser window
+      isMouseInside = false;
       isIdle = true;
     };
 
@@ -209,6 +222,7 @@ export const SkeletalWorm: React.FC = () => {
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
     window.addEventListener('touchmove', handleTouchMove, { passive: true });
     window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
     window.addEventListener('mouseleave', handleMouseLeave);
     window.addEventListener('resize', handleResize);
     document.addEventListener('visibilitychange', handleVisibilityChange);
@@ -447,12 +461,10 @@ export const SkeletalWorm: React.FC = () => {
       const ARRIVAL_DEADZONE = isMobile ? 18 : 24;
       const isArrived = !isIdle && dist <= ARRIVAL_DEADZONE;
 
-      // Check if worm touches the mouse pointer (head or body segments)
+      // Check if worm touches the mouse pointer — STRICTLY HEAD ONLY, NEVER BODY OR WINDOW EDGES
       const distHeadToMouse = Math.hypot(headX - mouse.x, headY - mouse.y);
-      const isTouchingMouse = !isIdle && (
-        distHeadToMouse <= (isMobile ? 28 : 36) ||
-        segments.some((seg) => Math.hypot(seg.x - mouse.x, seg.y - mouse.y) <= (isMobile ? 20 : 28))
-      );
+      const HEAD_TOUCH_RADIUS = (isMobile ? 12 : 16) * scale;
+      const isTouchingMouse = isMouseInside && !isIdle && distHeadToMouse <= HEAD_TOUCH_RADIUS;
 
       // Smoothly surge or fade the rainbow light effect
       if (isTouchingMouse) {
@@ -804,6 +816,7 @@ export const SkeletalWorm: React.FC = () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
       window.removeEventListener('mouseleave', handleMouseLeave);
       window.removeEventListener('resize', handleResize);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
