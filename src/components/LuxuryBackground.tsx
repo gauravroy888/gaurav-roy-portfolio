@@ -32,17 +32,14 @@ export const LuxuryBackground: React.FC = () => {
         }}
       />
 
-      {/* 3. Top-Right Deep Ocean Hydrothermal Spotlight */}
-      <div className="absolute -top-10 right-[5%] w-[850px] h-[850px] rounded-full bg-gradient-radial from-[#1E4A78]/35 via-[#0E284A]/15 to-transparent blur-[120px] pointer-events-none animate-pulse-slow" />
+      {/* 3. Deep Ocean Ambient Spotlights (Optimized: hidden on mobile to prevent GPU fillrate lag) */}
+      <div className="hidden md:block absolute -top-10 right-[5%] w-[850px] h-[850px] rounded-full bg-gradient-radial from-[#1E4A78]/35 via-[#0E284A]/15 to-transparent blur-[120px] pointer-events-none animate-pulse-slow" />
+      <div className="hidden md:block absolute top-10 -left-20 w-[700px] h-[700px] rounded-full bg-gradient-radial from-[#1A2644]/35 via-[#0D152A]/15 to-transparent blur-[130px] pointer-events-none" />
+      <div className="hidden md:block absolute top-[38%] right-[15%] w-[800px] h-[800px] rounded-full bg-gradient-radial from-[#17253D]/30 via-[#0B1424]/10 to-transparent blur-[140px] pointer-events-none" />
+      <div className="hidden md:block absolute top-[65%] -left-24 w-[750px] h-[750px] rounded-full bg-gradient-radial from-[#1E2548]/30 via-transparent to-transparent blur-[150px] pointer-events-none" />
 
-      {/* 3. Top-Left Bioluminescent Ambient Atmosphere */}
-      <div className="absolute top-10 -left-20 w-[700px] h-[700px] rounded-full bg-gradient-radial from-[#1A2644]/35 via-[#0D152A]/15 to-transparent blur-[130px] pointer-events-none" />
-
-      {/* 4. Center Work Section Ambient Abyssal Depth */}
-      <div className="absolute top-[38%] right-[15%] w-[800px] h-[800px] rounded-full bg-gradient-radial from-[#17253D]/30 via-[#0B1424]/10 to-transparent blur-[140px] pointer-events-none" />
-
-      {/* 5. Lower Capabilities Cyan-Ultraviolet Ambient Glow */}
-      <div className="absolute top-[65%] -left-24 w-[750px] h-[750px] rounded-full bg-gradient-radial from-[#1E2548]/30 via-transparent to-transparent blur-[150px] pointer-events-none" />
+      {/* 3b. Ultra-lightweight static glow for mobile (zero blur filter cost) */}
+      <div className="block md:hidden absolute top-0 right-0 w-full h-[50vh] bg-gradient-to-b from-[#142848]/20 via-transparent to-transparent pointer-events-none" />
 
       {/* 6. Geometric Spatial Coordinate Rings */}
       <div className="absolute top-20 right-[15%] w-[420px] h-[420px] rounded-full border border-cyan-400/[0.05] pointer-events-none" />
@@ -55,9 +52,9 @@ export const LuxuryBackground: React.FC = () => {
       {/* 8. Interactive Bioluminescent Skeletal Worm */}
       <SkeletalWorm />
 
-      {/* 9. Smooth Mouse-Tracking Dynamic Aqua Spotlight Glow */}
+      {/* 9. Smooth Mouse-Tracking Dynamic Aqua Spotlight Glow (Desktop only) */}
       <div
-        className="absolute w-[700px] h-[700px] rounded-full bg-gradient-radial from-cyan-400/[0.04] via-indigo-500/[0.02] to-transparent blur-[90px] transition-transform duration-500 ease-out pointer-events-none"
+        className="hidden md:block absolute w-[700px] h-[700px] rounded-full bg-gradient-radial from-cyan-400/[0.04] via-indigo-500/[0.02] to-transparent blur-[90px] transition-transform duration-500 ease-out pointer-events-none"
         style={{
           transform: `translate(${mousePos.x}vw, ${mousePos.y}vh) translate(-50%, -50%)`,
         }}

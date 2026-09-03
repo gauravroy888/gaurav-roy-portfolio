@@ -15,11 +15,12 @@ export const DeepSeaAtmosphere: React.FC = () => {
     let animationFrameId: number;
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
+    const isMobile = width < 768;
 
-    // Floating Bioluminescent Marine Snow / Plankton (Stratified across screen grid)
-    const COLS = 7;
-    const ROWS = 6;
-    const NUM_PLANKTON = COLS * ROWS; // 42 evenly distributed particles
+    // Floating Bioluminescent Marine Snow / Plankton (Stratified across screen grid, optimized for mobile)
+    const COLS = isMobile ? 4 : 7;
+    const ROWS = isMobile ? 3 : 6;
+    const NUM_PLANKTON = COLS * ROWS;
     
     interface Plankton {
       percentX: number;
@@ -45,7 +46,7 @@ export const DeepSeaAtmosphere: React.FC = () => {
           percentY: py,
           x: px * width,
           y: py * height,
-          radius: Math.random() * 1.6 + 0.6,
+          radius: (Math.random() * 1.6 + 0.6) * (isMobile ? 0.85 : 1.0),
           speedY: -(Math.random() * 0.35 + 0.15),
           speedX: (Math.random() - 0.5) * 0.2,
           opacity: Math.random() * 0.5 + 0.2,
@@ -115,15 +116,22 @@ export const DeepSeaAtmosphere: React.FC = () => {
 
         if (p.colorType === 'cyan') {
           ctx.fillStyle = `rgba(0, 245, 255, ${alpha})`;
-          ctx.shadowBlur = 8;
-          ctx.shadowColor = 'rgba(0, 245, 255, 0.6)';
+          if (!isMobile) {
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = 'rgba(0, 245, 255, 0.6)';
+          }
         } else {
           ctx.fillStyle = `rgba(192, 132, 252, ${alpha})`;
-          ctx.shadowBlur = 8;
-          ctx.shadowColor = 'rgba(192, 132, 252, 0.6)';
+          if (!isMobile) {
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = 'rgba(192, 132, 252, 0.6)';
+          }
         }
 
         ctx.fill();
+        if (!isMobile) {
+          ctx.shadowBlur = 0;
+        }
       }
 
       animationFrameId = requestAnimationFrame(render);

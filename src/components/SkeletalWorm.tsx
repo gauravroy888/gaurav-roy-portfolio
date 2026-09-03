@@ -225,11 +225,11 @@ export const SkeletalWorm: React.FC = () => {
 
       time += 0.035 * dt;
 
-      // Responsive device scaling (Mobile: 0.6x scale, 28 segments; Desktop: 1.0x scale, 42 segments)
+      // Responsive device scaling (Mobile: 0.6x scale, 18 segments; Desktop: 1.0x scale, 42 segments)
       const isMobile = width < 768;
       const scale = isMobile ? 0.6 : 1.0;
-      const activeNumSegments = isMobile ? 28 : 42;
-      const activeSegmentLength = isMobile ? 8.0 : 12.5;
+      const activeNumSegments = isMobile ? 18 : 42;
+      const activeSegmentLength = isMobile ? 9.5 : 12.5;
 
       // Decay energy surge ripple
       if (energySurge > 0) {
@@ -323,8 +323,9 @@ export const SkeletalWorm: React.FC = () => {
             orb.respawnTimer = 3.0 + Math.random() * 2.0;
             energySurge = 1.0;
 
-            // Spawn Sparkle Burst Particles
-            for (let p = 0; p < 14; p++) {
+            // Spawn Sparkle Burst Particles (Optimized count for mobile)
+            const burstCount = isMobile ? 6 : 14;
+            for (let p = 0; p < burstCount; p++) {
               const pAngle = Math.random() * Math.PI * 2;
               const pSpeed = Math.random() * 3.2 + 1.2;
               particles.push({
@@ -360,8 +361,10 @@ export const SkeletalWorm: React.FC = () => {
             ctx.arc(orb.x, orb.y, currentRadius * 2.2, 0, Math.PI * 2);
             ctx.fillStyle = orb.color;
             ctx.globalAlpha = 0.25 * orb.scaleAnim;
-            ctx.shadowBlur = 14 * scale;
-            ctx.shadowColor = orb.glowColor;
+            if (!isMobile) {
+              ctx.shadowBlur = 14 * scale;
+              ctx.shadowColor = orb.glowColor;
+            }
             ctx.fill();
 
             // Delicate Outer Dashed Orbit Ring
@@ -377,8 +380,10 @@ export const SkeletalWorm: React.FC = () => {
             ctx.arc(orb.x, orb.y, currentRadius, 0, Math.PI * 2);
             ctx.fillStyle = '#FFFFFF';
             ctx.globalAlpha = 0.95 * orb.scaleAnim;
-            ctx.shadowBlur = 8 * scale;
-            ctx.shadowColor = orb.glowColor;
+            if (!isMobile) {
+              ctx.shadowBlur = 8 * scale;
+              ctx.shadowColor = orb.glowColor;
+            }
             ctx.fill();
 
             ctx.restore();
@@ -401,8 +406,10 @@ export const SkeletalWorm: React.FC = () => {
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
         ctx.globalAlpha = p.alpha;
-        ctx.shadowBlur = 6 * scale;
-        ctx.shadowColor = p.color;
+        if (!isMobile) {
+          ctx.shadowBlur = 6 * scale;
+          ctx.shadowColor = p.color;
+        }
         ctx.fill();
         ctx.restore();
 
@@ -420,8 +427,10 @@ export const SkeletalWorm: React.FC = () => {
         ctx.font = `bold ${Math.round(11 * scale)}px monospace`;
         ctx.fillStyle = fs.color;
         ctx.globalAlpha = Math.max(0, fs.alpha);
-        ctx.shadowBlur = 6;
-        ctx.shadowColor = fs.color;
+        if (!isMobile) {
+          ctx.shadowBlur = 6;
+          ctx.shadowColor = fs.color;
+        }
         ctx.fillText(fs.text, fs.x - 6, fs.y);
         ctx.restore();
 
@@ -449,8 +458,8 @@ export const SkeletalWorm: React.FC = () => {
       if (isTouchingMouse) {
         rainbowIntensity += (1 - rainbowIntensity) * Math.min(1, 0.15 * dt); // Fast rainbow ignition
         
-        // Spawn chromatic rainbow sparkle stardust on mouse contact
-        if (Math.random() < 0.32 * dt) {
+        // Spawn chromatic rainbow sparkle stardust on mouse contact (capped on mobile)
+        if (Math.random() < (isMobile ? 0.12 : 0.32) * dt && particles.length < (isMobile ? 12 : 45)) {
           const pAngle = Math.random() * Math.PI * 2;
           const pSpeed = Math.random() * 2.2 + 0.8;
           const pHue = (time * 180 + Math.random() * 60) % 360;
@@ -560,8 +569,10 @@ export const SkeletalWorm: React.FC = () => {
           const alpha = 0.4 + pulse * 0.6;
           ctx.strokeStyle = `hsla(${rainbowHue}, 100%, ${55 + pulse * 35}%, ${alpha})`;
           ctx.lineWidth = (1.6 + pulse * 2.2) * scale;
-          ctx.shadowBlur = (4 + pulse * 18) * scale;
-          ctx.shadowColor = `hsl(${rainbowHue}, 100%, 65%)`;
+          if (!isMobile) {
+            ctx.shadowBlur = (4 + pulse * 18) * scale;
+            ctx.shadowColor = `hsl(${rainbowHue}, 100%, 65%)`;
+          }
         } else if (baseTheme === 'cyan') {
           const r = Math.round(10 + pulse * 245);
           const g = Math.round(110 + pulse * 145);
@@ -570,8 +581,10 @@ export const SkeletalWorm: React.FC = () => {
 
           ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
           ctx.lineWidth = (1.4 + pulse * 1.8) * scale;
-          ctx.shadowBlur = (2 + pulse * 14) * scale;
-          ctx.shadowColor = '#00F5FF';
+          if (!isMobile) {
+            ctx.shadowBlur = (2 + pulse * 14) * scale;
+            ctx.shadowColor = '#00F5FF';
+          }
         } else {
           const r = Math.round(120 + pulse * 135);
           const g = Math.round(60 + pulse * 120);
@@ -580,8 +593,10 @@ export const SkeletalWorm: React.FC = () => {
 
           ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
           ctx.lineWidth = (1.4 + pulse * 1.8) * scale;
-          ctx.shadowBlur = (2 + pulse * 14) * scale;
-          ctx.shadowColor = '#C084FC';
+          if (!isMobile) {
+            ctx.shadowBlur = (2 + pulse * 14) * scale;
+            ctx.shadowColor = '#C084FC';
+          }
         }
 
         ctx.stroke();
@@ -618,16 +633,22 @@ export const SkeletalWorm: React.FC = () => {
         if (rainbowIntensity > 0.02) {
           const ribHue = (time * 160 - i * 9) % 360;
           ctx.strokeStyle = `hsla(${ribHue}, 100%, ${60 + pulse * 30}%, ${0.35 + pulse * 0.65})`;
-          ctx.shadowBlur = (3 + pulse * 12) * scale;
-          ctx.shadowColor = `hsl(${ribHue}, 100%, 65%)`;
+          if (!isMobile) {
+            ctx.shadowBlur = (3 + pulse * 12) * scale;
+            ctx.shadowColor = `hsl(${ribHue}, 100%, 65%)`;
+          }
         } else if (baseTheme === 'cyan') {
           ctx.strokeStyle = `rgba(${Math.round(100 + pulse * 155)}, ${Math.round(160 + pulse * 95)}, 255, ${0.25 + pulse * 0.75})`;
-          ctx.shadowBlur = pulse * 9 * scale;
-          ctx.shadowColor = '#00F5FF';
+          if (!isMobile) {
+            ctx.shadowBlur = pulse * 9 * scale;
+            ctx.shadowColor = '#00F5FF';
+          }
         } else {
           ctx.strokeStyle = `rgba(${Math.round(180 + pulse * 75)}, ${Math.round(120 + pulse * 135)}, 255, ${0.25 + pulse * 0.75})`;
-          ctx.shadowBlur = pulse * 9 * scale;
-          ctx.shadowColor = '#C084FC';
+          if (!isMobile) {
+            ctx.shadowBlur = pulse * 9 * scale;
+            ctx.shadowColor = '#C084FC';
+          }
         }
 
         ctx.lineWidth = ribThickness;
@@ -643,16 +664,20 @@ export const SkeletalWorm: React.FC = () => {
           ctx.arc(leftX, leftY, dotRadius, 0, Math.PI * 2);
           if (rainbowIntensity > 0.02) {
             ctx.fillStyle = pulse > 0.6 ? '#FFFFFF' : `hsla(${tipHue}, 100%, 70%, ${0.6 + pulse * 0.4})`;
-            ctx.shadowBlur = (4 + pulse * 14) * scale;
-            ctx.shadowColor = `hsl(${tipHue}, 100%, 65%)`;
+            if (!isMobile) {
+              ctx.shadowBlur = (4 + pulse * 14) * scale;
+              ctx.shadowColor = `hsl(${tipHue}, 100%, 65%)`;
+            }
           } else {
             ctx.fillStyle = pulse > 0.6
               ? '#FFFFFF'
               : baseTheme === 'cyan'
               ? `rgba(6, 182, 212, ${0.3 + pulse * 0.7})`
               : `rgba(217, 70, 239, ${0.3 + pulse * 0.7})`;
-            ctx.shadowBlur = pulse * 10 * scale;
-            ctx.shadowColor = baseTheme === 'cyan' ? '#00F5FF' : '#F472B6';
+            if (!isMobile) {
+              ctx.shadowBlur = pulse * 10 * scale;
+              ctx.shadowColor = baseTheme === 'cyan' ? '#00F5FF' : '#F472B6';
+            }
           }
           ctx.fill();
 
@@ -661,16 +686,20 @@ export const SkeletalWorm: React.FC = () => {
           ctx.arc(rightX, rightY, dotRadius, 0, Math.PI * 2);
           if (rainbowIntensity > 0.02) {
             ctx.fillStyle = pulse > 0.6 ? '#FFFFFF' : `hsla(${tipHue}, 100%, 70%, ${0.6 + pulse * 0.4})`;
-            ctx.shadowBlur = (4 + pulse * 14) * scale;
-            ctx.shadowColor = `hsl(${tipHue}, 100%, 65%)`;
+            if (!isMobile) {
+              ctx.shadowBlur = (4 + pulse * 14) * scale;
+              ctx.shadowColor = `hsl(${tipHue}, 100%, 65%)`;
+            }
           } else {
             ctx.fillStyle = pulse > 0.6
               ? '#FFFFFF'
               : baseTheme === 'cyan'
               ? `rgba(6, 182, 212, ${0.3 + pulse * 0.7})`
               : `rgba(217, 70, 239, ${0.3 + pulse * 0.7})`;
-            ctx.shadowBlur = pulse * 10 * scale;
-            ctx.shadowColor = baseTheme === 'cyan' ? '#00F5FF' : '#F472B6';
+            if (!isMobile) {
+              ctx.shadowBlur = pulse * 10 * scale;
+              ctx.shadowColor = baseTheme === 'cyan' ? '#00F5FF' : '#F472B6';
+            }
           }
           ctx.fill();
         }
@@ -686,8 +715,10 @@ export const SkeletalWorm: React.FC = () => {
             : pulse > 0.65
             ? '#FFFFFF'
             : `hsla(${jointHue}, 100%, 80%, ${0.6 + pulse * 0.4})`;
-          ctx.shadowBlur = (4 + pulse * 14) * scale;
-          ctx.shadowColor = `hsl(${jointHue}, 100%, 65%)`;
+          if (!isMobile) {
+            ctx.shadowBlur = (4 + pulse * 14) * scale;
+            ctx.shadowColor = `hsl(${jointHue}, 100%, 65%)`;
+          }
         } else {
           ctx.fillStyle = i === 0
             ? '#FFFFFF'
@@ -696,8 +727,10 @@ export const SkeletalWorm: React.FC = () => {
             : baseTheme === 'cyan'
             ? `rgba(186, 230, 253, ${0.4 + pulse * 0.6})`
             : `rgba(245, 208, 254, ${0.4 + pulse * 0.6})`;
-          ctx.shadowBlur = pulse * 10 * scale;
-          ctx.shadowColor = baseTheme === 'cyan' ? '#00F5FF' : '#C084FC';
+          if (!isMobile) {
+            ctx.shadowBlur = pulse * 10 * scale;
+            ctx.shadowColor = baseTheme === 'cyan' ? '#00F5FF' : '#C084FC';
+          }
         }
         ctx.fill();
       }
@@ -727,8 +760,10 @@ export const SkeletalWorm: React.FC = () => {
       ctx.fillStyle = 'rgba(15, 23, 42, 0.92)';
       ctx.strokeStyle = skullGlow;
       ctx.lineWidth = 1.6;
-      ctx.shadowBlur = 8 + headPulse * 5;
-      ctx.shadowColor = skullGlow;
+      if (!isMobile) {
+        ctx.shadowBlur = 8 + headPulse * 5;
+        ctx.shadowColor = skullGlow;
+      }
       ctx.fill();
       ctx.stroke();
 
@@ -737,8 +772,10 @@ export const SkeletalWorm: React.FC = () => {
       ctx.arc(2.0, -2.5, 1.6, 0, Math.PI * 2);
       ctx.arc(2.0, 2.5, 1.6, 0, Math.PI * 2);
       ctx.fillStyle = '#FFFFFF';
-      ctx.shadowBlur = 8 + headPulse * 5;
-      ctx.shadowColor = skullGlow;
+      if (!isMobile) {
+        ctx.shadowBlur = 8 + headPulse * 5;
+        ctx.shadowColor = skullGlow;
+      }
       ctx.fill();
 
       // Sleek Fixed Front Mandibles
@@ -749,8 +786,10 @@ export const SkeletalWorm: React.FC = () => {
       ctx.lineTo(12.8, 5.2);
       ctx.strokeStyle = skullGlow;
       ctx.lineWidth = 1.3;
-      ctx.shadowBlur = 5;
-      ctx.shadowColor = skullGlow;
+      if (!isMobile) {
+        ctx.shadowBlur = 5;
+        ctx.shadowColor = skullGlow;
+      }
       ctx.stroke();
 
       ctx.restore();

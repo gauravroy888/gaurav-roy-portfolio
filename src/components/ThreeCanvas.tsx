@@ -104,12 +104,14 @@ export const ThreeCanvas: React.FC<ThreeCanvasProps> = ({ className = '' }) => {
     window.addEventListener('resize', handleResize);
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    // 7. Animation Loop with smooth damping
+    // 7. Animation Loop with smooth damping & viewport intersection culling
     let animationId: number;
+    let isIntersecting = false;
+    let observer: IntersectionObserver | null = null;
     const startTime = performance.now();
 
     const animate = () => {
-      if (isTabHidden) return;
+      if (isTabHidden || !isIntersecting) return;
       animationId = requestAnimationFrame(animate);
 
       const elapsedTime = (performance.now() - startTime) * 0.001;
@@ -125,11 +127,27 @@ export const ThreeCanvas: React.FC<ThreeCanvasProps> = ({ className = '' }) => {
       renderer.render(scene, camera);
     };
 
-    animate();
+    if (typeof window !== 'undefined' && 'IntersectionObserver' in window) {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          const wasVisible = isIntersecting;
+          isIntersecting = entry.isIntersecting;
+          if (!wasVisible && isIntersecting && !isTabHidden) {
+            animationId = requestAnimationFrame(animate);
+          }
+        },
+        { threshold: 0.05 }
+      );
+      observer.observe(container);
+    } else {
+      isIntersecting = true;
+      animate();
+    }
 
     // 8. Cleanup
     return () => {
       cancelAnimationFrame(animationId);
+      if (observer) observer.disconnect();
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', handleResize);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
