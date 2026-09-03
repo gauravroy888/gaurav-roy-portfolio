@@ -82,13 +82,21 @@ export const InteractiveBackground: React.FC = () => {
 
     initParticles();
 
+    let lastTime = performance.now();
+
     // Render loop
     const render = () => {
+      const now = performance.now();
+      const rawDelta = (now - lastTime) / 1000;
+      lastTime = now;
+      const delta = Math.min(Math.max(rawDelta, 0.001), 0.1);
+      const dt = delta * 60;
+
       ctx.clearRect(0, 0, width, height);
 
       // Smooth mouse follow
-      mouse.x += (mouse.targetX - mouse.x) * 0.05;
-      mouse.y += (mouse.targetY - mouse.y) * 0.05;
+      mouse.x += (mouse.targetX - mouse.x) * Math.min(1, 0.05 * dt);
+      mouse.y += (mouse.targetY - mouse.y) * Math.min(1, 0.05 * dt);
 
       // Draw interactive radial cursor spotlight
       const gradient = ctx.createRadialGradient(
@@ -113,8 +121,8 @@ export const InteractiveBackground: React.FC = () => {
         const p = particles[i];
 
         // Gentle organic drift
-        p.x += p.vx;
-        p.y += p.vy;
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
 
         // Wrap around boundaries
         if (p.x < 0) p.x = width;
@@ -129,8 +137,8 @@ export const InteractiveBackground: React.FC = () => {
 
         if (distance < mouse.radius) {
           const force = (mouse.radius - distance) / mouse.radius;
-          p.x -= (dx / distance) * force * 1.5;
-          p.y -= (dy / distance) * force * 1.5;
+          p.x -= (dx / distance) * force * 1.5 * dt;
+          p.y -= (dy / distance) * force * 1.5 * dt;
         }
 
         // Draw particle dot

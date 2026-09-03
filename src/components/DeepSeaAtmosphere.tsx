@@ -69,9 +69,12 @@ export const DeepSeaAtmosphere: React.FC = () => {
     };
 
     let isTabHidden = false;
+    let lastTime = performance.now();
+
     const handleVisibilityChange = () => {
       isTabHidden = document.hidden;
       if (!isTabHidden) {
+        lastTime = performance.now();
         animationFrameId = requestAnimationFrame(render);
       }
     };
@@ -83,13 +86,21 @@ export const DeepSeaAtmosphere: React.FC = () => {
 
     const render = () => {
       if (isTabHidden) return;
-      time += 0.02;
+      const now = performance.now();
+      const rawDelta = (now - lastTime) / 1000;
+      lastTime = now;
+
+      // Framerate-independent normalized delta time factor (dt = 1.0 at standard 60 FPS)
+      const delta = Math.min(Math.max(rawDelta, 0.001), 0.1);
+      const dt = delta * 60;
+
+      time += 0.02 * dt;
       ctx.clearRect(0, 0, width, height);
 
       // Render Floating Marine Snow & Micro-Plankton
       for (const p of planktonList) {
-        p.y += p.speedY;
-        p.x += p.speedX + Math.sin(time + p.pulsePhase) * 0.25;
+        p.y += p.speedY * dt;
+        p.x += (p.speedX + Math.sin(time + p.pulsePhase) * 0.25) * dt;
 
         // Wrap around viewport edges
         if (p.y < -10) p.y = height + 10;

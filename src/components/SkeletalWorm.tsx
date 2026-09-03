@@ -185,10 +185,13 @@ export const SkeletalWorm: React.FC = () => {
       isIdle = true;
     };
 
+    let lastTime = performance.now();
+
     const handleVisibilityChange = () => {
       isTabHidden = document.hidden;
       if (!isTabHidden) {
         lastMouseMoveTime = performance.now();
+        lastTime = performance.now();
         animationFrameId = requestAnimationFrame(render);
       }
     };
@@ -212,8 +215,15 @@ export const SkeletalWorm: React.FC = () => {
 
     const render = () => {
       if (isTabHidden) return;
-      time += 0.035;
       const now = performance.now();
+      const rawDelta = (now - lastTime) / 1000;
+      lastTime = now;
+
+      // Framerate-independent normalized delta time factor (dt = 1.0 at standard 60 FPS)
+      const delta = Math.min(Math.max(rawDelta, 0.001), 0.1);
+      const dt = delta * 60;
+
+      time += 0.035 * dt;
 
       // Responsive device scaling (Mobile: 0.6x scale, 28 segments; Desktop: 1.0x scale, 42 segments)
       const isMobile = width < 768;
@@ -223,7 +233,7 @@ export const SkeletalWorm: React.FC = () => {
 
       // Decay energy surge ripple
       if (energySurge > 0) {
-        energySurge = Math.max(0, energySurge - 0.02);
+        energySurge = Math.max(0, energySurge - 0.02 * dt);
       }
 
       // 1. Check for 5-second inactivity
@@ -244,7 +254,7 @@ export const SkeletalWorm: React.FC = () => {
       if (isIdle) {
         if (isFrontHeroPage) {
           // CONDITION A: ON FRONT HERO PAGE -> ENCIRCLE THE CELESTIAL CIRCLE AROUND GAURAV
-          orbitAngle += 0.016;
+          orbitAngle += 0.016 * dt;
 
           const circleBox = document.getElementById('hero-portrait-circle');
           if (circleBox) {
@@ -266,7 +276,7 @@ export const SkeletalWorm: React.FC = () => {
         } else {
           // CONDITION B: ON OTHER SECTIONS -> RANDOMLY ROAM ACROSS WHOLE PAGE
           const distToWander = Math.hypot(wanderTarget.x - headX, wanderTarget.y - headY);
-          wanderTarget.changeTimer += 0.016;
+          wanderTarget.changeTimer += delta;
 
           if (distToWander < 80 || wanderTarget.changeTimer > 5.5) {
             pickNewWanderTarget();
@@ -284,7 +294,7 @@ export const SkeletalWorm: React.FC = () => {
       // --- 2. UPDATE & RENDER SMALL GLOWING ORBS ---
       for (const orb of orbs) {
         if (orb.isCollected) {
-          orb.respawnTimer -= 0.016;
+          orb.respawnTimer -= delta;
           if (orb.respawnTimer <= 0) {
             orb.isCollected = false;
             const zone = ORB_ZONES[orb.zoneIdx];
@@ -297,7 +307,7 @@ export const SkeletalWorm: React.FC = () => {
         } else {
           // Animate appearance scale
           if (orb.scaleAnim < 1.0) {
-            orb.scaleAnim += 0.05;
+            orb.scaleAnim = Math.min(1.0, orb.scaleAnim + 0.05 * dt);
           }
 
           // Gentle ambient floating oscillation
@@ -379,11 +389,11 @@ export const SkeletalWorm: React.FC = () => {
       // --- 3. RENDER PARTICLES & FLOATING SCORES ---
       for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i];
-        p.life++;
-        p.x += p.vx;
-        p.y += p.vy;
-        p.vx *= 0.94;
-        p.vy *= 0.94;
+        p.life += dt;
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+        p.vx *= Math.pow(0.94, dt);
+        p.vy *= Math.pow(0.94, dt);
         p.alpha = Math.max(0, 1 - p.life / p.maxLife);
 
         ctx.save();
@@ -403,8 +413,8 @@ export const SkeletalWorm: React.FC = () => {
 
       for (let i = floatingScores.length - 1; i >= 0; i--) {
         const fs = floatingScores[i];
-        fs.y += fs.vy;
-        fs.alpha -= 0.025;
+        fs.y += fs.vy * dt;
+        fs.alpha -= 0.025 * dt;
 
         ctx.save();
         ctx.font = `bold ${Math.round(11 * scale)}px monospace`;
@@ -437,10 +447,10 @@ export const SkeletalWorm: React.FC = () => {
 
       // Smoothly surge or fade the rainbow light effect
       if (isTouchingMouse) {
-        rainbowIntensity += (1 - rainbowIntensity) * 0.15; // Fast rainbow ignition
+        rainbowIntensity += (1 - rainbowIntensity) * Math.min(1, 0.15 * dt); // Fast rainbow ignition
         
         // Spawn chromatic rainbow sparkle stardust on mouse contact
-        if (Math.random() < 0.32) {
+        if (Math.random() < 0.32 * dt) {
           const pAngle = Math.random() * Math.PI * 2;
           const pSpeed = Math.random() * 2.2 + 0.8;
           const pHue = (time * 180 + Math.random() * 60) % 360;
@@ -457,40 +467,40 @@ export const SkeletalWorm: React.FC = () => {
           });
         }
       } else {
-        rainbowIntensity += (0 - rainbowIntensity) * 0.035; // Gentle trailing dissipation
+        rainbowIntensity += (0 - rainbowIntensity) * Math.min(1, 0.035 * dt); // Gentle trailing dissipation
       }
 
       if (isArrived) {
-        wagIntensity += (1 - wagIntensity) * 0.06;
+        wagIntensity += (1 - wagIntensity) * Math.min(1, 0.06 * dt);
       } else {
-        wagIntensity += (0 - wagIntensity) * 0.12;
+        wagIntensity += (0 - wagIntensity) * Math.min(1, 0.12 * dt);
       }
 
       if (isIdle) {
         const targetAngle = Math.atan2(dy, dx);
         const angleDiff = getShortestAngle(headAngle, targetAngle);
-        headAngle += angleDiff * 0.07;
+        headAngle += angleDiff * Math.min(1, 0.07 * dt);
 
         const targetSpeed = Math.min(dist * 0.05, isMobile ? 3.0 : 4.4);
-        speed += (targetSpeed - speed) * 0.1;
+        speed += (targetSpeed - speed) * Math.min(1, 0.1 * dt);
 
         const wave = Math.sin(time * 2.8) * (isMobile ? 1.6 : 2.5);
-        headX += Math.cos(headAngle) * speed + Math.cos(headAngle + Math.PI / 2) * wave;
-        headY += Math.sin(headAngle) * speed + Math.sin(headAngle + Math.PI / 2) * wave;
+        headX += (Math.cos(headAngle) * speed + Math.cos(headAngle + Math.PI / 2) * wave) * dt;
+        headY += (Math.sin(headAngle) * speed + Math.sin(headAngle + Math.PI / 2) * wave) * dt;
       } else {
         if (!isArrived) {
           const targetAngle = Math.atan2(dy, dx);
           const angleDiff = getShortestAngle(headAngle, targetAngle);
-          headAngle += angleDiff * 0.08;
+          headAngle += angleDiff * Math.min(1, 0.08 * dt);
 
           const targetSpeed = Math.min((dist - ARRIVAL_DEADZONE) * 0.065, isMobile ? 3.8 : 5.2);
-          speed += (targetSpeed - speed) * 0.12;
+          speed += (targetSpeed - speed) * Math.min(1, 0.12 * dt);
 
           const waveDamping = Math.min(1, Math.max(0, (dist - ARRIVAL_DEADZONE) / 35));
           const wave = Math.sin(time * 3.4) * ((isMobile ? 1.8 : 2.8) * waveDamping);
 
-          headX += Math.cos(headAngle) * speed + Math.cos(headAngle + Math.PI / 2) * wave;
-          headY += Math.sin(headAngle) * speed + Math.sin(headAngle + Math.PI / 2) * wave;
+          headX += (Math.cos(headAngle) * speed + Math.cos(headAngle + Math.PI / 2) * wave) * dt;
+          headY += (Math.sin(headAngle) * speed + Math.sin(headAngle + Math.PI / 2) * wave) * dt;
         } else {
           speed = 0;
         }
