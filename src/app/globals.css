@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #090A0E;
+  --foreground: #F1F4F9;
+  --font-inter: 'Inter', sans-serif;
+  --font-bebas: 'Bebas Neue', sans-serif;
+  --font-cinzel: 'Cinzel', serif;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100vh;
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-inter);
+  overflow-x: hidden;
+}
+
+/* Custom Luxury Glass Card Utility */
+.luxury-card {
+  background: linear-gradient(180deg, rgba(26, 32, 50, 0.45) 0%, rgba(14, 18, 28, 0.55) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.15), 0 16px 40px -12px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.luxury-card:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.25), 0 20px 50px -10px rgba(0, 0, 0, 0.8), 0 0 30px -5px rgba(99, 102, 241, 0.18);
+  transform: translateY(-2px);
+}
+
+/* 100% Constant-Speed Perimeter Border Beam Animation */
+@keyframes offset-beam-travel {
+  0% {
+    offset-distance: 0%;
+  }
+  100% {
+    offset-distance: 100%;
+  }
+}
+
+/* Metallic Text Sheen */
+.text-metallic {
+  background: linear-gradient(180deg, #FFFFFF 0%, #B8C0D4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Subtle Blueprint Grid Pattern */
+.bg-spatial-grid {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #090A0E;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #24293A;
+}
