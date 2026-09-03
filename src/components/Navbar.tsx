@@ -62,7 +62,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onOpenContact, onO
           </a>
 
           {/* Center Glassmorphic Nav Bar Pill with Active Scroll Spy */}
-          <nav className="hidden md:flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/[0.06] hover:bg-white/[0.08] backdrop-blur-2xl border border-white/15 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] transition-all">
+          <nav className="hidden lg:flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/[0.06] hover:bg-white/[0.08] backdrop-blur-2xl border border-white/15 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] transition-all">
             {navLinks.map((link) => {
               const isActive = activeSection === link.id;
               return (
@@ -86,7 +86,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onOpenContact, onO
             {onOpenCommand && (
               <button
                 onClick={onOpenCommand}
-                className="hidden lg:flex items-center gap-2 px-3 py-2 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 text-xs font-mono text-gray-300 transition-all cursor-pointer"
+                className="hidden xl:flex items-center gap-2 px-3 py-2 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 text-xs font-mono text-gray-300 transition-all cursor-pointer"
                 title="Open Command Menu (Ctrl+K or Cmd+K)"
               >
                 <Search className="w-3.5 h-3.5 text-gray-400" />
@@ -107,7 +107,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onOpenContact, onO
           {/* Mobile Hamburger Toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-gray-300 hover:text-white"
+            className="lg:hidden p-2 text-gray-300 hover:text-white"
             aria-label="Toggle Navigation"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -118,7 +118,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onOpenContact, onO
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#0A0B10]/98 backdrop-blur-2xl border-b border-white/10 px-6 py-6 space-y-4">
+        <div className="lg:hidden bg-[#0A0B10]/98 backdrop-blur-2xl border-b border-white/10 px-6 py-6 space-y-4">
           <a
             href="#work"
             onClick={() => setMobileMenuOpen(false)}

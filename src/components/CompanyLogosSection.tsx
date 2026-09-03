@@ -31,13 +31,13 @@ export const CompanyLogosSection: React.FC = () => {
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-[1px] bg-gradient-to-r from-transparent via-purple-400/40 to-transparent pointer-events-none" />
 
           {/* Section Eyebrow */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-7 pb-4 border-b border-white/[0.08]">
-            <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-[0.2em] text-purple-300 font-bold">
-              <Building2 className="w-4 h-4 text-purple-300" />
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2.5 sm:gap-3 mb-7 pb-4 border-b border-white/[0.08] text-center sm:text-left">
+            <div className="flex items-center justify-center sm:justify-start gap-2 text-xs font-mono uppercase tracking-[0.2em] text-purple-300 font-bold">
+              <Building2 className="w-4 h-4 text-purple-300 flex-shrink-0" />
               <span>Companies & Enterprise Brands I&apos;ve Worked With</span>
             </div>
-            <div className="flex items-center gap-1.5 text-[11px] font-mono text-cyan-300">
-              <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
+            <div className="flex items-center justify-center sm:justify-start gap-1.5 text-[11px] font-mono text-cyan-300">
+              <Sparkles className="w-3.5 h-3.5 text-cyan-300 flex-shrink-0" />
               <span>Production CGI • 3D Design • Commercials</span>
             </div>
           </div>

@@ -31,38 +31,38 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
       <div className="absolute top-[35%] right-[10%] w-[480px] h-[480px] rounded-full bg-gradient-radial from-violet-600/22 via-transparent to-transparent blur-[90px] pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 w-full flex items-end">
-        <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-8 lg:gap-10 w-full">
+        <div className="flex flex-col lg:flex-row items-center lg:items-end justify-between gap-8 lg:gap-10 w-full">
           
           {/* Left Side: Editorial Typography & Actions */}
           <div
             id="hero-title-area"
-            className="w-full md:w-[54%] space-y-6 sm:space-y-7 text-left relative z-10 translate-y-0 md:-translate-y-6 lg:-translate-y-8 pb-4 md:pb-4"
+            className="w-full lg:w-[54%] space-y-6 sm:space-y-7 text-center lg:text-left relative z-10 translate-y-0 lg:-translate-y-6 xl:-translate-y-8 pb-4 lg:pb-4 flex flex-col items-center lg:items-start"
           >
             
             {/* Eyebrow */}
-            <div className="text-xs sm:text-sm font-mono tracking-[0.25em] text-purple-300 uppercase font-bold flex items-center gap-2">
+            <div className="text-xs sm:text-sm font-mono tracking-[0.22em] text-purple-300 uppercase font-bold flex items-center justify-center lg:justify-start gap-2 mx-auto lg:mx-0">
               <span className="w-2 h-2 rounded-full bg-purple-400 animate-ping inline-block" />
               <span>Digital Experiences That Inspire</span>
             </div>
 
             {/* Massive Condensed Headline */}
-            <div className="space-y-0">
-              <h1 className="font-display text-6xl sm:text-8xl lg:text-[115px] font-normal text-white uppercase tracking-tight leading-[0.88] select-none">
+            <div className="space-y-0 w-full">
+              <h1 className="font-display text-5xl sm:text-7xl md:text-8xl lg:text-8xl xl:text-[112px] font-normal text-white uppercase tracking-tight leading-[0.9] select-none text-center lg:text-left">
                 DIGITAL <br />
                 DESIGNER
               </h1>
             </div>
 
             {/* Subtitle */}
-            <p className="text-sm sm:text-base md:text-lg text-gray-200 leading-relaxed max-w-lg font-sans">
+            <p className="text-sm sm:text-base lg:text-lg text-gray-200 leading-relaxed max-w-lg font-sans text-center lg:text-left mx-auto lg:mx-0 px-2 sm:px-0">
               I design elegant, high-performing 3D spatial experiences, generative AI pipelines, and digital products that merge strategy, aesthetics, and technology.
             </p>
 
             {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-4 sm:gap-5 pt-2">
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 sm:gap-4 pt-2 w-full">
               <a
                 href="#work"
-                className="inline-flex items-center gap-2 px-7 sm:px-8 py-3.5 rounded-full bg-white text-black text-xs sm:text-sm font-bold tracking-wider uppercase hover:bg-gray-200 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-white/10"
+                className="w-full max-w-[270px] sm:w-[230px] h-[48px] sm:h-[52px] inline-flex items-center justify-center gap-2 px-5 rounded-full bg-white text-black text-xs sm:text-sm font-bold tracking-wider uppercase border border-transparent hover:bg-gray-200 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-white/10 text-center"
               >
                 <span>View My Work</span>
                 <ArrowUpRight className="w-4 h-4" />
@@ -70,7 +70,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
 
               <button
                 onClick={onOpenResume}
-                className="inline-flex items-center gap-2.5 px-7 sm:px-8 py-3.5 rounded-full bg-white/[0.07] hover:bg-white/[0.15] text-white text-xs sm:text-sm font-bold tracking-wider uppercase border border-white/20 hover:border-white/40 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(0,0,0,0.4)] transition-all hover:scale-105 active:scale-95 group"
+                className="w-full max-w-[270px] sm:w-[230px] h-[48px] sm:h-[52px] inline-flex items-center justify-center gap-2.5 px-5 rounded-full bg-white/[0.07] hover:bg-white/[0.15] text-white text-xs sm:text-sm font-bold tracking-wider uppercase border border-white/20 hover:border-white/40 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(0,0,0,0.4)] transition-all hover:scale-105 active:scale-95 group text-center"
               >
                 <span>Download Resume</span>
                 <ArrowDown className="w-4 h-4 text-gray-300 group-hover:text-white transition-transform group-hover:translate-y-0.5" />
@@ -80,18 +80,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
           </div>
 
           {/* Right Side: Portrait with Editorial Celestial Astrolabe & Responsive Layout (46% width) */}
-          <div className="w-full md:w-[46%] flex justify-center md:justify-end relative items-end pt-6 md:pt-0">
+          <div className="w-full lg:w-[46%] flex justify-center lg:justify-end relative items-end pt-8 lg:pt-0">
             
-            <div className="relative w-full max-w-[360px] sm:max-w-[400px] md:max-w-[450px] flex flex-col items-center justify-end">
+            <div className="relative w-full max-w-[340px] sm:max-w-[390px] md:max-w-[430px] lg:max-w-[460px] flex flex-col items-center justify-end">
               
               {/* --- MULTI-LAYERED EDITORIAL GEOMETRY & BACKLIGHT HALO --- */}
               <div
                 id="hero-portrait-circle"
-                className="absolute top-[28%] left-[50%] md:left-[54%] -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0"
+                className="absolute top-[28%] left-[50%] lg:left-[54%] -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0"
               >
                 
                 {/* 1. Outer Delicate Dashed Orbital Ring */}
-                <div className="w-[340px] sm:w-[450px] md:w-[530px] lg:w-[570px] h-[340px] sm:h-[450px] md:h-[530px] lg:h-[570px] rounded-full border border-dashed border-white/15 animate-[spin_120s_linear_infinite]" />
+                <div className="w-[310px] sm:w-[400px] md:w-[480px] lg:w-[540px] xl:w-[570px] h-[310px] sm:h-[400px] md:h-[480px] lg:h-[540px] xl:h-[570px] rounded-full border border-dashed border-white/15 animate-[spin_120s_linear_infinite]" />
                 
                 {/* 2. Inner Solid Architectural Orbit */}
                 <div className="absolute inset-4 sm:inset-5 rounded-full border border-white/20" />
@@ -127,7 +127,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
                       <img
                         src={portraitUrl}
                         alt="Gaurav Roy — Digital Designer Portrait"
-                        className="w-full max-w-[320px] sm:max-w-[380px] md:max-w-[420px] h-auto object-contain block drop-shadow-[0_0_35px_rgba(14,165,233,0.18)] drop-shadow-[0_20px_45px_rgba(0,0,0,0.95)] translate-y-7 sm:translate-y-10 md:translate-y-14 transition-all duration-500 hover:brightness-105"
+                        className="w-full max-w-[290px] sm:max-w-[340px] md:max-w-[380px] lg:max-w-[420px] h-auto object-contain block drop-shadow-[0_0_35px_rgba(14,165,233,0.18)] drop-shadow-[0_20px_45px_rgba(0,0,0,0.95)] translate-y-7 sm:translate-y-10 lg:translate-y-14 transition-all duration-500 hover:brightness-105"
                         style={{
                           filter: 'grayscale(22%) contrast(114%) brightness(97%)',
                         }}
@@ -135,7 +135,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
 
                       {/* 2. Delicate Deep Oceanic Blue Tint Wash Masked Directly to Portrait Silhouette */}
                       <div
-                        className="absolute inset-0 pointer-events-none mix-blend-soft-light opacity-65 translate-y-7 sm:translate-y-10 md:translate-y-14"
+                        className="absolute inset-0 pointer-events-none mix-blend-soft-light opacity-65 translate-y-7 sm:translate-y-10 lg:translate-y-14"
                         style={{
                           background: 'linear-gradient(135deg, rgba(14,165,233,0.2) 0%, rgba(30,58,138,0.45) 50%, rgba(15,23,42,0.6) 100%)',
                           WebkitMaskImage: `url(${portraitUrl})`,
@@ -154,7 +154,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
               </div>
 
               {/* Floating Minimal Badge Beside Torso */}
-              <div className="absolute bottom-10 right-1 sm:bottom-14 sm:right-2 md:bottom-18 md:-right-6 z-20 luxury-card rounded-xl px-4 sm:px-5 py-2.5 sm:py-3 shadow-2xl text-right border border-white/20 backdrop-blur-md">
+              <div className="absolute bottom-4 sm:bottom-8 right-2 sm:right-6 lg:-right-2 z-20 luxury-card rounded-xl px-4 sm:px-5 py-2.5 sm:py-3 shadow-2xl text-right border border-white/20 backdrop-blur-md">
                 <span className="text-[9px] sm:text-[10px] font-mono tracking-widest text-gray-300 uppercase block font-semibold">
                   Available for
                 </span>
