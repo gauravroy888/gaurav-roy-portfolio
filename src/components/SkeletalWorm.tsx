@@ -461,9 +461,9 @@ export const SkeletalWorm: React.FC = () => {
       const ARRIVAL_DEADZONE = isMobile ? 18 : 24;
       const isArrived = !isIdle && dist <= ARRIVAL_DEADZONE;
 
-      // Check if worm touches the mouse pointer — STRICTLY HEAD ONLY, NEVER BODY OR WINDOW EDGES
+      // Check if worm reaches near the mouse pointer — Invisible trigger halo centered on HEAD only
       const distHeadToMouse = Math.hypot(headX - mouse.x, headY - mouse.y);
-      const HEAD_TOUCH_RADIUS = (isMobile ? 12 : 16) * scale;
+      const HEAD_TOUCH_RADIUS = isMobile ? 26 : 38;
       const isTouchingMouse = isMouseInside && !isIdle && distHeadToMouse <= HEAD_TOUCH_RADIUS;
 
       // Smoothly surge or fade the rainbow light effect
