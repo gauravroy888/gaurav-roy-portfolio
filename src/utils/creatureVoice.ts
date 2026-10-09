@@ -6,38 +6,68 @@ let soundEnabled = true;
 let pendingSectionVoice: string | null = null;
 let autoplayUnlocked = false;
 
-// Preloaded HTML5 Audio instances for instant, zero-latency playback
-const AUDIO_TRACKS: Record<string, string> = {
-  hero: '/audio/spider/hero.wav',
-  companies: '/audio/spider/companies.wav',
-  specialties: '/audio/spider/specialties.wav',
-  work: '/audio/spider/work.wav',
-  capabilities: '/audio/spider/capabilities.wav',
-  process: '/audio/spider/process.wav',
-  contact: '/audio/spider/contact.wav',
-  celebrate: '/audio/spider/celebrate.wav',
+// Resolve base path for GitHub Pages or root hosting
+export const getBasePath = (): string => {
+  if (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_BASE_PATH) {
+    return process.env.NEXT_PUBLIC_BASE_PATH;
+  }
+  if (typeof window !== 'undefined') {
+    const pathname = window.location.pathname;
+    if (pathname.startsWith('/gaurav-roy-portfolio')) {
+      return '/gaurav-roy-portfolio';
+    }
+    // Also support any repo subpath when hosted on github.io
+    if (window.location.hostname.endsWith('github.io')) {
+      const parts = pathname.split('/').filter(Boolean);
+      if (parts.length > 0) {
+        return `/${parts[0]}`;
+      }
+    }
+  }
+  return '';
 };
+
+export const getAudioSrc = (trackKey: string): string => {
+  const base = getBasePath();
+  return `${base}/audio/spider/${trackKey}.wav`;
+};
+
+const AUDIO_TRACK_KEYS = [
+  'hero',
+  'companies',
+  'specialties',
+  'work',
+  'capabilities',
+  'process',
+  'contact',
+  'celebrate',
+] as const;
 
 const audioInstances: Record<string, HTMLAudioElement> = {};
 let currentlyPlaying: HTMLAudioElement | null = null;
 
 const getAudioInstance = (key: string): HTMLAudioElement | null => {
   if (typeof window === 'undefined') return null;
-  const src = AUDIO_TRACKS[key];
-  if (!src) return null;
+  const targetSrc = getAudioSrc(key);
 
-  if (!audioInstances[key]) {
-    const audio = new Audio(src);
+  let audio = audioInstances[key];
+  if (!audio) {
+    audio = new Audio(targetSrc);
     audio.preload = 'auto';
     audio.volume = 0.95;
+    audio.addEventListener('error', (e) => {
+      console.warn(`[CreatureVoice] Error loading audio track "${key}" from "${targetSrc}":`, e);
+    });
     audioInstances[key] = audio;
+  } else if (!audio.src || !audio.src.includes(targetSrc)) {
+    audio.src = targetSrc;
   }
-  return audioInstances[key];
+  return audio;
 };
 
 // Preload all tracks on client
 if (typeof window !== 'undefined') {
-  Object.keys(AUDIO_TRACKS).forEach((k) => {
+  AUDIO_TRACK_KEYS.forEach((k) => {
     try {
       getAudioInstance(k);
     } catch (_) {}
@@ -69,6 +99,9 @@ export const setPendingVoice = (key: string | null) => { pendingSectionVoice = k
 
 export const unlockAudio = () => {
   autoplayUnlocked = true;
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('creature-audio-unlocked'));
+  }
   const ctx = getAudioContext();
   if (ctx && ctx.state === 'suspended') {
     ctx.resume().catch(() => {});
@@ -115,6 +148,9 @@ export const playSectionVoice = (sectionKey: string): HTMLAudioElement | null =>
           // Playback succeeded!
           autoplayUnlocked = true;
           pendingSectionVoice = null;
+          if (typeof window !== 'undefined') {
+            window.dispatchEvent(new CustomEvent('creature-audio-unlocked'));
+          }
         })
         .catch((err) => {
           // Browser Autoplay Policy blocked audio before user interacted: queue track to play on first user gesture!

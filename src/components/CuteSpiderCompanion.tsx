@@ -204,9 +204,13 @@ export const CuteSpiderCompanion: React.FC = () => {
       unlockAudio();
       setIsAudioUnlocked(true);
     };
+    const handleUnlockedEvent = () => {
+      setIsAudioUnlocked(true);
+    };
     window.addEventListener('pointerdown', handleGlobalActivation, { capture: true, passive: true });
     window.addEventListener('click', handleGlobalActivation, { capture: true, passive: true });
     window.addEventListener('keydown', handleGlobalActivation, { capture: true, passive: true });
+    window.addEventListener('creature-audio-unlocked', handleUnlockedEvent);
 
     const canvasBack = canvasBackRef.current;
     const canvasFront = canvasFrontRef.current;
@@ -1988,6 +1992,10 @@ export const CuteSpiderCompanion: React.FC = () => {
     render();
 
     return () => {
+      window.removeEventListener('pointerdown', handleGlobalActivation, true);
+      window.removeEventListener('click', handleGlobalActivation, true);
+      window.removeEventListener('keydown', handleGlobalActivation, true);
+      window.removeEventListener('creature-audio-unlocked', handleUnlockedEvent);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('click', handleClick, true);
       window.removeEventListener('resize', handleResize);
