@@ -64,6 +64,7 @@ body {
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
@@ -72,4 +73,31 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: #24293A;
+  border-radius: 4px;
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Tooltip countdown timer bar */
+@keyframes shrink-timer {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+.animate-shrink-timer {
+  animation: shrink-timer 10s linear forwards;
 }

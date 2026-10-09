@@ -1,21 +1,29 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { SkeletalWorm } from './SkeletalWorm';
+import React, { useEffect, useRef } from 'react';
+// import { SkeletalWorm } from './SkeletalWorm'; // Kept in backup for future use
 import { DeepSeaAtmosphere } from './DeepSeaAtmosphere';
 
 export const LuxuryBackground: React.FC = () => {
-  const [mousePos, setMousePos] = useState({ x: 50, y: 30 });
+  const mouseGlowRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    let rafId: number | null = null;
     const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth) * 100;
-      const y = (e.clientY / window.innerHeight) * 100;
-      setMousePos({ x, y });
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        if (mouseGlowRef.current) {
+          mouseGlowRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`;
+        }
+      });
     };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   return (
@@ -32,11 +40,31 @@ export const LuxuryBackground: React.FC = () => {
         }}
       />
 
-      {/* 3. Deep Ocean Ambient Spotlights (Optimized: hidden on mobile to prevent GPU fillrate lag) */}
-      <div className="hidden md:block absolute -top-10 right-[5%] w-[850px] h-[850px] rounded-full bg-gradient-radial from-[#1E4A78]/35 via-[#0E284A]/15 to-transparent blur-[120px] pointer-events-none animate-pulse-slow" />
-      <div className="hidden md:block absolute top-10 -left-20 w-[700px] h-[700px] rounded-full bg-gradient-radial from-[#1A2644]/35 via-[#0D152A]/15 to-transparent blur-[130px] pointer-events-none" />
-      <div className="hidden md:block absolute top-[38%] right-[15%] w-[800px] h-[800px] rounded-full bg-gradient-radial from-[#17253D]/30 via-[#0B1424]/10 to-transparent blur-[140px] pointer-events-none" />
-      <div className="hidden md:block absolute top-[65%] -left-24 w-[750px] h-[750px] rounded-full bg-gradient-radial from-[#1E2548]/30 via-transparent to-transparent blur-[150px] pointer-events-none" />
+      {/* 3. Deep Ocean Ambient Spotlights (Optimized: native soft radial gradients with zero heavy blur convolution) */}
+      <div
+        className="hidden md:block absolute -top-10 right-[5%] w-[850px] h-[850px] rounded-full pointer-events-none opacity-60"
+        style={{
+          background: 'radial-gradient(circle, rgba(30, 74, 120, 0.30) 0%, rgba(14, 40, 74, 0.12) 45%, transparent 72%)',
+        }}
+      />
+      <div
+        className="hidden md:block absolute top-10 -left-20 w-[700px] h-[700px] rounded-full pointer-events-none opacity-60"
+        style={{
+          background: 'radial-gradient(circle, rgba(26, 38, 68, 0.30) 0%, rgba(13, 21, 42, 0.12) 45%, transparent 72%)',
+        }}
+      />
+      <div
+        className="hidden md:block absolute top-[38%] right-[15%] w-[800px] h-[800px] rounded-full pointer-events-none opacity-50"
+        style={{
+          background: 'radial-gradient(circle, rgba(23, 37, 61, 0.25) 0%, rgba(11, 20, 36, 0.10) 45%, transparent 72%)',
+        }}
+      />
+      <div
+        className="hidden md:block absolute top-[65%] -left-24 w-[750px] h-[750px] rounded-full pointer-events-none opacity-50"
+        style={{
+          background: 'radial-gradient(circle, rgba(30, 37, 72, 0.25) 0%, transparent 68%)',
+        }}
+      />
 
       {/* 3b. Ultra-lightweight static glow for mobile (zero blur filter cost) */}
       <div className="block md:hidden absolute top-0 right-0 w-full h-[50vh] bg-gradient-to-b from-[#142848]/20 via-transparent to-transparent pointer-events-none" />
@@ -49,14 +77,18 @@ export const LuxuryBackground: React.FC = () => {
       {/* 7. Deep-Sea Atmosphere: Caustics, Bathymetric Depth Contours & Floating Marine Snow */}
       <DeepSeaAtmosphere />
 
-      {/* 8. Interactive Bioluminescent Skeletal Worm */}
-      <SkeletalWorm />
+      {/* 8. Interactive Bioluminescent Skeletal Worm (Archived in backup: src/components/SkeletalWorm.tsx) */}
+      {/* <SkeletalWorm /> */}
 
-      {/* 9. Smooth Mouse-Tracking Dynamic Aqua Spotlight Glow (Desktop only) */}
+      {/* 9. Smooth Mouse-Tracking Dynamic Aqua Spotlight Glow (Direct hardware transform, zero React re-renders) */}
       <div
-        className="hidden md:block absolute w-[700px] h-[700px] rounded-full bg-gradient-radial from-cyan-400/[0.04] via-indigo-500/[0.02] to-transparent blur-[90px] transition-transform duration-500 ease-out pointer-events-none"
+        ref={mouseGlowRef}
+        className="hidden md:block absolute w-[600px] h-[600px] rounded-full pointer-events-none opacity-50 will-change-transform"
         style={{
-          transform: `translate(${mousePos.x}vw, ${mousePos.y}vh) translate(-50%, -50%)`,
+          top: 0,
+          left: 0,
+          transform: 'translate3d(50vw, 30vh, 0) translate(-50%, -50%)',
+          background: 'radial-gradient(circle, rgba(6, 182, 212, 0.08) 0%, rgba(99, 102, 241, 0.03) 40%, transparent 70%)',
         }}
       />
 

@@ -80,19 +80,46 @@ export const GlowBorderCard: React.FC<GlowBorderCardProps> = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const animRunningRef = useRef(false);
 
   useEffect(() => {
     const container = containerRef.current;
     const canvas = canvasRef.current;
     if (!container || !canvas) return;
 
+    // On touch devices or when not hovered and already idle, do not start loop
+    if (!isHovered && !animRunningRef.current) return;
+
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     let animId: number;
     let currentDistance = 0;
-    let hoverAlpha = 0;
+    let hoverAlpha = isHovered ? 0.05 : 0;
     let lastTime = performance.now();
+    animRunningRef.current = true;
+
+    // Cache container dimensions so we don't query getBoundingClientRect every single frame
+    const rect = container.getBoundingClientRect();
+    let W = rect.width;
+    let H = rect.height;
+    let R = Math.min(borderRadius, W / 2, H / 2);
+
+    const updateSize = () => {
+      if (!container || !canvas) return;
+      const r = container.getBoundingClientRect();
+      W = r.width;
+      H = r.height;
+      R = Math.min(borderRadius, W / 2, H / 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5); // Cap DPR at 1.5 to prevent GPU blowout on 3x/4x mobile screens
+      if (canvas.width !== W * dpr || canvas.height !== H * dpr) {
+        canvas.width = W * dpr;
+        canvas.height = H * dpr;
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.scale(dpr, dpr);
+      }
+    };
+    updateSize();
 
     // Constant Linear Velocity: exactly 220 pixels per second around the perimeter
     const PIXELS_PER_SECOND = 220;
@@ -110,17 +137,11 @@ export const GlowBorderCard: React.FC<GlowBorderCardProps> = ({
         hoverAlpha += (0 - hoverAlpha) * 0.08;
       }
 
-      const rect = container.getBoundingClientRect();
-      const W = rect.width;
-      const H = rect.height;
-      const R = Math.min(borderRadius, W / 2, H / 2);
-
-      // Match canvas size to display size for sharp rendering
-      const dpr = window.devicePixelRatio || 1;
-      if (canvas.width !== W * dpr || canvas.height !== H * dpr) {
-        canvas.width = W * dpr;
-        canvas.height = H * dpr;
-        ctx.scale(dpr, dpr);
+      // If finished fading out and no longer hovered, clear once and STOP the loop completely!
+      if (!isHovered && hoverAlpha <= 0.005) {
+        ctx.clearRect(0, 0, W, H);
+        animRunningRef.current = false;
+        return; // Zero CPU & GPU compute when not hovered!
       }
 
       ctx.clearRect(0, 0, W, H);
@@ -160,6 +181,7 @@ export const GlowBorderCard: React.FC<GlowBorderCardProps> = ({
 
     return () => {
       cancelAnimationFrame(animId);
+      animRunningRef.current = false;
     };
   }, [isHovered, borderRadius]);
 
@@ -172,7 +194,7 @@ export const GlowBorderCard: React.FC<GlowBorderCardProps> = ({
     >
       {/* 1. Main Card Surface */}
       <div
-        className={`relative z-10 w-full h-full bg-[#0E111D]/60 backdrop-blur-2xl border border-white/[0.1] hover:border-white/[0.18] shadow-2xl transition-all duration-500 ${roundedClassName} ${innerClassName}`}
+        className={`relative z-10 w-full h-full bg-[#0E111D]/80 md:bg-[#0E111D]/60 backdrop-blur-md md:backdrop-blur-xl border border-white/[0.1] hover:border-white/[0.18] shadow-2xl transition-all duration-500 ${roundedClassName} ${innerClassName}`}
       >
         {children}
       </div>

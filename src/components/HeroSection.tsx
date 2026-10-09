@@ -26,9 +26,19 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
         }}
       />
 
-      {/* 3. Volumetric Deep Indigo / Purple Ambient Lighting (Right & Behind Portrait) */}
-      <div className="absolute top-[20%] -right-[10%] w-[700px] sm:w-[900px] h-[700px] sm:h-[900px] rounded-full bg-gradient-radial from-purple-600/28 via-[#1E1B4B]/25 to-transparent blur-[130px] pointer-events-none -z-10" />
-      <div className="absolute top-[35%] right-[10%] w-[480px] h-[480px] rounded-full bg-gradient-radial from-violet-600/22 via-transparent to-transparent blur-[90px] pointer-events-none -z-10" />
+      {/* 3. Volumetric Deep Indigo / Purple Ambient Lighting (Right & Behind Portrait - Zero blur convolution) */}
+      <div
+        className="absolute top-[20%] -right-[10%] w-[700px] sm:w-[900px] h-[700px] sm:h-[900px] rounded-full pointer-events-none -z-10 opacity-70"
+        style={{
+          background: 'radial-gradient(circle, rgba(147, 51, 234, 0.22) 0%, rgba(30, 27, 75, 0.16) 45%, transparent 72%)',
+        }}
+      />
+      <div
+        className="absolute top-[35%] right-[10%] w-[480px] h-[480px] rounded-full pointer-events-none -z-10 opacity-60"
+        style={{
+          background: 'radial-gradient(circle, rgba(124, 58, 237, 0.18) 0%, transparent 68%)',
+        }}
+      />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 w-full flex items-end">
         <div className="flex flex-col lg:flex-row items-center lg:items-end justify-between gap-8 lg:gap-10 w-full">
@@ -42,35 +52,51 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
             {/* Eyebrow */}
             <div className="text-xs sm:text-sm font-mono tracking-[0.22em] text-purple-300 uppercase font-bold flex items-center justify-center lg:justify-start gap-2 mx-auto lg:mx-0">
               <span className="w-2 h-2 rounded-full bg-purple-400 animate-ping inline-block" />
-              <span>Digital Experiences That Inspire</span>
+              <span>3D • Generative AI • Spatial Web</span>
             </div>
 
             {/* Massive Condensed Headline */}
             <div className="space-y-0 w-full">
-              <h1 className="font-display text-5xl sm:text-7xl md:text-8xl lg:text-8xl xl:text-[112px] font-normal text-white uppercase tracking-tight leading-[0.9] select-none text-center lg:text-left">
-                DIGITAL <br />
-                DESIGNER
+              <h1
+                id="hero-heading-h1"
+                className="font-display text-5xl sm:text-7xl md:text-8xl lg:text-[84px] xl:text-[104px] font-normal text-white uppercase tracking-tight leading-[0.9] select-none text-center lg:text-left"
+              >
+                <span id="hero-word-creative" className="inline-block">CREATIVE</span>
+                <br />
+                <span id="hero-word-technologist" className="inline-block">TECHNOLOGIST</span>
               </h1>
             </div>
 
             {/* Subtitle */}
             <p className="text-sm sm:text-base lg:text-lg text-gray-200 leading-relaxed max-w-lg font-sans text-center lg:text-left mx-auto lg:mx-0 px-2 sm:px-0">
-              I design elegant, high-performing 3D spatial experiences, generative AI pipelines, and digital products that merge strategy, aesthetics, and technology.
+              Bridging 3D/CGI and Unreal Engine, ComfyUI generative AI workflows, motion design, and spatial UX — merging creative prototyping with robust technical implementation.
             </p>
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 sm:gap-4 pt-2 w-full">
               <a
+                id="hero-btn-work"
                 href="#work"
-                className="w-full max-w-[270px] sm:w-[230px] h-[48px] sm:h-[52px] inline-flex items-center justify-center gap-2 px-5 rounded-full bg-white text-black text-xs sm:text-sm font-bold tracking-wider uppercase border border-transparent hover:bg-gray-200 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-white/10 text-center"
+                onClick={(e) => {
+                  if (typeof window !== 'undefined') {
+                    window.dispatchEvent(new CustomEvent('spider-event', { detail: { action: 'work' } }));
+                  }
+                }}
+                className="w-full max-w-[270px] sm:w-[230px] h-[48px] sm:h-[52px] inline-flex items-center justify-center gap-2 px-5 rounded-full bg-white text-black text-xs sm:text-sm font-bold tracking-wider uppercase border border-transparent hover:bg-gray-200 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-white/10 text-center relative overflow-hidden group"
               >
                 <span>View My Work</span>
-                <ArrowUpRight className="w-4 h-4" />
+                <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
 
               <button
-                onClick={onOpenResume}
-                className="w-full max-w-[270px] sm:w-[230px] h-[48px] sm:h-[52px] inline-flex items-center justify-center gap-2.5 px-5 rounded-full bg-white/[0.07] hover:bg-white/[0.15] text-white text-xs sm:text-sm font-bold tracking-wider uppercase border border-white/20 hover:border-white/40 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(0,0,0,0.4)] transition-all hover:scale-105 active:scale-95 group text-center"
+                id="hero-btn-resume"
+                onClick={() => {
+                  if (typeof window !== 'undefined') {
+                    window.dispatchEvent(new CustomEvent('spider-event', { detail: { action: 'resume' } }));
+                  }
+                  onOpenResume();
+                }}
+                className="w-full max-w-[270px] sm:w-[230px] h-[48px] sm:h-[52px] inline-flex items-center justify-center gap-2.5 px-5 rounded-full bg-white/[0.07] hover:bg-white/[0.15] text-white text-xs sm:text-sm font-bold tracking-wider uppercase border border-white/20 hover:border-white/40 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(0,0,0,0.4)] transition-all hover:scale-105 active:scale-95 group text-center relative overflow-hidden"
               >
                 <span>Download Resume</span>
                 <ArrowDown className="w-4 h-4 text-gray-300 group-hover:text-white transition-transform group-hover:translate-y-0.5" />
@@ -110,10 +136,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
                   DEPTH
                 </div>
 
-                {/* 5. Luminous Celestial Star Sparkle ✦ */}
-                <div className="absolute top-[6%] right-[8%] text-white text-xl sm:text-2xl animate-pulse drop-shadow-[0_0_12px_rgba(255,255,255,0.95)]">
-                  ✦
-                </div>
               </div>
 
               {/* Seamless Cutout Portrait with Split-Toned Deep Blue Atmospheric Wash */}
@@ -125,8 +147,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
                     <>
                       {/* 1. Base Portrait Image */}
                       <img
+                        id="hero-portrait-img"
                         src={portraitUrl}
-                        alt="Gaurav Roy — Digital Designer Portrait"
+                        alt="Gaurav Roy — Creative Technologist Portrait"
                         className="w-full max-w-[290px] sm:max-w-[340px] md:max-w-[380px] lg:max-w-[420px] h-auto object-contain block drop-shadow-[0_0_35px_rgba(14,165,233,0.18)] drop-shadow-[0_20px_45px_rgba(0,0,0,0.95)] translate-y-7 sm:translate-y-10 lg:translate-y-14 transition-all duration-500 hover:brightness-105"
                         style={{
                           filter: 'grayscale(22%) contrast(114%) brightness(97%)',

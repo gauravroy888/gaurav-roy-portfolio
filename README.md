@@ -1,4 +1,4 @@
-# Gaurav Roy — Creative Technologist & Senior 3D Designer Portfolio
+# Gaurav Roy — Creative Technologist — 3D, Generative AI & Spatial Web
 
 > A cutting-edge, high-performance portfolio website built with **Next.js 14**, **Three.js**, **Tailwind CSS**, and **Canvas 2D Procedural Kinematics**. Features an abyssal dark aesthetic, procedural skeletal bioluminescence, 3-tier glassmorphic project architecture, and framerate-independent physics.
 

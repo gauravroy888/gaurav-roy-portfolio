@@ -70,8 +70,17 @@ export interface ProjectItem {
     value: string;
   }[];
   galleryImages: string[];
+  plans?: ProjectPlanItem[];
   liveDemoUrl?: string;
   githubUrl?: string;
+}
+
+export interface ProjectPlanItem {
+  title: string;
+  type: string;
+  image: string;
+  description?: string;
+  scale?: string;
 }
 
 export interface CollectionItem {
@@ -84,6 +93,7 @@ export interface CollectionItem {
   itemCount: number;
   thumbnail: string;
   badge?: string;
+  youtubeId?: string;
 }
 
 export interface DomainItem {
@@ -224,15 +234,6 @@ export const COLLECTIONS: CollectionItem[] = [
     thumbnail: 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?auto=format&fit=crop&w=1200&q=80',
   },
   {
-    id: 'unreal-engine-realtime',
-    domainId: '3d-spatial',
-    title: 'Unreal Engine 5 Real-Time Sets',
-    folderName: 'unreal',
-    description: 'Lumen dynamic illumination, Nanite mesh density, Blueprints, and 60fps virtual production.',
-    itemCount: 4,
-    thumbnail: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80',
-  },
-  {
     id: 'kitchen-architectural',
     domainId: '3d-spatial',
     title: 'Kitchen & Interior Architecture',
@@ -271,13 +272,16 @@ export const COLLECTIONS: CollectionItem[] = [
     thumbnail: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1200&q=80',
   },
   {
-    id: 'antigravity-web-apps',
+    id: 'webxr-unreal',
     domainId: 'full-stack',
-    title: 'Antigravity AI Full-Stack & Spatial Web',
-    folderName: 'Web & WebXR Code',
-    description: 'Interactive Next.js 14 web applications, Three.js 3D configurators, and modern UI systems.',
+    title: 'WebXR & Unreal Engine 5 Real-Time Sets',
+    subtitle: 'Lumen Illumination, Nanite Geometry & Spatial WebXR',
+    folderName: 'unreal-webxr',
+    description: 'Lumen dynamic illumination, Nanite geometry streaming, Blueprints, and WebXR virtual production.',
     itemCount: 3,
-    thumbnail: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80',
+    thumbnail: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80',
+    badge: 'Real-Time UE5 & WebXR',
+    youtubeId: 'H9XmsDbvflM',
   },
 ];
 
@@ -586,37 +590,114 @@ export const PROJECTS: ProjectItem[] = [
     ]
   },
   {
-    id: 'proj-unreal-virtual-set',
-    slug: 'unreal-engine-5-virtual-production',
-    title: 'UE5 Real-Time Virtual Production Set',
-    subtitle: 'Lumen Dynamic GI & Nanite Virtual Architecture at 60 FPS',
-    domainId: '3d-spatial',
-    collectionId: 'unreal-engine-realtime',
-    year: '2024 - 2025',
-    role: 'Unreal Engine Technical Artist',
-    coverImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80',
-    badge: 'Real-Time UE5',
+    id: 'proj-ue5-realtime-showcase-1',
+    slug: 'biocon-25d-walkthrough-experience',
+    title: 'Biocon 2.5D Walkthrough Experience',
+    subtitle: 'Interactive Pharmaceutical & Laboratory Facility Spatial Tour',
+    domainId: 'full-stack',
+    collectionId: 'webxr-unreal',
+    client: 'Biocon',
+    year: '2024',
+    role: 'Lead 3D Visualizer & Interactive Experience Developer',
+    youtubeId: 'H9XmsDbvflM',
+    badge: 'Biocon • 2.5D Tour',
     featured: true,
-    shortDescription: 'Interactive real-time architectural environment running in Unreal Engine 5.4 with dynamic sun positions, Lumen reflections, and Nanite geometry.',
-    fullOverview: 'Built to demonstrate the future of virtual production and real-time client presentations. Eliminates multi-hour offline render queues by leveraging Unreal Engine 5 Lumen hardware raytracing and custom HLSL shader networks.',
+    coverImage: 'https://img.youtube.com/vi/H9XmsDbvflM/hqdefault.jpg',
+    shortDescription: 'Interactive 2.5D walkthrough and virtual presentation suite developed for Biocon, showcasing cleanroom architecture, laboratory layouts, and pharmaceutical research facilities.',
+    fullOverview: 'Created for Biocon enterprise communications and facility tours. Combines layered 3D spatial renders with interactive navigation triggers, smooth camera transitions, and informative UI callouts for visitors to explore Biocon research facilities directly inside the web browser.',
     technicalDecisions: [
-      'Configured Nanite virtualization allowing over 80 million raw polygons with zero LOD pop-in.',
-      'Custom Blueprint system for real-time material swapping (wood, stone, metal) via UI control widget.',
-      'Post-processing volume with filmic tone mapping and chromatic aberration for cinematic realism.'
+      'Layered 2.5D parallax projection maps for responsive, zero-latency browser performance.',
+      'Interactive hotspot overlays triggering detail cards for laboratory equipment and zoning.',
+      'Lightweight texture compression optimized for mobile and corporate client networks.',
+      'Color-calibrated to Biocon enterprise medical branding standards.'
     ],
     specs: {
-      software: ['Unreal Engine 5.4', 'Blender', 'Substance Painter', 'Blueprints'],
-      renderEngine: 'UE5 Lumen Real-Time Hardware Raytracing',
-      polyCount: '85M Nanite Triangles',
-      deliveryFormat: 'Real-time 4K 60FPS Executable & Virtual Cam'
+      software: ['Unreal Engine / 3D DCC', 'After Effects', 'TypeScript / Web', 'Photoshop'],
+      renderEngine: 'Real-Time Web Interactive Engine',
+      deliveryFormat: 'Web Browser Interactive Walkthrough & 4K Master Video'
     },
     metrics: [
-      { label: 'Real-Time Framerate', value: '60+ FPS (4K)' },
-      { label: 'Polygon Budget', value: '85M+ Triangles' },
-      { label: 'Iteration Speed', value: 'Instant (0 Render Lag)' }
+      { label: 'Client', value: 'Biocon' },
+      { label: 'Platform', value: 'Web Interactive' },
+      { label: 'Resolution', value: 'Full HD / 4K' },
+      { label: 'Experience', value: '2.5D Spatial' }
     ],
     galleryImages: [
-      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80',
+      'https://img.youtube.com/vi/H9XmsDbvflM/hqdefault.jpg',
+      'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'
+    ],
+    plans: [
+      {
+        title: 'Biocon Cleanroom Zoning & Spatial Flow',
+        type: 'Facility Spatial Layout',
+        image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80',
+        description: 'Sterile corridor transitions, laboratory cleanroom zoning, and visitor camera flight paths.',
+        scale: '1:100 Architectural'
+      },
+      {
+        title: 'Interactive Hotspot & Parallax Depth Blueprint',
+        type: '2.5D Interaction Schematic',
+        image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80',
+        description: 'Multi-depth parallax projection coordinates and interactive event nodes for facility navigation.',
+        scale: 'Normalized Web Viewport'
+      }
+    ]
+  },
+  {
+    id: 'proj-webxr-spatial-simulation-2',
+    slug: 'hairdryer-3d-interactive-web-sim',
+    title: 'Hairdryer 3D Interactive Web Simulator',
+    subtitle: 'Real-Time 3D Product Configurator & Airflow Physics in Browser',
+    domainId: 'full-stack',
+    collectionId: 'webxr-unreal',
+    client: 'Product Engineering & Web3D',
+    year: '2024',
+    role: '3D Interactive Artist & Technical Director',
+    youtubeId: 'YQl51dy0HsY',
+    badge: 'Web3D • Interactive Sim',
+    featured: true,
+    coverImage: 'https://img.youtube.com/vi/YQl51dy0HsY/hqdefault.jpg',
+    shortDescription: 'Real-time interactive 3D product simulation of a modern consumer hairdryer, featuring full orbit controls, component breakdowns, and interactive physics directly in the browser.',
+    fullOverview: 'Engineered to demonstrate next-generation e-commerce and interactive product exploration. Users can freely rotate the product in 360 degrees, inspect mechanical CAD ergonomics, toggle airflow velocity simulations, and test colorway variations with instantaneous real-time response.',
+    technicalDecisions: [
+      'PBR metallic and matte satin plastic shaders calibrated for realistic studio lighting reflection.',
+      'Real-time particle airflow simulation demonstrating aerodynamic heat and velocity dispersion.',
+      'Smooth orbit controls, pinch-to-zoom, and boundary collision damping.',
+      'Ultra-low memory footprint running at 60 FPS across desktop and mobile browsers.'
+    ],
+    specs: {
+      software: ['Three.js / WebXR', 'Blender / Cinema 4D', 'Substance 3D Painter', 'TypeScript'],
+      polyCount: '180K Optimized Quads',
+      renderEngine: 'WebGL / WebGPU PBR Real-Time Engine',
+      deliveryFormat: 'Interactive Web Application & 60 FPS Video Demonstration'
+    },
+    metrics: [
+      { label: 'Framerate', value: '60 FPS Smooth' },
+      { label: 'Load Time', value: '< 1.2s WebGL' },
+      { label: '3D Controls', value: '360° Orbit & Zoom' },
+      { label: 'PBR Shaders', value: '100% Calibrated' }
+    ],
+    galleryImages: [
+      'https://img.youtube.com/vi/YQl51dy0HsY/hqdefault.jpg',
+      'https://images.unsplash.com/photo-1550009158-9ebf69173e03?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=1200&q=80'
+    ],
+    plans: [
+      {
+        title: 'CAD Ergonomic Schematics & Dimension Tolerances',
+        type: 'Mechanical CAD Blueprint',
+        image: 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?auto=format&fit=crop&w=1200&q=80',
+        description: 'Injection mold parting lines, heat coil chamber clearances, and handle curvature ergonometrics.',
+        scale: '1:1 Millimeter Precision'
+      },
+      {
+        title: 'Aerodynamic Velocity & Heat Dispersion Grid',
+        type: 'Airflow Physics Schematic',
+        image: 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=1200&q=80',
+        description: 'CFD aerodynamic vector paths and real-time particle emitter volume constraints.',
+        scale: 'Fluid Dynamic Vector Grid'
+      }
     ]
   },
   {
@@ -653,38 +734,59 @@ export const PROJECTS: ProjectItem[] = [
     ]
   },
   {
-    id: 'proj-antigravity-fullstack',
-    slug: 'antigravity-spatial-web-platform',
-    title: 'Antigravity Full-Stack 3D & AI Web Portal',
-    subtitle: 'Next.js 14, TypeScript, Tailwind, Three.js & Agentic AI Workflows',
+    id: 'proj-ue5-virtual-world-3',
+    slug: 'interactive-archviz-unreal-engine-web',
+    title: 'Interactive Archviz Unreal Engine ｜ Outdoor & Indoor on Web Browser',
+    subtitle: 'Photorealistic Architectural Walkthrough Running in Browser via Pixel Streaming',
     domainId: 'full-stack',
-    collectionId: 'antigravity-web-apps',
-    year: '2025 - 2026',
-    role: 'Full-Stack Creative Technologist',
-    coverImage: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80',
-    githubUrl: 'https://github.com/gauravroy-portfolio',
-    liveDemoUrl: 'https://gauravroy.dev',
-    badge: 'Full-Stack Code',
+    collectionId: 'webxr-unreal',
+    client: 'Luxury Architecture & Real Estate',
+    year: '2024 - 2025',
+    role: 'Unreal Engine Technical Artist & ArchViz Lead',
+    youtubeId: '185ThgS5plA',
+    badge: 'UE5 • Web Pixel Streaming',
     featured: true,
-    shortDescription: 'High-performance interactive web application built with Next.js, Framer Motion, and WebGL rendering, engineered using AI agent workflows.',
-    fullOverview: 'Demonstrates end-to-end full-stack capabilities, bridging high-end 3D graphics with modern software engineering practices: TypeScript strict mode, responsive fluid layouts, fast CDN deployment, and recruiter-focused UX.',
+    coverImage: 'https://img.youtube.com/vi/185ThgS5plA/hqdefault.jpg',
+    shortDescription: 'Photorealistic architectural visualization powered by Unreal Engine 5, featuring seamless transitions between indoor luxury suites and outdoor natural landscapes, delivered directly on the web browser.',
+    fullOverview: 'A state-of-the-art interactive architectural showcase. Built with Unreal Engine 5.4 Lumen global illumination, Nanite virtualized architectural geometry, and delivered directly to any web browser without requiring local high-end GPUs. Clients can explore day-to-night lighting shifts, inspect material swatches, and navigate expansive indoor-outdoor architectural environments.',
     technicalDecisions: [
-      'Russian Doll multi-level navigation system for frictionless project drill-down.',
-      'Zero layout shift, 100/100 Lighthouse performance, and keyboard-accessible command shortcuts.',
-      'Integrated interactive image comparison slider and custom 4K YouTube player modal.'
+      'Low-latency WebRTC pixel streaming pipeline bringing 60 FPS Unreal Engine 5.4 directly into web browsers.',
+      'Lumen hardware raytraced GI handling soft sun spill and warm 2700K recessed interior cove lights.',
+      'Dynamic outdoor foliage wind simulations paired with Nanite stone and timber masonry.',
+      'Two-way UI communication between React / Next.js web controls and Unreal Engine Blueprints.'
     ],
     specs: {
-      software: ['Next.js 14 (App Router)', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Three.js'],
-      framework: 'React 18 + Next.js Server & Client Components',
-      deliveryFormat: 'Vercel / Netlify Edge CDN Deployment'
+      software: ['Unreal Engine 5.4', 'Lumen & Nanite', 'Pixel Streaming / WebRTC', 'Blueprints', 'Substance Designer'],
+      renderEngine: 'UE5 Lumen Real-Time Hardware Raytracing',
+      polyCount: '120M Nanite Triangles',
+      deliveryFormat: 'Interactive Web Stream & 4K HDR Cinematic Masters'
     },
     metrics: [
-      { label: 'Lighthouse Score', value: '98/100' },
-      { label: 'Page Load', value: '< 0.8s' },
-      { label: 'Codebase', value: '100% Strict TypeScript' }
+      { label: 'Streaming FPS', value: '60 FPS 1080p/4K' },
+      { label: 'Latency', value: '< 30ms WebRTC' },
+      { label: 'Nanite Triangles', value: '120M Geometry' },
+      { label: 'Lighting Pass', value: 'Lumen HW Raytracing' }
     ],
     galleryImages: [
-      'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80',
+      'https://img.youtube.com/vi/185ThgS5plA/hqdefault.jpg',
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80'
+    ],
+    plans: [
+      {
+        title: 'Indoor-to-Outdoor Architectural Master Plan',
+        type: 'Architectural Floor & Landscape Plan',
+        image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+        description: 'Interior living pavilion, exterior terrace reflection pools, and surrounding topography boundaries.',
+        scale: '1:50 Architectural Metric'
+      },
+      {
+        title: 'Lumen Dynamic Sun & Interior Lighting Schematic',
+        type: 'Lighting Volumes & Lumen Rig',
+        image: 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80',
+        description: 'Directional sun trajectory, sky atmosphere density, and warm 2700K recessed interior cove lights.',
+        scale: 'UE5 World Units'
+      }
     ]
   },
   {

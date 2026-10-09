@@ -47,10 +47,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onOpenContact, onO
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-[10000] transition-all duration-300 ${
         scrolled
-          ? 'bg-[#0E0F14]/90 backdrop-blur-xl border-b border-white/[0.06] py-3.5'
-          : 'bg-transparent py-6'
+          ? 'bg-[#0E0F14]/95 backdrop-blur-xl border-b border-white/[0.08] py-3.5'
+          : 'bg-[#0E0F14]/60 backdrop-blur-md py-5 border-b border-white/[0.04]'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">

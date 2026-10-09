@@ -47,16 +47,26 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
       return COLLECTIONS.filter((c) => c.domainId === 'gen-ai');
     }
     if (activeFilter === 'webxr-unreal') {
-      return COLLECTIONS.filter((c) => c.domainId === 'full-stack' || c.id === 'unreal-engine-realtime');
+      return COLLECTIONS.filter((c) => c.id === 'webxr-unreal');
     }
     return COLLECTIONS;
   };
 
-  const filteredCategories = getFilteredCategories();
-  const totalPages = Math.ceil(filteredCategories.length / ITEMS_PER_PAGE);
+  const isWebxrUnreal = activeFilter === 'webxr-unreal';
+  const webxrProjects = PROJECTS.filter((p) => p.collectionId === 'webxr-unreal');
 
-  // Paginated categories (4 at a time to prevent long vertical scrolling)
+  const filteredCategories = getFilteredCategories();
+  const totalCategoryPages = Math.ceil(filteredCategories.length / ITEMS_PER_PAGE);
+  const totalWebxrPages = Math.ceil(webxrProjects.length / ITEMS_PER_PAGE);
+  const totalPages = isWebxrUnreal ? totalWebxrPages : totalCategoryPages;
+
+  // Paginated items (4 at a time to maintain consistent 2x2 grid)
   const displayedCategories = filteredCategories.slice(
+    currentPage * ITEMS_PER_PAGE,
+    (currentPage + 1) * ITEMS_PER_PAGE
+  );
+
+  const displayedWebxrProjects = webxrProjects.slice(
     currentPage * ITEMS_PER_PAGE,
     (currentPage + 1) * ITEMS_PER_PAGE
   );
@@ -121,9 +131,16 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                 Showing{' '}
                 <strong className="text-white font-bold">
                   {currentPage * ITEMS_PER_PAGE + 1}–
-                  {Math.min((currentPage + 1) * ITEMS_PER_PAGE, filteredCategories.length)}
+                  {Math.min(
+                    (currentPage + 1) * ITEMS_PER_PAGE,
+                    isWebxrUnreal ? webxrProjects.length : filteredCategories.length
+                  )}
                 </strong>{' '}
-                of <strong className="text-white font-bold">{filteredCategories.length}</strong> Categories
+                of{' '}
+                <strong className="text-white font-bold">
+                  {isWebxrUnreal ? webxrProjects.length : filteredCategories.length}
+                </strong>{' '}
+                {isWebxrUnreal ? 'Projects' : 'Categories'}
               </span>
 
               <div className="flex items-center gap-2.5 ml-auto">
@@ -140,7 +157,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                       ? 'opacity-30 cursor-not-allowed border-white/10 text-gray-500'
                       : 'border-white/15 bg-white/10 hover:bg-white/20 text-white shadow-sm'
                   }`}
-                  title="Previous 4 Categories"
+                  title={isWebxrUnreal ? 'Previous Projects' : 'Previous 4 Categories'}
                 >
                   <ChevronLeft className="w-4 h-4" />
                   <span className="hidden sm:inline">Prev</span>
@@ -154,7 +171,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                       ? 'opacity-30 cursor-not-allowed border-white/10 text-gray-500'
                       : 'border-white/15 bg-white/10 hover:bg-white/20 text-white shadow-sm'
                   }`}
-                  title="Next 4 Categories"
+                  title={isWebxrUnreal ? 'Next Projects' : 'Next 4 Categories'}
                 >
                   <span className="hidden sm:inline">Next</span>
                   <ChevronRight className="w-4 h-4" />
@@ -163,43 +180,109 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
             </div>
           )}
 
-          {/* TIER 1: UNCLUTTERED CATEGORY CARDS (Heading + Explanation only) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8">
-            {displayedCategories.map((category) => {
-              return (
+          {/* TIER 1: PROJECT CARDS / CATEGORY CARDS */}
+          {isWebxrUnreal ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8">
+              {displayedWebxrProjects.map((project) => (
                 <div
-                  key={category.id}
-                  onClick={() => onSelectCategory(category)}
+                  key={project.id}
+                  onClick={() => onSelectProject(project)}
                   className="group relative bg-[#0E111D]/60 hover:bg-[#141828]/80 backdrop-blur-2xl border border-white/10 hover:border-purple-400/50 rounded-3xl p-6 sm:p-7 cursor-pointer transition-all duration-500 flex flex-col justify-between shadow-2xl hover:scale-[1.01] hover:shadow-purple-500/10"
                 >
-                  {/* Clean Category Thumbnail with hardware-level alpha mask (zero subpixel edge artifacts) */}
-                  <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden mb-5">
-                    <img
-                      src={category.thumbnail}
-                      alt={category.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100"
-                      style={{
-                        WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 72%, rgba(0,0,0,0) 97%)',
-                        maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 72%, rgba(0,0,0,0) 97%)',
-                      }}
-                    />
+                  {/* Front-playing Video without Audio */}
+                  <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden mb-5 bg-black shadow-inner">
+                    {project.youtubeId ? (
+                      <iframe
+                        src={`https://www.youtube.com/embed/${project.youtubeId}?autoplay=1&mute=1&controls=0&playsinline=1&rel=0`}
+                        title={project.title}
+                        className="w-full h-full object-cover pointer-events-none scale-105"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerPolicy="strict-origin-when-cross-origin"
+                        tabIndex={-1}
+                      />
+                    ) : (
+                      <img
+                        src={project.coverImage}
+                        alt={project.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100"
+                      />
+                    )}
+
+                    {/* Subtle bottom gradient vignette */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0E111D]/80 via-transparent to-transparent pointer-events-none" />
                   </div>
 
-                  {/* Exactly Two Lines: 1 for Heading, 1 for Explanation */}
+                  {/* Heading & Subtitle */}
                   <div className="space-y-2">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-purple-300 font-bold px-2.5 py-0.5 rounded-full bg-purple-500/10 border border-purple-500/20">
+                        {project.badge}
+                      </span>
+                      <span className="text-[11px] font-mono text-gray-400">
+                        {project.year}
+                      </span>
+                    </div>
+
                     <h3 className="text-xl sm:text-2xl font-display text-white tracking-wide uppercase group-hover:text-cyan-300 transition-colors line-clamp-1">
-                      {category.title}
+                      {project.title}
                     </h3>
 
                     <p className="text-sm text-gray-300 leading-relaxed font-sans line-clamp-2">
-                      {category.description}
+                      {project.subtitle}
                     </p>
                   </div>
-
                 </div>
-              );
-            })}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8">
+              {displayedCategories.map((category) => {
+                return (
+                  <div
+                    key={category.id}
+                    onClick={() => onSelectCategory(category)}
+                    className="group relative bg-[#0E111D]/60 hover:bg-[#141828]/80 backdrop-blur-2xl border border-white/10 hover:border-purple-400/50 rounded-3xl p-6 sm:p-7 cursor-pointer transition-all duration-500 flex flex-col justify-between shadow-2xl hover:scale-[1.01] hover:shadow-purple-500/10"
+                  >
+                    {/* Clean Category Thumbnail with hardware-level alpha mask */}
+                    <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden mb-5 bg-black">
+                      {category.youtubeId ? (
+                        <iframe
+                          src={`https://www.youtube.com/embed/${category.youtubeId}?autoplay=1&mute=1&controls=0&playsinline=1&rel=0`}
+                          title={category.title}
+                          className="w-full h-full object-cover pointer-events-none scale-105"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          referrerPolicy="strict-origin-when-cross-origin"
+                          tabIndex={-1}
+                        />
+                      ) : (
+                        <img
+                          src={category.thumbnail}
+                          alt={category.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100"
+                          style={{
+                            WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 72%, rgba(0,0,0,0) 97%)',
+                            maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 72%, rgba(0,0,0,0) 97%)',
+                          }}
+                        />
+                      )}
+                    </div>
+
+                    {/* Exactly Two Lines: 1 for Heading, 1 for Explanation */}
+                    <div className="space-y-2">
+                      <h3 className="text-xl sm:text-2xl font-display text-white tracking-wide uppercase group-hover:text-cyan-300 transition-colors line-clamp-1">
+                        {category.title}
+                      </h3>
+
+                      <p className="text-sm text-gray-300 leading-relaxed font-sans line-clamp-2">
+                        {category.description}
+                      </p>
+                    </div>
+
+                  </div>
+                );
+              })}
+            </div>
+          )}
 
           {/* Bottom Pagination Bar when multiple pages exist */}
           {totalPages > 1 && (
@@ -214,7 +297,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                 }`}
               >
                 <ChevronLeft className="w-4 h-4" />
-                <span>Previous 4 Options</span>
+                <span>{isWebxrUnreal ? 'Previous Projects' : 'Previous 4 Options'}</span>
               </button>
 
               {/* Page Indicator Dots */}
@@ -242,7 +325,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                     : 'border-white/15 bg-white/10 hover:bg-white/20 text-white shadow-sm'
                 }`}
               >
-                <span>Next 4 Options</span>
+                <span>{isWebxrUnreal ? 'Next Projects' : 'Next 4 Options'}</span>
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>

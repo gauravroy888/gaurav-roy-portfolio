@@ -17,9 +17,9 @@ export const DeepSeaAtmosphere: React.FC = () => {
     let height = (canvas.height = window.innerHeight);
     const isMobile = width < 768;
 
-    // Floating Bioluminescent Marine Snow / Plankton (Stratified across screen grid, optimized for mobile)
-    const COLS = isMobile ? 4 : 7;
-    const ROWS = isMobile ? 3 : 6;
+    // Floating Bioluminescent Marine Snow / Plankton (Stratified across screen grid, optimized for performance)
+    const COLS = isMobile ? 3 : 5;
+    const ROWS = isMobile ? 2 : 4;
     const NUM_PLANKTON = COLS * ROWS;
     
     interface Plankton {
@@ -46,10 +46,10 @@ export const DeepSeaAtmosphere: React.FC = () => {
           percentY: py,
           x: px * width,
           y: py * height,
-          radius: (Math.random() * 1.6 + 0.6) * (isMobile ? 0.85 : 1.0),
+          radius: (Math.random() * 1.5 + 0.6) * (isMobile ? 0.75 : 1.0),
           speedY: -(Math.random() * 0.35 + 0.15),
           speedX: (Math.random() - 0.5) * 0.2,
-          opacity: Math.random() * 0.5 + 0.2,
+          opacity: Math.random() * 0.45 + 0.2,
           pulseSpeed: Math.random() * 0.03 + 0.015,
           pulsePhase: Math.random() * Math.PI * 2,
           colorType: Math.random() > 0.35 ? 'cyan' : 'magenta',
@@ -98,7 +98,7 @@ export const DeepSeaAtmosphere: React.FC = () => {
       time += 0.02 * dt;
       ctx.clearRect(0, 0, width, height);
 
-      // Render Floating Marine Snow & Micro-Plankton
+      // Render Floating Marine Snow & Micro-Plankton with zero-cost vector halos (NO expensive shadowBlur!)
       for (const p of planktonList) {
         p.y += p.speedY * dt;
         p.x += (p.speedX + Math.sin(time + p.pulsePhase) * 0.25) * dt;
@@ -110,28 +110,25 @@ export const DeepSeaAtmosphere: React.FC = () => {
 
         const currentPulse = (Math.sin(time * 2 + p.pulsePhase) + 1) / 2;
         const alpha = p.opacity * (0.6 + currentPulse * 0.4);
+        const rad = p.radius + currentPulse * 0.5;
 
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius + currentPulse * 0.5, 0, Math.PI * 2);
-
-        if (p.colorType === 'cyan') {
-          ctx.fillStyle = `rgba(0, 245, 255, ${alpha})`;
-          if (!isMobile) {
-            ctx.shadowBlur = 8;
-            ctx.shadowColor = 'rgba(0, 245, 255, 0.6)';
-          }
-        } else {
-          ctx.fillStyle = `rgba(192, 132, 252, ${alpha})`;
-          if (!isMobile) {
-            ctx.shadowBlur = 8;
-            ctx.shadowColor = 'rgba(192, 132, 252, 0.6)';
-          }
-        }
-
-        ctx.fill();
+        // 1. Soft Outer Bioluminescent Halo (Pure vector fill - 0ms GPU convolution blur cost)
         if (!isMobile) {
-          ctx.shadowBlur = 0;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, rad * 2.4, 0, Math.PI * 2);
+          ctx.fillStyle = p.colorType === 'cyan'
+            ? `rgba(0, 245, 255, ${alpha * 0.22})`
+            : `rgba(192, 132, 252, ${alpha * 0.22})`;
+          ctx.fill();
         }
+
+        // 2. Core Particle Point
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, rad, 0, Math.PI * 2);
+        ctx.fillStyle = p.colorType === 'cyan'
+          ? `rgba(0, 245, 255, ${alpha})`
+          : `rgba(192, 132, 252, ${alpha})`;
+        ctx.fill();
       }
 
       animationFrameId = requestAnimationFrame(render);
@@ -148,13 +145,13 @@ export const DeepSeaAtmosphere: React.FC = () => {
 
   return (
     <>
-      {/* 1. Subtle Underwater Caustic Light Rays (God Rays filtering through abyssal depths) */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
+      {/* 1. Subtle Underwater Caustic Light Rays (God Rays filtering through abyssal depths - Desktop only) */}
+      <div className="hidden md:block absolute inset-0 pointer-events-none overflow-hidden opacity-30">
         <div
-          className="absolute -top-[20%] left-[10%] w-[500px] h-[140%] bg-gradient-to-b from-cyan-400/[0.08] via-blue-500/[0.03] to-transparent blur-[80px] -rotate-[24deg] transform-gpu"
+          className="absolute -top-[20%] left-[10%] w-[500px] h-[140%] bg-gradient-to-b from-cyan-400/[0.08] via-blue-500/[0.03] to-transparent blur-[40px] -rotate-[24deg]"
         />
         <div
-          className="absolute -top-[30%] right-[20%] w-[450px] h-[150%] bg-gradient-to-b from-indigo-400/[0.06] via-cyan-500/[0.02] to-transparent blur-[90px] -rotate-[18deg] transform-gpu"
+          className="absolute -top-[30%] right-[20%] w-[450px] h-[150%] bg-gradient-to-b from-indigo-400/[0.06] via-cyan-500/[0.02] to-transparent blur-[45px] -rotate-[18deg]"
         />
       </div>
 

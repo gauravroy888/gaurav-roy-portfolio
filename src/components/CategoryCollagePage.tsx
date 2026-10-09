@@ -78,15 +78,26 @@ export const CategoryCollagePage: React.FC<CategoryCollagePageProps> = ({
               onClick={() => onSelectProject(project)}
               className={`group relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 bg-[#0E111D]/60 backdrop-blur-2xl border border-white/10 hover:border-purple-400/50 hover:shadow-2xl hover:shadow-purple-500/10 ${spanClass} flex flex-col justify-end p-5 sm:p-6`}
             >
-              {/* Pure Render Image Background */}
-              <div className="absolute inset-0 z-0 overflow-hidden">
-                <img
-                  src={project.coverImage}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                />
+              {/* Pure Render Image or Muted Video Background */}
+              <div className="absolute inset-0 z-0 overflow-hidden bg-black">
+                {project.youtubeId ? (
+                  <iframe
+                    src={`https://www.youtube.com/embed/${project.youtubeId}?autoplay=1&mute=1&controls=0&playsinline=1&rel=0`}
+                    title={project.title}
+                    className="w-full h-full object-cover pointer-events-none scale-110"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    tabIndex={-1}
+                  />
+                ) : (
+                  <img
+                    src={project.coverImage}
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                )}
                 {/* Translucent Glass Vignette for High Readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#080B13] via-[#080B13]/50 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#080B13] via-[#080B13]/60 to-transparent pointer-events-none" />
               </div>
 
               {/* Exactly Two Lines: 1 for Heading, 1 for Explanation */}

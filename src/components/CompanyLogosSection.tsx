@@ -19,7 +19,7 @@ export const CompanyLogosSection: React.FC = () => {
   };
 
   return (
-    <section className="py-6 relative z-10">
+    <section id="companies" className="py-6 relative z-10 scroll-mt-24">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         
         {/* Luxury Glassmorphic Outer Main Container Card with Subtle Slow Beam */}
@@ -32,7 +32,7 @@ export const CompanyLogosSection: React.FC = () => {
 
           {/* Section Eyebrow */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2.5 sm:gap-3 mb-7 pb-4 border-b border-white/[0.08] text-center sm:text-left">
-            <div className="flex items-center justify-center sm:justify-start gap-2 text-xs font-mono uppercase tracking-[0.2em] text-purple-300 font-bold">
+            <div id="companies-heading" className="flex items-center justify-center sm:justify-start gap-2 text-xs font-mono uppercase tracking-[0.2em] text-purple-300 font-bold">
               <Building2 className="w-4 h-4 text-purple-300 flex-shrink-0" />
               <span>Companies & Enterprise Brands I&apos;ve Worked With</span>
             </div>

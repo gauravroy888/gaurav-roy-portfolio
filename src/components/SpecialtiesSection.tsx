@@ -4,50 +4,51 @@ import React from 'react';
 import { 
   Layers, 
   Tv, 
-  Building2, 
+  Box, 
   Code2, 
-  Lightbulb, 
-  Search 
+  Film, 
+  Sparkles,
+  Globe 
 } from 'lucide-react';
 import { GlowBorderCard } from './GlowBorderCard';
 
 export const SpecialtiesSection: React.FC = () => {
   const specialties = [
     {
-      icon: Layers,
-      title: 'UI/UX & Spatial Design',
-      desc: 'Creating clean, intuitive 3D spaces, interactive interfaces, and digital experiences that enhance user engagement and brand clarity.',
-      accent: 'from-purple-500/25 to-cyan-500/25 text-purple-300 border-purple-500/30',
-    },
-    {
       icon: Tv,
-      title: 'Real-Time Unreal Engine',
-      desc: 'Designing seamless, responsive 3D environments, virtual production sets, and real-time Lumen GI simulations at 60+ FPS.',
+      title: '3D/CGI & Unreal Engine',
+      desc: 'Crafting photorealistic 3D CGI assets, real-time Unreal Engine environments, and interactive experiences with Lumen GI simulations at 60+ FPS.',
       accent: 'from-cyan-500/25 to-blue-500/25 text-cyan-300 border-cyan-500/30',
     },
     {
-      icon: Building2,
-      title: '3D Architecture & CGI',
-      desc: 'Crafting ultra-photorealistic luxury hospitality suites, PBR calibrated materials, and broadcast 8K master stills for enterprise clients.',
-      accent: 'from-blue-500/25 to-indigo-500/25 text-blue-300 border-blue-500/30',
-    },
-    {
-      icon: Code2,
-      title: 'Generative AI Pipelines',
-      desc: 'Architecting custom ComfyUI node workflows, Flux/SDXL LoRA fine-tuning, and automated asset generation systems that scale 10x.',
+      icon: Sparkles,
+      title: 'Generative AI & ComfyUI Workflows',
+      desc: 'Architecting custom ComfyUI node graphs, LTX 2.5, Qwen models, Whisper integration, and automated generative visual pipelines.',
       accent: 'from-pink-500/25 to-purple-500/25 text-pink-300 border-pink-500/30',
     },
     {
-      icon: Lightbulb,
-      title: 'Brand Motion & Reels',
-      desc: 'Directing cinematic commercial launch reels, fluid particle simulations, and dynamic product animations for global brand campaigns.',
+      icon: Layers,
+      title: 'Motion, Interaction & Spatial UX',
+      desc: 'Designing intuitive spatial user interfaces, WebXR navigation models, micro-interactions, and fluid physics-driven responsive spaces.',
+      accent: 'from-purple-500/25 to-cyan-500/25 text-purple-300 border-purple-500/30',
+    },
+    {
+      icon: Code2,
+      title: 'Creative Prototyping & Implementation',
+      desc: 'Bridging artistic visual concepts with robust technical execution — turning rapid multi-disciplinary prototypes into scalable code systems.',
+      accent: 'from-emerald-500/25 to-teal-500/25 text-emerald-300 border-emerald-500/30',
+    },
+    {
+      icon: Film,
+      title: 'Motion Graphics & Video Editing',
+      desc: 'Directing cinematic commercial product reels, product ads, kinetic typography, and editorial post-production in After Effects & Premiere.',
       accent: 'from-amber-500/25 to-orange-500/25 text-amber-300 border-amber-500/30',
     },
     {
-      icon: Search,
-      title: 'Spatial Web & Three.js',
-      desc: 'Engineering interactive WebGL/Three.js web applications, 3D configurators, and modern full-stack platforms with zero load lag.',
-      accent: 'from-emerald-500/25 to-teal-500/25 text-emerald-300 border-emerald-500/30',
+      icon: Globe,
+      title: 'Spatial Web & Three.js Systems',
+      desc: 'Engineering scalable platforms that ensure zero latency, performance, and reliability using modern Three.js and full-stack stacks.',
+      accent: 'from-blue-500/25 to-indigo-500/25 text-blue-300 border-blue-500/30',
     },
   ];
 
@@ -66,13 +67,13 @@ export const SpecialtiesSection: React.FC = () => {
           {/* Section Header */}
           <div className="text-center space-y-3 mb-14">
             <span className="text-xs sm:text-sm font-mono uppercase tracking-[0.25em] text-purple-300 font-bold block">
-              Services
+              Services & Core Disciplines
             </span>
             <h2 className="font-display text-4xl sm:text-6xl text-white uppercase tracking-tight">
               My Specialties
             </h2>
-            <p className="text-gray-300 max-w-xl mx-auto text-sm sm:text-base font-sans leading-relaxed">
-              Mastering the intersection of high-fidelity 3D CGI, interactive spatial computation, and generative AI pipelines.
+            <p className="text-gray-300 max-w-2xl mx-auto text-sm sm:text-base font-sans leading-relaxed">
+              Synthesizing 3D/CGI, real-time Unreal Engine, ComfyUI generative AI workflows, motion design, and spatial web engineering into cohesive digital experiences.
             </p>
           </div>
 

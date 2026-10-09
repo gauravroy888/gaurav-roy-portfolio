@@ -29,15 +29,20 @@ const cinzel = Cinzel({
 });
 
 export const metadata: Metadata = {
-  title: 'Gaurav Roy — Creative Technologist & Senior 3D Designer',
-  description: 'I design elegant, high-performing 3D spatial experiences, generative AI pipelines, and modern web applications.',
+  title: 'Gaurav Roy — Creative Technologist — 3D, Generative AI & Spatial Web',
+  description: 'Portfolio of Gaurav Roy, Creative Technologist bridging 3D/CGI & Unreal Engine, ComfyUI generative AI workflows, motion design, and spatial web engineering.',
   keywords: [
     'Gaurav Roy',
-    'Digital Designer',
     'Creative Technologist',
-    '3D Generalist',
+    '3D CGI',
     'Unreal Engine 5',
     'ComfyUI Workflows',
+    'Generative AI',
+    'Spatial Web',
+    'Spatial UX',
+    'Creative Prototyping',
+    'Motion Graphics',
+    'Video Editing',
     'Next.js Developer',
     'Kohler',
     'Panasonic',
@@ -45,8 +50,8 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Gaurav Roy', url: 'https://gauravroy.dev' }],
   openGraph: {
-    title: 'Gaurav Roy — Creative Technologist & Senior 3D Designer',
-    description: 'I design elegant, high-performing 3D spatial experiences, generative AI pipelines, and modern web applications.',
+    title: 'Gaurav Roy — Creative Technologist — 3D, Generative AI & Spatial Web',
+    description: 'Portfolio of Gaurav Roy, Creative Technologist bridging 3D/CGI & Unreal Engine, ComfyUI generative AI workflows, motion design, and spatial web engineering.',
     type: 'website',
   },
 };
@@ -55,7 +60,7 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: 'Gaurav Roy',
-  jobTitle: 'Creative Technologist & Senior 3D Designer',
+  jobTitle: 'Creative Technologist — 3D, Generative AI & Spatial Web',
   url: 'https://gauravroy.dev',
   email: 'gauravroy476@gmail.com',
   telephone: '+91 9069558564',

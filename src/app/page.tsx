@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { ProjectItem, CollectionItem, PROJECTS, COLLECTIONS } from '../data/portfolioData';
 import { LuxuryBackground } from '../components/LuxuryBackground';
+import { CuteSpiderCompanion } from '../components/CuteSpiderCompanion';
 import { Navbar } from '../components/Navbar';
 import { HeroSection } from '../components/HeroSection';
 import { MetricsBar } from '../components/MetricsBar';
@@ -99,6 +100,9 @@ export default function Home() {
       
       {/* Rich Studio Lighting Dark Gradient Background with Top-Edge Dome */}
       <LuxuryBackground />
+
+      {/* 3D Depth-Segregated Cute Spider Companion */}
+      <CuteSpiderCompanion />
 
       {/* Top Sticky Navbar */}
       <Navbar

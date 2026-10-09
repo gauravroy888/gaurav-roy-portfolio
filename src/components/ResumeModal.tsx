@@ -20,17 +20,17 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
   const handleCopyText = () => {
     const resumeText = `
 GAURAV ROY
-Creative Technologist & Senior 3D / AI Full-Stack Engineer
+Creative Technologist — 3D, Generative AI & Spatial Web
 Delhi, India | +91 9069558564 | gauravroy476@gmail.com | https://gauravroy.dev
 
 EXECUTIVE SUMMARY
-Creative Technologist with 5+ years of industry experience bridging spatial 3D computer graphics, real-time Unreal Engine 5, ComfyUI generative AI pipelines, and modern full-stack web engineering. Proven track record leading multidisciplinary teams at Pixel2Pixel and delivering commercial CGI and interactive assets for Fortune & enterprise brands (Kohler, Panasonic, TATA, JBL, Hindware, Biocon, GITAM).
+Creative Technologist with 5+ years of industry experience synthesizing 3D/CGI & Unreal Engine, ComfyUI generative AI workflows, motion design, and spatial UX into robust technical implementations. Proven track record leading multidisciplinary teams at Pixel2Pixel and delivering commercial CGI and interactive assets for Fortune & enterprise brands (Kohler, Panasonic, TATA, JBL, Hindware, Biocon, GITAM).
 
 CORE COMPETENCIES
-• 3D & Spatial Computing: Unreal Engine 5.4 (Lumen/Nanite), Autodesk Maya, Cinema 4D, Marvelous Designer, Blender, WebXR, Three.js.
-• Generative AI & Automation: ComfyUI Node Architectures, Flux.1, SDXL, LoRA Fine-Tuning, ControlNet, Antigravity Agentic Workflows.
-• Full-Stack Web Development: Next.js 14/15, React, TypeScript, Tailwind CSS, Node.js, WebGL.
-• Visuals & Post-Production: After Effects, Octane, Redshift, Premiere Pro, RealFlow, ACEScg Color Pipelines.
+• 3D/CGI & Unreal Engine: Unreal Engine 5 (Lumen/Nanite), Cinema 4D, Blender, Autodesk Maya, Marvelous Designer, WebXR, Three.js.
+• Generative AI & ComfyUI: ComfyUI Node Architectures, LTX 2.5, Qwen Models, Whisper, LoRA Fine-Tuning, ControlNet, Antigravity Agentic Workflows.
+• Motion Graphics & Video Editing: After Effects, Premiere Pro, Product Ads & Commercial Launch Reels, Octane, Redshift, ACEScg Color Pipelines.
+• Spatial UX & Creative Prototyping: Interactive Spatial UX, Rapid Prototyping, WebGL/Three.js Systems, Next.js Full-Stack Engineering.
 • Leadership & Delivery: Team Management, Creative Direction, Pipeline Architecture, Mentorship.
 
 PROFESSIONAL EXPERIENCE
@@ -109,7 +109,7 @@ EDUCATION
                 GAURAV ROY
               </h1>
               <span className="text-xs font-mono text-purple-400 uppercase tracking-widest font-semibold">
-                Creative Technologist & 3D/AI Lead
+                Creative Technologist — 3D, Generative AI & Spatial Web
               </span>
             </div>
 
@@ -132,7 +132,7 @@ EDUCATION
               Executive Profile
             </h3>
             <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
-              Multi-disciplinary Creative Technologist with 5+ years of production experience bridging high-end 3D CGI, Unreal Engine 5 real-time environments, ComfyUI generative AI pipelines, and modern full-stack web applications. Proven track record leading creative teams at Pixel2Pixel and delivering commercial assets for enterprise leaders including Kohler, Panasonic, TATA, JBL, Hindware, Biocon, and GITAM.
+              Multi-disciplinary Creative Technologist with 5+ years of production experience synthesizing 3D/CGI & Unreal Engine, ComfyUI generative AI workflows, motion design, and spatial web architectures. Proven track record leading creative teams at Pixel2Pixel and delivering commercial assets for enterprise leaders including Kohler, Panasonic, TATA, JBL, Hindware, Biocon, and GITAM.
             </p>
           </div>
 
@@ -203,7 +203,7 @@ EDUCATION
 
               <div className="bg-[#121524]/40 p-3 rounded-xl border border-white/[0.04]">
                 <span className="text-purple-300 font-semibold block mb-1">Generative AI:</span>
-                <span className="text-gray-300">ComfyUI, Flux.1, SDXL, LoRA Training, ControlNet Depth/Canny, Antigravity AI</span>
+                <span className="text-gray-300">ComfyUI, LTX 2.5, Qwen Models, Whisper, LoRA Fine-Tuning, ControlNet, Antigravity</span>
               </div>
 
               <div className="bg-[#121524]/40 p-3 rounded-xl border border-white/[0.04]">
