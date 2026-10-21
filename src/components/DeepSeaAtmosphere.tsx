@@ -57,16 +57,21 @@ export const DeepSeaAtmosphere: React.FC = () => {
       }
     }
 
+    // Debounced resize handler — avoids layout thrashing on every pixel of resize drag
+    let resizeTimer: ReturnType<typeof setTimeout> | null = null;
     const handleResize = () => {
-      if (!canvas) return;
-      const oldW = width || window.innerWidth;
-      const oldH = height || window.innerHeight;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-      for (const p of planktonList) {
-        p.x = (p.x / oldW) * width;
-        p.y = (p.y / oldH) * height;
-      }
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (!canvas) return;
+        const oldW = width || window.innerWidth;
+        const oldH = height || window.innerHeight;
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        for (const p of planktonList) {
+          p.x = (p.x / oldW) * width;
+          p.y = (p.y / oldH) * height;
+        }
+      }, 150);
     };
 
     let isTabHidden = false;
@@ -80,7 +85,7 @@ export const DeepSeaAtmosphere: React.FC = () => {
       }
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize, { passive: true });
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
     let time = 0;
@@ -140,18 +145,26 @@ export const DeepSeaAtmosphere: React.FC = () => {
       window.removeEventListener('resize', handleResize);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       cancelAnimationFrame(animationFrameId);
+      if (resizeTimer) clearTimeout(resizeTimer);
     };
   }, []);
 
   return (
     <>
       {/* 1. Subtle Underwater Caustic Light Rays (God Rays filtering through abyssal depths - Desktop only) */}
+      {/* Note: using radial-gradient instead of blur filter to avoid GPU compositing layer cost */}
       <div className="hidden md:block absolute inset-0 pointer-events-none overflow-hidden opacity-30">
         <div
-          className="absolute -top-[20%] left-[10%] w-[500px] h-[140%] bg-gradient-to-b from-cyan-400/[0.08] via-blue-500/[0.03] to-transparent blur-[40px] -rotate-[24deg]"
+          className="absolute -top-[20%] left-[10%] w-[500px] h-[140%] -rotate-[24deg]"
+          style={{
+            background: 'linear-gradient(to bottom, rgba(34,211,238,0.07) 0%, rgba(59,130,246,0.025) 40%, transparent 80%)',
+          }}
         />
         <div
-          className="absolute -top-[30%] right-[20%] w-[450px] h-[150%] bg-gradient-to-b from-indigo-400/[0.06] via-cyan-500/[0.02] to-transparent blur-[45px] -rotate-[18deg]"
+          className="absolute -top-[30%] right-[20%] w-[450px] h-[150%] -rotate-[18deg]"
+          style={{
+            background: 'linear-gradient(to bottom, rgba(99,102,241,0.055) 0%, rgba(34,211,238,0.018) 40%, transparent 80%)',
+          }}
         />
       </div>
 

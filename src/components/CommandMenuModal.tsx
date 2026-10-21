@@ -18,6 +18,7 @@ import {
   Copy,
   Check
 } from 'lucide-react';
+import { useModalScrollLock } from '../utils/modalScrollLock';
 
 interface CommandMenuModalProps {
   isOpen: boolean;
@@ -32,6 +33,9 @@ export const CommandMenuModal: React.FC<CommandMenuModalProps> = ({
   onOpenResume,
   onSelectProject,
 }) => {
+  // Global modal scroll lock & interaction blocker
+  useModalScrollLock(isOpen);
+
   const [query, setQuery] = useState('');
   const [copied, setCopied] = useState(false);
 
@@ -68,7 +72,8 @@ export const CommandMenuModal: React.FC<CommandMenuModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center pt-20 p-4 bg-black/80 backdrop-blur-xl animate-in fade-in duration-200"
+      className="fixed inset-0 z-[100000] flex items-start justify-center pt-20 p-4 bg-black/80 backdrop-blur-xl overflow-y-auto overscroll-contain animate-in fade-in duration-200"
+      data-modal-scrollable
       onClick={onClose}
     >
       <div
@@ -95,7 +100,7 @@ export const CommandMenuModal: React.FC<CommandMenuModalProps> = ({
         </div>
 
         {/* Results List */}
-        <div className="max-h-[60vh] overflow-y-auto p-3 space-y-4">
+        <div className="max-h-[60vh] overflow-y-auto overscroll-contain p-3 space-y-4" data-modal-scrollable>
           
           {/* Quick Actions */}
           <div>

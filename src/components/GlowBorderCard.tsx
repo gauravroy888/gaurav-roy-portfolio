@@ -190,7 +190,7 @@ export const GlowBorderCard: React.FC<GlowBorderCardProps> = ({
       ref={containerRef}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`group relative ${roundedClassName} ${className}`}
+      className={`relative ${roundedClassName} ${className}`}
     >
       {/* 1. Main Card Surface */}
       <div

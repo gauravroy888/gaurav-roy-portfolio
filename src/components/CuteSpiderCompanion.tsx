@@ -194,7 +194,7 @@ export const CuteSpiderCompanion: React.FC = () => {
     y: 0,
   });
 
-  const [soundOn, setSoundOn] = useState(true);
+  const [soundOn, setSoundOn] = useState(false);
   const [isAudioUnlocked, setIsAudioUnlocked] = useState(false);
 
   useEffect(() => {
@@ -294,8 +294,6 @@ export const CuteSpiderCompanion: React.FC = () => {
     let pawWaveCycle = 0;
     let isWavingPaws = false;
 
-    // Downward guidance silk tracer (triggered on 'VIEW MY WORK' click)
-    let guidanceTracer = { active: false, progress: 0, timer: 0 };
     // Golden scroll toss (triggered on 'DOWNLOAD RESUME' click)
     let scrollToss = { active: false, timer: 0, x: 0, y: 0 };
 
@@ -326,7 +324,11 @@ export const CuteSpiderCompanion: React.FC = () => {
       pluckVelocity: 0,
     }));
 
+    let isModalActive = false;
+
     const handleMouseMove = (e: MouseEvent) => {
+      if (isModalActive) return;
+
       if (mouse.x > -500) {
         mouseMoveDeltaX += e.clientX - mouse.x;
       }
@@ -360,6 +362,8 @@ export const CuteSpiderCompanion: React.FC = () => {
 
     // Click handler: click on spider or hero buttons
     const handleClick = (e: MouseEvent) => {
+      if (isModalActive) return;
+
       const currentSpiderX = spiderX + spiderWindSwayX;
       const dist = Math.hypot(e.clientX - currentSpiderX, e.clientY - spiderY);
       if (dist < 55) {
@@ -423,8 +427,7 @@ export const CuteSpiderCompanion: React.FC = () => {
     const handleSpiderEvent = (e: Event) => {
       const custom = e as CustomEvent<{ action: string }>;
       if (custom.detail?.action === 'work') {
-        // 'VIEW MY WORK' clicked: spider shoots guidance tracer line pointing down
-        guidanceTracer = { active: true, progress: 0, timer: 0 };
+        // 'VIEW MY WORK' clicked: spider waves paws joyfully with gentle spark particles
         isWavingPaws = true;
         playJoyfulChime();
         for (let i = 0; i < 7; i++) {
@@ -462,10 +465,21 @@ export const CuteSpiderCompanion: React.FC = () => {
       height = canvasBack.height = canvasFront.height = window.innerHeight;
     };
 
+    const handleModalState = (e: Event) => {
+      const custom = e as CustomEvent<{ isAnyModalOpen: boolean }>;
+      isModalActive = Boolean(custom.detail?.isAnyModalOpen);
+      if (isModalActive) {
+        stopAllSpiderVoices();
+        isSpeechActive = false;
+        setActiveSpeech((prev) => ({ ...prev, visible: false }));
+      }
+    };
+
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
     window.addEventListener('click', handleClick, true);
     window.addEventListener('resize', handleResize);
     window.addEventListener('spider-event', handleSpiderEvent);
+    window.addEventListener('app-modal-state-change', handleModalState);
 
     let lastTime = performance.now();
 
@@ -503,6 +517,8 @@ export const CuteSpiderCompanion: React.FC = () => {
       bottom: height * 0.58 + 50,
     };
     let cachedSectionTops: { id: string; top: number; bottom: number }[] = [];
+    let cachedSectionHeadingTop = -1;
+    let cachedCompaniesContainerRight = -1;
     let lastLayoutMeasureTime = 0;
 
     const measureLayout = () => {
@@ -543,6 +559,25 @@ export const CuteSpiderCompanion: React.FC = () => {
             top: hTop + curScroll,
             bottom: r.bottom + curScroll,
           });
+        }
+      }
+
+      // Cache active section heading & container coordinates (avoids layout thrashing in rAF)
+      const activeEl = document.getElementById(currentActiveSection);
+      if (activeEl) {
+        const hEl = activeEl.querySelector('#companies-heading') || activeEl.querySelector('h2') || activeEl.querySelector('span.uppercase') || activeEl.querySelector('h3');
+        if (hEl) {
+          cachedSectionHeadingTop = hEl.getBoundingClientRect().top;
+        } else {
+          cachedSectionHeadingTop = -1;
+        }
+        if (currentActiveSection === 'companies') {
+          const containerEl = activeEl.querySelector('.max-w-7xl');
+          if (containerEl) {
+            cachedCompaniesContainerRight = containerEl.getBoundingClientRect().right;
+          } else {
+            cachedCompaniesContainerRight = -1;
+          }
         }
       }
     };
@@ -588,81 +623,64 @@ export const CuteSpiderCompanion: React.FC = () => {
       // =========================================================================
       // SCROLL POSITION & MULTI-SECTION TOUR TRACKING (ZERO LAYOUT THRASHING)
       // =========================================================================
-      let detectedSection = currentActiveSection;
-
-      const isAtPageBottom =
-        window.innerHeight + scrollY >= (document.documentElement.scrollHeight || document.body.scrollHeight) - 60;
-
-      if (isAtPageBottom) {
-        detectedSection = 'contact';
-      } else if (scrollY < 200) {
-        detectedSection = 'hero';
+      if (isModalActive) {
+        // A modal/popup is open! Freeze section tracking, dwell timer, and speech completely
+        sectionDwellTimer = 0;
+        isSpeechActive = false;
       } else {
-        // Fast arithmetic check against cached document positions (0 DOM queries!)
-        for (const s of cachedSectionTops) {
-          const hTop = s.top - scrollY;
-          const rBottom = s.bottom - scrollY;
-          if (hTop <= 310 && rBottom >= 180) {
-            detectedSection = s.id;
-            break;
+        let detectedSection = currentActiveSection;
+
+        const isAtPageBottom =
+          window.innerHeight + scrollY >= (document.documentElement.scrollHeight || document.body.scrollHeight) - 60;
+
+        if (isAtPageBottom) {
+          detectedSection = 'contact';
+        } else if (scrollY < 200) {
+          detectedSection = 'hero';
+        } else {
+          // Fast arithmetic check against cached document positions (0 DOM queries!)
+          for (const s of cachedSectionTops) {
+            const hTop = s.top - scrollY;
+            const rBottom = s.bottom - scrollY;
+            if (hTop <= 310 && rBottom >= 180) {
+              detectedSection = s.id;
+              break;
+            }
           }
         }
-      }
 
-      // User active scroll tracking: reset dwell timer when actively scrolling
-      const scrollDelta = Math.abs(scrollY - lastSampledScrollY);
-      if (scrollDelta > 8) {
-        sectionDwellTimer = 0;
-        lastSampledScrollY = scrollY;
-      }
-
-      // Track whether user scrolled down away from Hero top
-      if (scrollY > 50) {
-        hasScrolledAwayFromHeroTop = true;
-      }
-
-      // 1. If spider is resting offscreen on Hero, wake spider up when:
-      // - User scrolled away and returned to top (scrollY < 40)
-      // - OR spider rested quietly offscreen for cooldown period (stateTimer > 18.0)
-      // - OR user interacts with the top corner web (mouse near web anchor)
-      if (spiderState === 'OFFSCREEN_REST' && detectedSection === 'hero') {
-        const mouseNearWeb = mouse.x > 0 && mouse.y > 0 && Math.hypot(mouse.x, mouse.y) <= currentWebRadius;
-        if ((hasScrolledAwayFromHeroTop && scrollY < 40) || stateTimer > 18.0 || mouseNearWeb) {
-          hasScrolledAwayFromHeroTop = false;
-          spiderState = 'INITIAL_DROP';
-          stateTimer = 0;
-          webAnchorX = creativeRect.left + 22;
-          webAnchorY = 0;
-          spiderX = webAnchorX;
-          spiderY = 0;
-          if (hitboxRef.current) hitboxRef.current.style.display = 'block';
+        // User active scroll tracking: reset dwell timer when actively scrolling
+        const scrollDelta = Math.abs(scrollY - lastSampledScrollY);
+        if (scrollDelta > 8) {
+          sectionDwellTimer = 0;
+          lastSampledScrollY = scrollY;
         }
-      }
 
-      // 1b. If spider is resting offscreen in content sections, wake it up if user scrolls noticeably
-      if (spiderState === 'OFFSCREEN_REST' && detectedSection !== 'hero' && scrollDelta > 45) {
-        spiderState = 'SECTION_TOUR_RAPPEL';
-        stateTimer = 0;
-        pendulumLength = 0;
-        pendulumAngle = 0;
-        pendulumAngularVel = (Math.random() - 0.5) * 0.003;
-        const cfg = SECTION_RAPPEL_CONFIGS[detectedSection] || SECTION_RAPPEL_CONFIGS.specialties;
-        webAnchorX = Math.round(width * cfg.anchorXPercent);
-        webAnchorY = 0;
-        spiderX = webAnchorX;
-        spiderY = 0;
-        if (hitboxRef.current) hitboxRef.current.style.display = 'block';
-      }
+        // Track whether user scrolled down away from Hero top
+        if (scrollY > 50) {
+          hasScrolledAwayFromHeroTop = true;
+        }
 
-      // 2. Trigger section change & smooth rappel into new section
-      if (spiderState !== 'SPIDER_CLICK_CELEBRATE' && detectedSection !== previousSection) {
-        previousSection = detectedSection;
-        currentActiveSection = detectedSection;
-        sectionDwellTimer = 0; // Reset dwell timer on entering a new section
-        hasScrolledAwayFromHeroTop = false;
+        // 1. If spider is resting offscreen on Hero, wake spider up when:
+        // - User scrolled away and returned to top (scrollY < 40)
+        // - OR spider rested quietly offscreen for cooldown period (stateTimer > 18.0)
+        // - OR user interacts with the top corner web (mouse near web anchor)
+        if (spiderState === 'OFFSCREEN_REST' && detectedSection === 'hero') {
+          const mouseNearWeb = mouse.x > 0 && mouse.y > 0 && Math.hypot(mouse.x, mouse.y) <= currentWebRadius;
+          if ((hasScrolledAwayFromHeroTop && scrollY < 40) || stateTimer > 18.0 || mouseNearWeb) {
+            hasScrolledAwayFromHeroTop = false;
+            spiderState = 'INITIAL_DROP';
+            stateTimer = 0;
+            webAnchorX = creativeRect.left + 22;
+            webAnchorY = 0;
+            spiderX = webAnchorX;
+            spiderY = 0;
+            if (hitboxRef.current) hitboxRef.current.style.display = 'block';
+          }
+        }
 
-        // In content sections, spider transitions to SECTION_TOUR_RAPPEL mode at that section's unique location
-        if (detectedSection !== 'hero') {
+        // 1b. If spider is resting offscreen in content sections, wake it up if user scrolls noticeably
+        if (spiderState === 'OFFSCREEN_REST' && detectedSection !== 'hero' && scrollDelta > 45) {
           spiderState = 'SECTION_TOUR_RAPPEL';
           stateTimer = 0;
           pendulumLength = 0;
@@ -671,61 +689,84 @@ export const CuteSpiderCompanion: React.FC = () => {
           const cfg = SECTION_RAPPEL_CONFIGS[detectedSection] || SECTION_RAPPEL_CONFIGS.specialties;
           webAnchorX = Math.round(width * cfg.anchorXPercent);
           webAnchorY = 0;
-          // Smoothly descend from top ceiling anchor
-          spiderX = webAnchorX;
-          spiderY = 0;
-          if (hitboxRef.current) hitboxRef.current.style.display = 'block';
-        } else {
-          spiderState = 'INITIAL_DROP';
-          stateTimer = 0;
-          webAnchorX = creativeRect.left + 22;
-          webAnchorY = 0;
           spiderX = webAnchorX;
           spiderY = 0;
           if (hitboxRef.current) hitboxRef.current.style.display = 'block';
         }
 
-        // Section dialogue appears STRICTLY ONCE per section during the session
-        if (!spokenSections.has(detectedSection)) {
-          spokenSections.add(detectedSection);
-          speechTimer = 0;
-          isSpeechActive = true;
-          typewriterIndex = 0;
+        // 2. Trigger section change & smooth rappel into new section
+        if (spiderState !== 'SPIDER_CLICK_CELEBRATE' && detectedSection !== previousSection) {
+          previousSection = detectedSection;
+          currentActiveSection = detectedSection;
+          sectionDwellTimer = 0; // Reset dwell timer on entering a new section
+          hasScrolledAwayFromHeroTop = false;
 
-          const info = SECTION_COMMENTARY[detectedSection] || SECTION_COMMENTARY.hero;
-          typewriterTargetText = info.text;
+          // In content sections, spider transitions to SECTION_TOUR_RAPPEL mode at that section's unique location
+          if (detectedSection !== 'hero') {
+            spiderState = 'SECTION_TOUR_RAPPEL';
+            stateTimer = 0;
+            pendulumLength = 0;
+            pendulumAngle = 0;
+            pendulumAngularVel = (Math.random() - 0.5) * 0.003;
+            const cfg = SECTION_RAPPEL_CONFIGS[detectedSection] || SECTION_RAPPEL_CONFIGS.specialties;
+            webAnchorX = Math.round(width * cfg.anchorXPercent);
+            webAnchorY = 0;
+            // Smoothly descend from top ceiling anchor
+            spiderX = webAnchorX;
+            spiderY = 0;
+            if (hitboxRef.current) hitboxRef.current.style.display = 'block';
+          } else {
+            spiderState = 'INITIAL_DROP';
+            stateTimer = 0;
+            webAnchorX = creativeRect.left + 22;
+            webAnchorY = 0;
+            spiderX = webAnchorX;
+            spiderY = 0;
+            if (hitboxRef.current) hitboxRef.current.style.display = 'block';
+          }
 
-          // Play studio Gemini Zephyr voice
-          playSectionVoice(detectedSection);
-        } else {
-          // Already appeared once: silence voice narration and hide speech bubble
+          // Section dialogue appears STRICTLY ONCE per section during the session
+          if (!spokenSections.has(detectedSection)) {
+            spokenSections.add(detectedSection);
+            speechTimer = 0;
+            isSpeechActive = true;
+            typewriterIndex = 0;
+
+            const info = SECTION_COMMENTARY[detectedSection] || SECTION_COMMENTARY.hero;
+            typewriterTargetText = info.text;
+
+            // Play studio Gemini Zephyr voice
+            playSectionVoice(detectedSection);
+          } else {
+            // Already appeared once: silence voice narration and hide speech bubble
+            isSpeechActive = false;
+            setActiveSpeech((prev) => ({ ...prev, visible: false }));
+            stopAllSpiderVoices();
+          }
+        }
+
+        // Track how long the user has stopped at this section/page
+        sectionDwellTimer += delta;
+
+        // If user stops at content sections for more than 20 seconds: exit out of page like Spiderman with elastic string!
+        if (
+          currentActiveSection !== 'hero' &&
+          sectionDwellTimer >= 20.0 &&
+          spiderState !== 'SHOOT_WEB_PREPARE' &&
+          spiderState !== 'SPIDERMAN_ZIP_UP' &&
+          spiderState !== 'OFFSCREEN_REST' &&
+          spiderState !== 'SPIDER_CLICK_CELEBRATE' &&
+          spiderState !== 'INITIAL_DROP'
+        ) {
+          spiderState = 'SHOOT_WEB_PREPARE';
+          stateTimer = 0;
+          webShotProgress = 0;
+          webAnchorX = spiderX;
+          webAnchorY = 0;
+          playWebShootSound();
           isSpeechActive = false;
           setActiveSpeech((prev) => ({ ...prev, visible: false }));
-          stopAllSpiderVoices();
         }
-      }
-
-      // Track how long the user has stopped at this section/page
-      sectionDwellTimer += delta;
-
-      // If user stops at content sections for more than 20 seconds: exit out of page like Spiderman with elastic string!
-      if (
-        currentActiveSection !== 'hero' &&
-        sectionDwellTimer >= 20.0 &&
-        spiderState !== 'SHOOT_WEB_PREPARE' &&
-        spiderState !== 'SPIDERMAN_ZIP_UP' &&
-        spiderState !== 'OFFSCREEN_REST' &&
-        spiderState !== 'SPIDER_CLICK_CELEBRATE' &&
-        spiderState !== 'INITIAL_DROP'
-      ) {
-        spiderState = 'SHOOT_WEB_PREPARE';
-        stateTimer = 0;
-        webShotProgress = 0;
-        webAnchorX = spiderX;
-        webAnchorY = 0;
-        playWebShootSound();
-        isSpeechActive = false;
-        setActiveSpeech((prev) => ({ ...prev, visible: false }));
       }
 
       // Clear both canvases for active frame render
@@ -733,7 +774,7 @@ export const CuteSpiderCompanion: React.FC = () => {
       ctxFront.clearRect(0, 0, width, height);
 
       // Update typewriter text & speech bubble visibility (auto-dismiss after 10.0 seconds, or 25s if awaiting user gesture)
-      if (isSpeechActive) {
+      if (isSpeechActive && !isModalActive) {
         speechTimer += delta;
         const maxSpeechDuration = isAutoplayUnlocked() ? 10.0 : 25.0;
         if (speechTimer >= maxSpeechDuration) {
@@ -1066,22 +1107,39 @@ export const CuteSpiderCompanion: React.FC = () => {
           spiderState = 'RAPPEL_TO_BUTTON';
           stateTimer = 0;
           pathProgress = 0;
+          webAnchorX = technologistRect.left + 35;
+          webAnchorY = technologistRect.bottom + 6;
         }
       } else if (spiderState === 'RAPPEL_TO_BUTTON') {
-        // Step 6: Silk Rappel directly to "VIEW MY WORK" button
+        // Step 6: Silk Rappel directly from bottom of "TECHNOLOGIST" onto "VIEW MY WORK" button
         webAnchorX = technologistRect.left + 35;
         webAnchorY = technologistRect.bottom + 6;
+        const landingX = btnWorkRect.left + 45;
         const landingY = btnWorkRect.top - 5;
 
-        pathProgress += 0.0085 * dt;
-        targetX = btnWorkRect.left + 45;
-        targetY = webAnchorY + (landingY - webAnchorY) * Math.min(1, pathProgress);
-        targetDesiredAngle = Math.PI;
+        pathProgress += 0.0075 * dt;
+        const p = Math.min(1, pathProgress);
+        targetX = webAnchorX + (landingX - webAnchorX) * p;
+        targetY = webAnchorY + (landingY - webAnchorY) * p;
+        targetDesiredAngle = Math.PI; // Face downward while rappelling
 
-        if (pathProgress >= 1.0 || stateTimer > 2.5) {
+        if (pathProgress >= 1.0 || stateTimer > 2.6) {
           spiderState = 'WALK_BTN_WORK';
           stateTimer = 0;
           pathProgress = 0;
+          // Soft joyful landing chime and sparkles
+          playJoyfulChime();
+          for (let i = 0; i < 6; i++) {
+            particles.push({
+              x: spiderX + (Math.random() - 0.5) * 14,
+              y: spiderY + 4,
+              vx: (Math.random() - 0.5) * 1.5,
+              vy: -1.0 - Math.random() * 1.5,
+              alpha: 0.9,
+              size: 2.8,
+              color: '#C084FC',
+            });
+          }
         }
       } else if (spiderState === 'WALK_BTN_WORK') {
         // Step 7: Walks along top rim of "VIEW MY WORK"
@@ -1301,23 +1359,12 @@ export const CuteSpiderCompanion: React.FC = () => {
 
         let targetBaseY = Math.round(height * cfg.hangingYPercent);
 
-        // Dynamically align hanging Y level with the section heading (matching user reference)
-        const secEl = document.getElementById(currentActiveSection);
-        if (secEl) {
-          const hEl = secEl.querySelector('#companies-heading') || secEl.querySelector('h2') || secEl.querySelector('span.uppercase') || secEl.querySelector('h3');
-          if (hEl) {
-            const hRect = hEl.getBoundingClientRect();
-            if (hRect.top >= 40 && hRect.top <= height * 0.70) {
-              targetBaseY = Math.round(hRect.top + 10);
-            }
-          }
-          if (currentActiveSection === 'companies') {
-            const containerEl = secEl.querySelector('.max-w-7xl');
-            if (containerEl) {
-              const cRect = containerEl.getBoundingClientRect();
-              webAnchorX = Math.min(width - 45, Math.round(cRect.right + 20));
-            }
-          }
+        // Dynamically align hanging Y level with the section heading using cached coordinates (no 60fps layout thrashing)
+        if (cachedSectionHeadingTop >= 40 && cachedSectionHeadingTop <= height * 0.70) {
+          targetBaseY = Math.round(cachedSectionHeadingTop + 10);
+        }
+        if (currentActiveSection === 'companies' && cachedCompaniesContainerRight > 0) {
+          webAnchorX = Math.min(width - 45, Math.round(cachedCompaniesContainerRight + 20));
         }
 
         // Smooth extension of string length as spider descends from ceiling
@@ -1354,10 +1401,14 @@ export const CuteSpiderCompanion: React.FC = () => {
         // Calm resting companion posture in content sections (no frantic hand loops)
         isWavingPaws = false;
 
-        // If user scrolls back up to hero, return to hero cycle
+        // If user scrolls back up to hero, return to hero cycle cleanly from top anchor
         if (currentActiveSection === 'hero') {
           spiderState = 'INITIAL_DROP';
           stateTimer = 0;
+          webAnchorX = creativeRect.left + 22;
+          webAnchorY = 0;
+          spiderX = webAnchorX;
+          spiderY = 0;
           isWavingPaws = false;
         }
       } else if (spiderState === 'MOUSE_CURIOUS') {
@@ -1408,7 +1459,6 @@ export const CuteSpiderCompanion: React.FC = () => {
       const isHangingThreadActive =
         spiderState === 'INITIAL_DROP' ||
         spiderState === 'RAPPEL_TO_BUTTON' ||
-        spiderState === 'RAPPEL_UP_TO_LETTERS' ||
         spiderState === 'SHOOT_WEB_PREPARE' ||
         spiderState === 'SECTION_TOUR_RAPPEL' ||
         (spiderState === 'SPIDER_CLICK_PERCH' && currentActiveSection !== 'hero');
@@ -1432,8 +1482,12 @@ export const CuteSpiderCompanion: React.FC = () => {
           stringWindVelocity += windImpulse * 0.20;
         } else if (spiderState !== 'SECTION_TOUR_RAPPEL') {
           // For other dropping states, subtle thread breeze when near thread
-          const anchorY = (spiderState === 'RAPPEL_TO_BUTTON' || spiderState === 'RAPPEL_UP_TO_LETTERS') ? webAnchorY : 0;
-          const threadTopY = spiderState === 'SHOOT_WEB_PREPARE' ? spiderY - (spiderY - 0) * webShotProgress : anchorY;
+          const threadTopY =
+            spiderState === 'RAPPEL_TO_BUTTON'
+              ? webAnchorY
+              : spiderState === 'SHOOT_WEB_PREPARE'
+                ? spiderY - (spiderY - 0) * webShotProgress
+                : 0;
           const isNearThreadY = mouse.y >= threadTopY - 20 && mouse.y <= spiderY + 70;
           const dx = mouse.x - spiderX;
           if (isNearThreadY && Math.abs(dx) < 100 && Math.abs(horizontalMove) > 0.08) {
@@ -1473,20 +1527,23 @@ export const CuteSpiderCompanion: React.FC = () => {
       const renderSpiderAngle = spiderAngle + spiderWindTiltAngle;
 
       // =========================================================================
-      // 3b. DRAW GLOWING SILK THREAD & GUIDANCE TRACER
+      // 3b. DRAW GLOWING SILK THREAD
       // =========================================================================
       if (
         spiderState === 'INITIAL_DROP' ||
         spiderState === 'RAPPEL_TO_BUTTON' ||
-        spiderState === 'RAPPEL_UP_TO_LETTERS' ||
         spiderState === 'SHOOT_WEB_PREPARE' ||
         spiderState === 'SPIDERMAN_ZIP_UP' ||
         spiderState === 'SECTION_TOUR_RAPPEL' ||
         (spiderState === 'SPIDER_CLICK_PERCH' && currentActiveSection !== 'hero')
       ) {
         ctxFront.save();
-        const anchorY = (spiderState === 'RAPPEL_TO_BUTTON' || spiderState === 'RAPPEL_UP_TO_LETTERS') ? webAnchorY : 0;
-        const threadTopY = spiderState === 'SHOOT_WEB_PREPARE' ? spiderY - (spiderY - 0) * webShotProgress : anchorY;
+        const threadTopY =
+          spiderState === 'RAPPEL_TO_BUTTON'
+            ? webAnchorY
+            : spiderState === 'SHOOT_WEB_PREPARE'
+              ? spiderY - (spiderY - 0) * webShotProgress
+              : 0;
 
         // Anchor node at top
         ctxFront.beginPath();
@@ -1524,26 +1581,6 @@ export const CuteSpiderCompanion: React.FC = () => {
         ctxFront.restore();
       }
 
-      // Guidance Tracer Line (When 'VIEW MY WORK' is clicked)
-      if (guidanceTracer.active) {
-        guidanceTracer.timer += delta;
-        guidanceTracer.progress = Math.min(1.0, guidanceTracer.progress + 0.08 * dt);
-
-        ctxFront.save();
-        ctxFront.beginPath();
-        ctxFront.moveTo(renderSpiderX, renderSpiderY + 10);
-        ctxFront.lineTo(renderSpiderX, renderSpiderY + 10 + guidanceTracer.progress * (height * 0.6));
-        ctxFront.strokeStyle = 'rgba(56, 189, 248, 0.85)';
-        ctxFront.lineWidth = 2.0;
-        ctxFront.shadowBlur = 12;
-        ctxFront.shadowColor = '#38BDF8';
-        ctxFront.stroke();
-        ctxFront.restore();
-
-        if (guidanceTracer.timer > 2.0) {
-          guidanceTracer.active = false;
-        }
-      }
 
       // Golden Scroll Toss Animation (When 'DOWNLOAD RESUME' is clicked)
       if (scrollToss.active) {
@@ -1954,14 +1991,13 @@ export const CuteSpiderCompanion: React.FC = () => {
         ctxFront.restore();
       }
 
-      // Update interactive spider hitbox
+      // Update interactive spider hitbox with GPU-accelerated transform (no top/left reflow)
       if (hitboxRef.current) {
         if (renderSpiderY < -50 || spiderState === 'SPIDERMAN_ZIP_UP' || spiderState === 'OFFSCREEN_REST' || spiderState === 'SHOOT_WEB_PREPARE') {
           hitboxRef.current.style.display = 'none';
         } else {
           hitboxRef.current.style.display = 'block';
-          hitboxRef.current.style.left = `${renderSpiderX}px`;
-          hitboxRef.current.style.top = `${renderSpiderY}px`;
+          hitboxRef.current.style.transform = `translate3d(${renderSpiderX}px, ${renderSpiderY}px, 0) translate(-50%, -50%)`;
         }
       }
 
@@ -1978,6 +2014,8 @@ export const CuteSpiderCompanion: React.FC = () => {
         stringWindOffset,
         activeSection: currentActiveSection,
         webRadius: currentWebRadius,
+        webAnchorX,
+        webAnchorY,
         soundEnabled: isSoundEnabled(),
         triggerClick: triggerSpiderClickCelebrate,
         creativeRect,
@@ -2000,6 +2038,7 @@ export const CuteSpiderCompanion: React.FC = () => {
       window.removeEventListener('click', handleClick, true);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('spider-event', handleSpiderEvent);
+      window.removeEventListener('app-modal-state-change', handleModalState);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
@@ -2010,6 +2049,7 @@ export const CuteSpiderCompanion: React.FC = () => {
     setSoundEnabled(next);
     if (next) {
       unlockAudio();
+      setIsAudioUnlocked(true);
       if (activeSpeech.section) {
         playSectionVoice(activeSpeech.section);
       }
@@ -2037,15 +2077,14 @@ export const CuteSpiderCompanion: React.FC = () => {
         className="fixed inset-0 pointer-events-none z-[35]"
       />
 
-      {/* Interactive Spider Hitbox with Cute Pointer Cursor */}
+      {/* Interactive Spider Hitbox with Cute Pointer Cursor (GPU transform) */}
       <div
         ref={hitboxRef}
-        className="fixed pointer-events-auto cursor-pointer z-[38] -translate-x-1/2 -translate-y-1/2 rounded-full"
+        className="fixed pointer-events-auto cursor-pointer z-[38] rounded-full will-change-transform"
         style={{
           width: '68px',
           height: '68px',
-          left: '0px',
-          top: '0px',
+          transform: 'translate3d(-9999px, -9999px, 0)',
           display: 'none',
         }}
         onClick={(e) => {
@@ -2087,12 +2126,14 @@ export const CuteSpiderCompanion: React.FC = () => {
                 </span>
               </div>
               <div className="flex items-center gap-1.5">
-                {!isAudioUnlocked && (
+                {(!soundOn || !isAudioUnlocked) && (
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       unlockAudio();
                       setIsAudioUnlocked(true);
+                      setSoundOn(true);
+                      setSoundEnabled(true);
                       if (activeSpeech.section) {
                         playSectionVoice(activeSpeech.section);
                       }
@@ -2109,7 +2150,7 @@ export const CuteSpiderCompanion: React.FC = () => {
                   className="text-[10px] text-gray-400 hover:text-white transition-colors flex items-center gap-1 bg-white/[0.06] hover:bg-white/[0.12] px-1.5 py-0.5 rounded-md"
                   title={soundOn ? 'Mute Creature Voice' : 'Unmute Creature Voice'}
                 >
-                  <span>{soundOn ? '🔊 Sound' : '🔇 Mute'}</span>
+                  <span>{soundOn ? '🔊 Sound' : '🔇 Muted'}</span>
                 </button>
                 <button
                   onClick={handleDismissSpeech}

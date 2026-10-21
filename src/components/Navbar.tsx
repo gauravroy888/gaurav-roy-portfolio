@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { ArrowUpRight, Menu, X, Search } from 'lucide-react';
+import { ArrowUpRight, Menu, X } from 'lucide-react';
 
 interface NavbarProps {
   onOpenResume: () => void;
@@ -23,31 +23,48 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onOpenContact, onO
   ];
 
   useEffect(() => {
+    // --- scrolled state: passive scroll listener ---
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
-
-      const sectionIds = ['work', 'specialties', 'capabilities', 'process', 'contact'];
-      const scrollPosition = window.scrollY + 280;
-
-      for (let i = sectionIds.length - 1; i >= 0; i--) {
-        const id = sectionIds[i];
-        const el = document.getElementById(id);
-        if (el && scrollPosition >= el.offsetTop) {
-          setActiveSection(id);
-          return;
-        }
-      }
-      if (window.scrollY < 200) {
-        setActiveSection('');
-      }
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    // --- Active section: IntersectionObserver (zero layout reads, compositor-thread) ---
+    const sectionIds = ['work', 'specialties', 'capabilities', 'process', 'contact'];
+    const observers: IntersectionObserver[] = [];
+
+    // Track which sections are currently intersecting; pick the topmost one
+    const visible = new Set<string>();
+    const pickActive = () => {
+      for (const id of sectionIds) {
+        if (visible.has(id)) { setActiveSection(id); return; }
+      }
+      setActiveSection('');
+    };
+
+    for (const id of sectionIds) {
+      const el = document.getElementById(id);
+      if (!el) continue;
+      const obs = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) { visible.add(id); } else { visible.delete(id); }
+          pickActive();
+        },
+        { rootMargin: '-25% 0px -65% 0px', threshold: 0 }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    }
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      observers.forEach((obs) => obs.disconnect());
+    };
   }, []);
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-[10000] transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         scrolled
           ? 'bg-[#0E0F14]/95 backdrop-blur-xl border-b border-white/[0.08] py-3.5'
           : 'bg-[#0E0F14]/60 backdrop-blur-md py-5 border-b border-white/[0.04]'
@@ -81,19 +98,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onOpenContact, onO
             })}
           </nav>
 
-          {/* Action CTA & Cmd+K Trigger */}
+          {/* Action CTA */}
           <div className="hidden sm:flex items-center gap-3">
-            {onOpenCommand && (
-              <button
-                onClick={onOpenCommand}
-                className="hidden xl:flex items-center gap-2 px-3 py-2 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 text-xs font-mono text-gray-300 transition-all cursor-pointer"
-                title="Open Command Menu (Ctrl+K or Cmd+K)"
-              >
-                <Search className="w-3.5 h-3.5 text-gray-400" />
-                <span className="text-[11px] font-sans">Search</span>
-                <kbd className="px-1.5 py-0.5 rounded bg-black/40 text-[10px] text-gray-400 border border-white/10 font-mono">⌘K</kbd>
-              </button>
-            )}
 
             <a
               href="#contact"

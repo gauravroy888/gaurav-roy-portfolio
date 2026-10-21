@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import confetti from 'canvas-confetti';
+import dynamic from 'next/dynamic';
 import {
   Mail,
   Phone,
@@ -11,23 +11,37 @@ import {
   Linkedin,
   Instagram,
   Github,
-  Check
+  Check,
+  Calendar
 } from 'lucide-react';
+
+const CreativeConsultationModal = dynamic(
+  () => import('./CreativeConsultationModal').then((mod) => mod.CreativeConsultationModal),
+  { ssr: false }
+);
 
 interface ContactFooterProps {
   onOpenResume?: () => void;
 }
 
-export const ContactFooter: React.FC<ContactFooterProps> = () => {
+export const ContactFooter: React.FC<ContactFooterProps> = ({ onOpenResume }) => {
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
+
+  const triggerConfetti = async (options: Parameters<typeof import('canvas-confetti')>[0]) => {
+    try {
+      const confetti = (await import('canvas-confetti')).default;
+      confetti(options);
+    } catch (_) {}
+  };
 
   const handleCopyEmail = (e: React.MouseEvent) => {
     e.preventDefault();
     navigator.clipboard.writeText('gauravroy476@gmail.com');
     setCopiedEmail(true);
 
-    confetti({
+    triggerConfetti({
       particleCount: 50,
       spread: 60,
       origin: { y: 0.85 },
@@ -42,7 +56,7 @@ export const ContactFooter: React.FC<ContactFooterProps> = () => {
     navigator.clipboard.writeText('+91 9069558564');
     setCopiedPhone(true);
 
-    confetti({
+    triggerConfetti({
       particleCount: 40,
       spread: 50,
       origin: { y: 0.85 },
@@ -79,7 +93,7 @@ export const ContactFooter: React.FC<ContactFooterProps> = () => {
                 I'm currently available for full-time roles, freelance projects, and spatial CGI collaborations.
               </p>
 
-              <div>
+              <div className="flex flex-wrap items-center gap-3">
                 <a
                   href="mailto:gauravroy476@gmail.com"
                   onClick={handleCopyEmail}
@@ -88,6 +102,16 @@ export const ContactFooter: React.FC<ContactFooterProps> = () => {
                   <span>{copiedEmail ? 'Copied gauravroy476@gmail.com!' : "Let's Work Together"}</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />
                 </a>
+
+                <button
+                  type="button"
+                  onClick={() => setIsBookingOpen(true)}
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white/[0.08] hover:bg-white/[0.18] text-white border border-white/20 text-xs font-semibold tracking-wider uppercase transition-all hover:scale-105 active:scale-95 shadow-md backdrop-blur-md"
+                  title="Book a 1:1 Creative Discovery Call with Google Calendar"
+                >
+                  <Calendar className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>Book a Call</span>
+                </button>
               </div>
             </div>
 
@@ -118,10 +142,16 @@ export const ContactFooter: React.FC<ContactFooterProps> = () => {
                 <span>Delhi, India / Remote</span>
               </div>
 
-              <div className="flex items-center gap-2 text-gray-400">
+              <a
+                href="https://gauravroy.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-gray-400 hover:text-cyan-400 transition-colors"
+                title="Visit gauravroy.dev"
+              >
                 <Globe className="w-3.5 h-3.5 text-gray-400" />
                 <span>gauravroy.dev</span>
-              </div>
+              </a>
             </div>
 
           </div>
@@ -152,6 +182,12 @@ export const ContactFooter: React.FC<ContactFooterProps> = () => {
         </div>
 
       </div>
+
+      {/* Google Calendar Creative Consultation Modal */}
+      <CreativeConsultationModal
+        isOpen={isBookingOpen}
+        onClose={() => setIsBookingOpen(false)}
+      />
     </footer>
   );
 };

@@ -1,0 +1,16 @@
+# Modern browsers only — eliminates ~10 kB of unnecessary Babel polyfills
+# Covers 95%+ of global users as of 2025 (ES2020 baseline)
+[production]
+chrome >= 91
+firefox >= 90
+edge >= 91
+safari >= 15
+opera >= 77
+samsung >= 16
+not dead
+not ie 11
+
+[development]
+last 1 chrome version
+last 1 firefox version
+last 1 safari version

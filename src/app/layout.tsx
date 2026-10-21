@@ -29,6 +29,7 @@ const cinzel = Cinzel({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://gauravroy.dev'),
   title: 'Gaurav Roy — Creative Technologist — 3D, Generative AI & Spatial Web',
   description: 'Portfolio of Gaurav Roy, Creative Technologist bridging 3D/CGI & Unreal Engine, ComfyUI generative AI workflows, motion design, and spatial web engineering.',
   keywords: [
@@ -49,10 +50,32 @@ export const metadata: Metadata = {
     'TATA'
   ],
   authors: [{ name: 'Gaurav Roy', url: 'https://gauravroy.dev' }],
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico' },
+    ],
+  },
   openGraph: {
     title: 'Gaurav Roy — Creative Technologist — 3D, Generative AI & Spatial Web',
     description: 'Portfolio of Gaurav Roy, Creative Technologist bridging 3D/CGI & Unreal Engine, ComfyUI generative AI workflows, motion design, and spatial web engineering.',
+    url: 'https://gauravroy.dev',
+    siteName: 'Gaurav Roy Portfolio',
     type: 'website',
+    images: [
+      {
+        url: '/images/gaurav_portrait.png',
+        width: 1200,
+        height: 630,
+        alt: 'Gaurav Roy — Creative Technologist',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Gaurav Roy — Creative Technologist — 3D, Generative AI & Spatial Web',
+    description: 'Portfolio of Gaurav Roy, Creative Technologist bridging 3D/CGI & Unreal Engine, ComfyUI generative AI workflows, motion design, and spatial web engineering.',
+    images: ['/images/gaurav_portrait.png'],
   },
 };
 

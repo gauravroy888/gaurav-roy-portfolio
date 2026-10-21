@@ -9,6 +9,9 @@ const nextConfig = {
     NEXT_PUBLIC_BASE_PATH: isGitHubActions ? `/${repoName}` : '',
   },
   reactStrictMode: true,
+  experimental: {
+    optimizePackageImports: ['lucide-react'],
+  },
   images: {
     unoptimized: true,
     remotePatterns: [

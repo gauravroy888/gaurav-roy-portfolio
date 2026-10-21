@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
-// import { SkeletalWorm } from './SkeletalWorm'; // Kept in backup for future use
 import { DeepSeaAtmosphere } from './DeepSeaAtmosphere';
 
 export const LuxuryBackground: React.FC = () => {

@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { ProjectItem, ProjectPlanItem } from '../data/portfolioData';
-import { ImageCompareSlider } from './ImageCompareSlider';
 import {
   X,
   Play,
@@ -16,12 +15,16 @@ import {
   Maximize2,
   ImagePlus,
   FilePlus,
-  Volume2
+  ArrowLeft,
+  BookOpen,
+  ShieldCheck,
 } from 'lucide-react';
+import { useModalScrollLock } from '../utils/modalScrollLock';
 
 interface ProductDetailModalProps {
   project: ProjectItem | null;
   onClose: () => void;
+  onBack?: () => void;
   onOpenVideo: (youtubeId: string, title: string, client?: string, role?: string) => void;
   onNavigatePrev?: () => void;
   onNavigateNext?: () => void;
@@ -29,7 +32,7 @@ interface ProductDetailModalProps {
   totalCount?: number;
 }
 
-type ModalTab = 'video' | 'overview' | 'gallery' | 'plans' | 'clay-slider';
+type ModalTab = 'video' | 'overview' | 'gallery' | 'plans' | 'clay-slider' | 'views' | 'stills';
 
 interface LightboxItem {
   url: string;
@@ -41,37 +44,29 @@ interface LightboxItem {
 export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   project,
   onClose,
+  onBack,
   onNavigatePrev,
   onNavigateNext,
   currentIndex,
   totalCount,
 }) => {
   const [activeTab, setActiveTab] = useState<ModalTab>('video');
+  const [videoSource, setVideoSource] = useState<'main' | 'proof'>('main');
   const [lightboxItem, setLightboxItem] = useState<LightboxItem | null>(null);
 
-  // Sync initial tab whenever project changes
-  useEffect(() => {
-    if (project) {
-      if (project.youtubeId) {
-        setActiveTab('video');
-      } else {
-        setActiveTab('overview');
-      }
-      setLightboxItem(null);
-    }
-  }, [project?.id]);
+  // Global modal scroll lock & interaction blocker
+  useModalScrollLock(Boolean(project || lightboxItem));
 
-  // Prevent background scrolling when modal is open
+  // Reset video source and set default active tab on project change
   useEffect(() => {
-    if (project) {
-      document.body.style.overflow = 'hidden';
+    if (!project) return;
+    setVideoSource('main');
+    if (project.youtubeId) {
+      setActiveTab('video');
     } else {
-      document.body.style.overflow = 'unset';
+      setActiveTab('overview');
     }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [project]);
+  }, [project?.id, project?.youtubeId]);
 
   // Keyboard navigation (ArrowLeft / ArrowRight / Escape)
   useEffect(() => {
@@ -97,10 +92,16 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
   const galleryList = project.galleryImages || [];
   const plansList = project.plans || [];
+  const isAdvertisement =
+    project.collectionId === 'commercial-campaigns' ||
+    project.collectionId === 'motion-graphics' ||
+    project.domainId === 'brand-motion';
+  const stillsList = project.stills || [];
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-5 md:p-8 bg-black/90 backdrop-blur-2xl overflow-y-auto animate-fadeIn"
+      className="fixed inset-0 z-[100010] flex items-center justify-center p-3 sm:p-5 md:p-8 pt-6 sm:pt-8 bg-black/90 backdrop-blur-2xl overflow-y-auto overscroll-contain animate-fadeIn"
+      data-modal-scrollable
       onClick={onClose}
     >
       <div
@@ -108,8 +109,35 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header Bar */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.08] bg-[#141724]/90 sticky top-0 z-30 backdrop-blur-xl">
-          <div className="flex items-center gap-3">
+        <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 border-b border-white/[0.08] bg-[#141724]/90 sticky top-0 z-30 backdrop-blur-xl gap-2">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            {onBack && (
+              <button
+                onClick={onBack}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-gray-200 hover:text-white border border-white/15 hover:border-white/30 text-xs font-mono font-bold transition-all group shadow-sm active:scale-95 flex-shrink-0"
+                title={`Back to ${
+                  project.collectionId === 'product-renders'
+                    ? 'All Products'
+                    : project.collectionId === 'commercial-campaigns'
+                    ? 'All Commercials'
+                    : project.collectionId === 'motion-graphics'
+                    ? 'All Motion Graphics'
+                    : 'All Layouts'
+                }`}
+              >
+                <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" />
+                <span className="hidden sm:inline">
+                  {project.collectionId === 'product-renders'
+                    ? 'All Products'
+                    : project.collectionId === 'commercial-campaigns'
+                    ? 'All Commercials'
+                    : project.collectionId === 'motion-graphics'
+                    ? 'All Motion Graphics'
+                    : 'All Layouts'}
+                </span>
+                <span className="sm:hidden">Back</span>
+              </button>
+            )}
             <span className="text-[11px] font-mono uppercase px-3 py-1 rounded-full bg-white/10 border border-white/15 font-bold text-white">
               {project.badge}
             </span>
@@ -152,10 +180,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             <div className="h-4 w-px bg-white/15 mx-1 hidden sm:block" />
             <button
               onClick={onClose}
-              className="p-1.5 text-gray-400 hover:text-white rounded-lg hover:bg-white/10 transition-colors ml-1"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-gray-200 hover:text-white border border-white/15 hover:border-white/30 text-xs font-mono font-bold transition-all ml-1 active:scale-95"
               title="Close (Esc)"
             >
-              <X className="w-5 h-5" />
+              <span className="hidden sm:inline">Close</span>
+              <X className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -173,71 +202,94 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             </p>
           </div>
 
-          {/* Interactive Media View Tab Switcher */}
-          <div className="flex flex-wrap items-center gap-2 border-b border-white/[0.08] pb-3">
-            {project.youtubeId && (
-              <button
-                onClick={() => setActiveTab('video')}
-                className={`px-4 py-1.5 rounded-full text-xs font-mono transition-all flex items-center gap-1.5 ${
-                  activeTab === 'video'
-                    ? 'bg-purple-600 text-white font-bold shadow-md shadow-purple-600/30'
-                    : 'text-gray-300 hover:text-white bg-white/[0.05]'
-                }`}
-              >
-                <Play className="w-3.5 h-3.5 fill-current" />
-                <span>Live Video Experience</span>
-                <span className="text-[10px] font-normal opacity-80">(Audio On)</span>
-              </button>
-            )}
+          {/* Interactive Media View Tab Switcher (Bigger & Strictly 2 Tabs Per Section) */}
+          <div className="flex flex-wrap items-center gap-3 border-b border-white/[0.08] pb-4">
+            {project.youtubeId ? (
+              <>
+                <button
+                  onClick={() => setActiveTab('video')}
+                  className={`px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all flex items-center gap-2.5 ${
+                    activeTab === 'video'
+                      ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30 ring-1 ring-purple-400/50'
+                      : 'text-gray-300 hover:text-white bg-white/[0.06] hover:bg-white/10 border border-white/10'
+                  }`}
+                >
+                  <Play className="w-4 h-4 fill-current text-white" />
+                  <span>
+                    {project.collectionId === 'motion-graphics'
+                      ? 'Motion Graphic Video'
+                      : 'Commercial Video'}
+                  </span>
+                </button>
 
-            <button
-              onClick={() => setActiveTab('overview')}
-              className={`px-4 py-1.5 rounded-full text-xs font-mono transition-all flex items-center gap-1.5 ${
-                activeTab === 'overview'
-                  ? 'bg-white text-black font-semibold shadow-md'
-                  : 'text-gray-300 hover:text-white bg-white/[0.05]'
-              }`}
-            >
-              <Eye className="w-3.5 h-3.5" />
-              <span>Master Render</span>
-            </button>
+                {isAdvertisement && (
+                  <button
+                    onClick={() => setActiveTab('stills')}
+                    className={`px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all flex items-center gap-2.5 ${
+                      activeTab === 'stills'
+                        ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30 ring-1 ring-purple-400/50'
+                        : 'text-gray-300 hover:text-white bg-white/[0.06] hover:bg-white/10 border border-white/10'
+                    }`}
+                  >
+                    <ImageIcon className="w-4 h-4 text-purple-300" />
+                    <span>Stills / Renders</span>
+                  </button>
+                )}
 
-            <button
-              onClick={() => setActiveTab('gallery')}
-              className={`px-4 py-1.5 rounded-full text-xs font-mono transition-all flex items-center gap-1.5 ${
-                activeTab === 'gallery'
-                  ? 'bg-white text-black font-semibold shadow-md'
-                  : 'text-gray-300 hover:text-white bg-white/[0.05]'
-              }`}
-            >
-              <ImageIcon className="w-3.5 h-3.5" />
-              <span>Images & Stills ({galleryList.length})</span>
-            </button>
+                {project.storyboardUrl && (
+                  <a
+                    href={project.storyboardUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all flex items-center gap-2 bg-gradient-to-r from-amber-500/20 to-orange-500/20 hover:from-amber-500/30 hover:to-orange-500/30 text-amber-300 border border-amber-500/40 hover:border-amber-400 shadow-md group active:scale-95"
+                    title="Open interactive storyboard in a new browser tab"
+                  >
+                    <BookOpen className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
+                    <span>Storyboard</span>
+                    <ExternalLink className="w-3.5 h-3.5 text-amber-400 ml-0.5" />
+                  </a>
+                )}
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => setActiveTab('overview')}
+                  className={`px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all flex items-center gap-2.5 ${
+                    activeTab === 'overview'
+                      ? 'bg-white text-black font-bold shadow-lg shadow-white/10'
+                      : 'text-gray-300 hover:text-white bg-white/[0.06] hover:bg-white/10 border border-white/10'
+                  }`}
+                >
+                  <Eye className="w-4 h-4" />
+                  <span>Master Render</span>
+                </button>
 
-            <button
-              onClick={() => setActiveTab('plans')}
-              className={`px-4 py-1.5 rounded-full text-xs font-mono transition-all flex items-center gap-1.5 ${
-                activeTab === 'plans'
-                  ? 'bg-cyan-500 text-black font-bold shadow-md shadow-cyan-500/20'
-                  : 'text-gray-300 hover:text-white bg-white/[0.05]'
-              }`}
-            >
-              <Compass className="w-3.5 h-3.5" />
-              <span>Plans & Schematics ({plansList.length})</span>
-            </button>
-
-            {project.clayImage && project.finalImage && (
-              <button
-                onClick={() => setActiveTab('clay-slider')}
-                className={`px-4 py-1.5 rounded-full text-xs font-mono transition-all flex items-center gap-1.5 ${
-                  activeTab === 'clay-slider'
-                    ? 'bg-purple-500 text-white font-semibold shadow-md'
-                    : 'text-gray-300 hover:text-white bg-white/[0.05]'
-                }`}
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Clay vs Render</span>
-              </button>
+                {project.views && project.views.length > 0 ? (
+                  <button
+                    onClick={() => setActiveTab('views')}
+                    className={`px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all flex items-center gap-2.5 ${
+                      activeTab === 'views'
+                        ? 'bg-emerald-500 text-white font-bold shadow-lg shadow-emerald-500/20'
+                        : 'text-gray-300 hover:text-white bg-white/[0.06] hover:bg-white/10 border border-white/10'
+                    }`}
+                  >
+                    <Sparkles className="w-4 h-4" />
+                    <span>3D Views & Details ({project.views.length})</span>
+                  </button>
+                ) : galleryList.length > 0 ? (
+                  <button
+                    onClick={() => setActiveTab('gallery')}
+                    className={`px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all flex items-center gap-2.5 ${
+                      activeTab === 'gallery'
+                        ? 'bg-white text-black font-bold shadow-lg'
+                        : 'text-gray-300 hover:text-white bg-white/[0.06] hover:bg-white/10 border border-white/10'
+                    }`}
+                  >
+                    <ImageIcon className="w-4 h-4" />
+                    <span>Images & Stills ({galleryList.length})</span>
+                  </button>
+                ) : null}
+              </>
             )}
           </div>
 
@@ -246,42 +298,301 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             
             {/* 1. Video Player Surface */}
             {activeTab === 'video' && project.youtubeId && (
-              <div className="space-y-2">
+              <div className="space-y-4">
+                {/* Proof Video Switcher (for projects with companion proof video, e.g. Translumina) */}
+                {project.proofYoutubeId && (
+                  <div className="flex flex-wrap items-center gap-2 p-1.5 bg-white/[0.04] border border-white/10 rounded-2xl w-fit">
+                    <button
+                      onClick={() => setVideoSource('main')}
+                      className={`px-3.5 py-1.5 rounded-xl text-xs font-mono transition-all flex items-center gap-2 ${
+                        videoSource === 'main'
+                          ? 'bg-purple-600 text-white font-bold shadow-lg shadow-purple-600/30'
+                          : 'text-gray-400 hover:text-white hover:bg-white/5'
+                      }`}
+                    >
+                      <Play className="w-3.5 h-3.5 fill-current" />
+                      <span>Final Commercial Cut</span>
+                    </button>
+                    <button
+                      onClick={() => setVideoSource('proof')}
+                      className={`px-3.5 py-1.5 rounded-xl text-xs font-mono transition-all flex items-center gap-2 ${
+                        videoSource === 'proof'
+                          ? 'bg-emerald-600 text-white font-bold shadow-lg shadow-emerald-600/30'
+                          : 'text-gray-400 hover:text-white hover:bg-white/5'
+                      }`}
+                    >
+                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-300" />
+                      <span>3D Production Proof Video</span>
+                    </button>
+                  </div>
+                )}
+
                 <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-black shadow-2xl border border-white/10">
                   <iframe
-                    src={`https://www.youtube.com/embed/${project.youtubeId}?autoplay=1&controls=1&rel=0`}
-                    title={project.title}
+                    key={videoSource === 'proof' && project.proofYoutubeId ? project.proofYoutubeId : project.youtubeId}
+                    src={`https://www.youtube.com/embed/${
+                      videoSource === 'proof' && project.proofYoutubeId
+                        ? project.proofYoutubeId
+                        : project.youtubeId
+                    }?autoplay=1&controls=1&rel=0`}
+                    title={
+                      videoSource === 'proof' && project.proofVideoTitle
+                        ? project.proofVideoTitle
+                        : project.title
+                    }
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerPolicy="strict-origin-when-cross-origin"
                     allowFullScreen
                     className="w-full h-full border-0"
                   />
                 </div>
-                <div className="flex flex-wrap items-center justify-between text-xs font-mono text-gray-400 px-1 pt-1 gap-2">
-                  <span className="flex items-center gap-1.5 text-purple-300">
-                    <Volume2 className="w-3.5 h-3.5" />
-                    Full audio & HD controls enabled • Click fullscreen for immersive 4K playback
+
+                {/* Concise Details on Video Tab */}
+                <div className="bg-[#141724]/80 border border-white/[0.08] rounded-2xl p-4 sm:p-5 space-y-3.5 shadow-xl">
+                  <div className="space-y-1 border-b border-white/[0.06] pb-3">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-purple-300 font-bold block">
+                      Campaign Brief
+                    </span>
+                    <p className="text-xs sm:text-sm text-gray-200 leading-relaxed font-sans max-w-3xl">
+                      {project.shortDescription}
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-mono text-gray-400">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-gray-500 text-[11px]">Software:</span>
+                      {project.specs.software?.map((s, idx) => (
+                        <span key={idx} className="px-2 py-0.5 rounded bg-white/[0.05] border border-white/[0.08] text-gray-300 text-[10px]">
+                          {s}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="flex items-center gap-4">
+                      {project.client && (
+                        <span className="text-gray-300 text-[11px]">
+                          Client: <strong className="text-white">{project.client}</strong>
+                        </span>
+                      )}
+                      {project.role && (
+                        <span className="text-gray-400 text-[11px] hidden md:inline">
+                          {project.role}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Authentic 3D Viewport Proofs (for campaigns with viewport renders, e.g. Kohler Wild at Heart) */}
+                {project.views && project.views.length > 0 && (
+                  <div className="bg-[#141724]/80 border border-white/[0.08] rounded-2xl p-4 sm:p-5 space-y-3.5 shadow-xl">
+                    <div className="flex items-center justify-between text-xs font-mono">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                        <span className="text-emerald-300 font-bold uppercase tracking-wider text-xs">
+                          3D Viewport Geometry Proofs ({project.views.length})
+                        </span>
+                      </div>
+                      <span className="text-gray-400 text-[11px] hidden sm:inline">
+                        Click to inspect high-poly model in lightbox
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                      {project.views.map((v) => (
+                        <div
+                          key={v.id}
+                          onClick={() =>
+                            setLightboxItem({
+                              url: v.highResUrl || v.imageUrl,
+                              title: v.name,
+                              subtitle: v.description,
+                            })
+                          }
+                          className="group relative rounded-xl overflow-hidden bg-black/60 border border-white/10 hover:border-emerald-400/50 cursor-pointer transition-all duration-300 shadow-md"
+                        >
+                          <div className="relative aspect-[16/10] overflow-hidden bg-black">
+                            <img
+                              src={v.imageUrl}
+                              alt={v.name}
+                              loading="lazy"
+                              decoding="async"
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            />
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5 text-white text-xs font-mono">
+                              <Maximize2 className="w-4 h-4 text-emerald-300" />
+                              <span>Inspect High-Poly Proof</span>
+                            </div>
+                            <div className="absolute top-2 left-2 px-2.5 py-0.5 rounded bg-black/80 backdrop-blur-md text-[10px] font-mono text-emerald-300 border border-emerald-500/30">
+                              {v.camNumber}
+                            </div>
+                          </div>
+                          <div className="p-3 bg-[#111420] border-t border-white/[0.06] space-y-0.5">
+                            <h4 className="text-xs font-bold text-white group-hover:text-emerald-300 transition-colors">
+                              {v.name}
+                            </h4>
+                            {v.description && (
+                              <p className="text-[11px] text-gray-400 font-sans line-clamp-1">
+                                {v.description}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Stills / Renders / Images Section (Only for Advertisement Section) */}
+                {isAdvertisement && stillsList.length > 0 && (
+                  <div className="bg-[#141724]/80 border border-white/[0.08] rounded-2xl p-4 sm:p-5 space-y-3.5 shadow-xl">
+                    <div className="flex items-center justify-between text-xs font-mono border-b border-white/[0.06] pb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
+                        <span className="text-purple-300 font-bold uppercase tracking-wider text-xs">
+                          Stills & Production Renders ({stillsList.length})
+                        </span>
+                      </div>
+                      <button
+                        onClick={() => setActiveTab('stills')}
+                        className="text-gray-400 hover:text-purple-300 text-[11px] flex items-center gap-1.5 transition-colors font-mono"
+                      >
+                        <span>Full Stills View</span>
+                        <Maximize2 className="w-3.5 h-3.5 text-purple-400" />
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                      {stillsList.map((still, idx) => (
+                        <div
+                          key={still.id || idx}
+                          onClick={() =>
+                            setLightboxItem({
+                              url: still.highResUrl || still.imageUrl,
+                              title: still.title,
+                              subtitle: still.description || `${project.title} • Still 0${idx + 1}`,
+                            })
+                          }
+                          className="group relative aspect-[16/10] rounded-xl overflow-hidden bg-black/60 border border-white/10 hover:border-purple-400/50 cursor-pointer transition-all duration-300 shadow-md hover:scale-[1.02]"
+                        >
+                          <img
+                            src={still.imageUrl}
+                            alt={still.title}
+                            loading="lazy"
+                            decoding="async"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5 text-white text-[11px] font-mono">
+                            <Maximize2 className="w-3.5 h-3.5 text-purple-300" />
+                            <span>Inspect</span>
+                          </div>
+                          <div className="absolute bottom-2 left-2 right-2 truncate">
+                            <span className="px-1.5 py-0.5 rounded bg-black/80 backdrop-blur-md text-[9px] font-mono text-gray-300 border border-white/10">
+                              {still.title}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Stills / Renders Dedicated Tab Surface (Advertisement Section) */}
+            {activeTab === 'stills' && (
+              <div className="space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-gray-400 bg-white/[0.03] border border-white/[0.08] p-3.5 rounded-2xl">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-purple-400 animate-pulse" />
+                    <span className="text-purple-300 font-bold uppercase tracking-wider text-xs">
+                      Campaign Stills, CGI Renders & Lighting Passes ({stillsList.length})
+                    </span>
+                  </div>
+                  <span className="text-gray-400 text-[11px]">
+                    Click any still to inspect in full 4K resolution lightbox
                   </span>
-                  <a
-                    href={`https://www.youtube.com/watch?v=${project.youtubeId}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-white flex items-center gap-1 text-[11px] underline underline-offset-2"
-                  >
-                    Open on YouTube <ExternalLink className="w-3 h-3" />
-                  </a>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {stillsList.map((still, idx) => (
+                    <div
+                      key={still.id || idx}
+                      onClick={() =>
+                        setLightboxItem({
+                          url: still.highResUrl || still.imageUrl,
+                          title: still.title,
+                          subtitle: still.description || `${project.title} • Still 0${idx + 1}`,
+                        })
+                      }
+                      className="group relative rounded-2xl overflow-hidden bg-black/60 border border-white/10 hover:border-purple-400/50 cursor-pointer transition-all duration-300 shadow-xl"
+                    >
+                      <div className="relative aspect-[16/10] overflow-hidden bg-black">
+                        <img
+                          src={still.imageUrl}
+                          alt={still.title}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-white text-xs font-mono backdrop-blur-[2px]">
+                          <Maximize2 className="w-4 h-4 text-purple-300" />
+                          <span>Inspect Full Resolution</span>
+                        </div>
+                        {still.tag && (
+                          <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-md text-[10px] font-mono font-bold text-purple-300 border border-purple-500/30">
+                            {still.tag}
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-3.5 bg-[#111420] border-t border-white/[0.06] flex items-center justify-between">
+                        <div>
+                          <h4 className="text-xs sm:text-sm font-bold text-white group-hover:text-purple-300 transition-colors">
+                            {still.title}
+                          </h4>
+                          {still.description && (
+                            <p className="text-[11px] text-gray-400 font-sans mt-0.5 line-clamp-1">
+                              {still.description}
+                            </p>
+                          )}
+                        </div>
+                        <span className="text-[10px] font-mono text-gray-500 uppercase shrink-0 ml-2">
+                          STILL 0{idx + 1}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
 
             {/* 2. Overview Master Render */}
             {activeTab === 'overview' && (
-              <div className="relative aspect-[16/10] w-full bg-black rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+              <div
+                className={`relative w-full bg-black/80 rounded-2xl overflow-hidden border border-white/10 shadow-2xl flex items-center justify-center cursor-pointer group ${
+                  project.aspectRatio === 'tall' ? 'max-h-[76vh] py-2' : 'aspect-[16/10]'
+                }`}
+                onClick={() => {
+                  const highRes = project.views?.[0]?.highResUrl || project.finalImage || project.coverImage;
+                  setLightboxItem({
+                    url: highRes,
+                    title: project.title,
+                    subtitle: project.subtitle,
+                  });
+                }}
+              >
                 <img
                   src={project.coverImage}
                   alt={project.title}
-                  className="w-full h-full object-cover"
+                  loading="lazy"
+                  decoding="async"
+                  className={`w-full object-contain ${
+                    project.aspectRatio === 'tall' ? 'max-h-[74vh] w-auto mx-auto' : 'h-full object-cover'
+                  }`}
                 />
+                <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-white text-xs font-mono">
+                  <Maximize2 className="w-4 h-4 text-cyan-300" />
+                  <span>Click to Inspect Master Resolution (Lightbox)</span>
+                </div>
               </div>
             )}
 
@@ -303,6 +614,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       <img
                         src={img}
                         alt={`${project.title} - ${idx + 1}`}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5 text-white text-xs font-mono">
@@ -353,6 +666,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                         <img
                           src={plan.image}
                           alt={plan.title}
+                          loading="lazy"
+                          decoding="async"
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5 text-white text-xs font-mono">
@@ -394,135 +709,182 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               </div>
             )}
 
-            {/* 5. Clay Slider Surface */}
-            {activeTab === 'clay-slider' && project.clayImage && project.finalImage && (
-              <div className="rounded-2xl overflow-hidden border border-white/10 bg-black shadow-2xl">
-                <ImageCompareSlider
-                  beforeImage={project.clayImage}
-                  afterImage={project.finalImage}
-                  beforeLabel="3D Clay / Wireframe Pass"
-                  afterLabel="Final Lit Render"
+            {/* 5. Viewport Screenshot Surface (Direct Image View) */}
+            {activeTab === 'clay-slider' && project.clayImage && (
+              <div className="relative rounded-2xl overflow-hidden border border-emerald-500/30 bg-black shadow-2xl aspect-[16/10] group flex items-center justify-center">
+                <img
+                  src={project.clayImage}
+                  alt="Cinema 4D Viewport Screenshot"
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                 />
+                <div className="absolute top-4 left-4 z-10 flex items-center gap-2 bg-black/80 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-emerald-500/30 shadow-lg">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-xs font-mono font-bold text-emerald-300">
+                    Cinema 4D Viewport Screenshot (Authenticity Proof — Not AI)
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* 6. Viewport Proofs Surface */}
+            {activeTab === 'views' && project.views && project.views.length > 0 && (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between text-xs font-mono text-gray-400">
+                  <span className="text-emerald-300 font-bold">
+                    Authentic 3D Viewport Geometry & Wireframe Proofs ({project.views.length})
+                  </span>
+                  <span>Click any viewport render to inspect high-poly geometry</span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {project.views.map((v) => (
+                    <div
+                      key={v.id}
+                      onClick={() =>
+                        setLightboxItem({
+                          url: v.highResUrl || v.imageUrl,
+                          title: v.name,
+                          subtitle: v.description,
+                        })
+                      }
+                      className="group relative rounded-2xl overflow-hidden bg-[#151928] border border-white/10 hover:border-emerald-400/50 cursor-pointer transition-all duration-300 shadow-md p-4 flex flex-col justify-between"
+                    >
+                      <div className="relative aspect-[16/10] rounded-xl overflow-hidden mb-3 bg-black border border-white/10">
+                        <img
+                          src={v.imageUrl}
+                          alt={v.name}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5 text-white text-xs font-mono">
+                          <Maximize2 className="w-4 h-4 text-emerald-300" />
+                          <span>Inspect Viewport Proof</span>
+                        </div>
+                        <div className="absolute top-2 left-2 px-2.5 py-0.5 rounded bg-black/80 backdrop-blur-md text-[10px] font-mono text-emerald-300 border border-emerald-500/30">
+                          {v.camNumber}
+                        </div>
+                      </div>
+                      <div className="space-y-1">
+                        <h4 className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors">
+                          {v.name}
+                        </h4>
+                        {v.description && (
+                          <p className="text-xs text-gray-400 leading-relaxed font-sans line-clamp-2">
+                            {v.description}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
 
           </div>
 
-          {/* Metric Highlights */}
-          {project.metrics && project.metrics.length > 0 && (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-white/[0.02] border border-white/10 rounded-2xl p-4">
-              {project.metrics.map((metric, i) => (
-                <div key={i} className="bg-[#171A26] border border-white/[0.06] rounded-xl p-3 text-center">
-                  <div className="text-base sm:text-xl font-display font-bold text-white tracking-tight">
-                    {metric.value}
-                  </div>
-                  <div className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mt-0.5">
-                    {metric.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Project Details Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
-            
-            <div className="md:col-span-2 space-y-5">
-              <div>
-                <h4 className="text-xs font-mono uppercase tracking-wider text-purple-300 font-bold mb-1.5">
-                  Project Scope & Overview
-                </h4>
-                <p className="text-xs sm:text-sm text-gray-300 leading-relaxed font-sans">
-                  {project.fullOverview}
-                </p>
-              </div>
-
-              {project.technicalDecisions && project.technicalDecisions.length > 0 && (
-                <div>
-                  <h4 className="text-xs font-mono uppercase tracking-wider text-purple-300 font-bold mb-2">
-                    Technical Execution & Decisions
-                  </h4>
-                  <ul className="space-y-2">
-                    {project.technicalDecisions.map((decision, index) => (
-                      <li key={index} className="flex items-start gap-2.5 text-xs text-gray-300 bg-[#171A26] p-3 rounded-xl border border-white/[0.04]">
-                        <span className="w-4 h-4 rounded-full bg-purple-500/20 text-purple-300 text-[10px] font-mono font-bold flex items-center justify-center shrink-0 mt-0.5">
-                          {index + 1}
-                        </span>
-                        <span>{decision}</span>
-                      </li>
-                    ))}
-                  </ul>
+          {/* Detailed Specifications & Overview (shown on overview / stills tabs, kept concise on video tab) */}
+          {(activeTab !== 'video' || !isAdvertisement) && (
+            <>
+              {/* Metric Highlights */}
+              {project.metrics && project.metrics.length > 0 && (
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-white/[0.02] border border-white/10 rounded-2xl p-4">
+                  {project.metrics.map((metric, i) => (
+                    <div
+                      key={i}
+                      className="bg-[#151824] border border-white/[0.08] hover:border-white/20 rounded-xl p-3 sm:p-3.5 text-center flex flex-col items-center justify-center min-h-[72px] transition-colors"
+                    >
+                      <div className="text-xs sm:text-sm md:text-[15px] font-sans font-bold text-white tracking-wide uppercase leading-snug break-words">
+                        {metric.value}
+                      </div>
+                      <div className="text-[10px] sm:text-[11px] font-mono text-gray-400 uppercase tracking-wider mt-1 font-medium">
+                        {metric.label}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
-            </div>
 
-            {/* Right Column: Pipeline Specs */}
-            <div className="bg-[#171A26] border border-white/[0.06] rounded-2xl p-4 space-y-3">
-              <h4 className="text-[10px] font-mono uppercase tracking-wider text-gray-400 font-semibold border-b border-white/[0.06] pb-2">
-                Pipeline Specifications
-              </h4>
-
-              <div className="space-y-3 text-xs font-mono">
-                {project.specs.renderEngine && (
+              {/* Project Details Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+                
+                <div className="md:col-span-2 space-y-5">
                   <div>
-                    <span className="text-gray-500 block text-[10px]">Render Engine</span>
-                    <span className="text-gray-200 font-bold">{project.specs.renderEngine}</span>
+                    <h4 className="text-xs font-mono uppercase tracking-wider text-purple-300 font-bold mb-1.5">
+                      Project Scope & Overview
+                    </h4>
+                    <p className="text-xs sm:text-sm text-gray-300 leading-relaxed font-sans">
+                      {project.fullOverview}
+                    </p>
                   </div>
-                )}
 
-                {project.specs.polyCount && (
-                  <div>
-                    <span className="text-gray-500 block text-[10px]">Polygon Budget</span>
-                    <span className="text-gray-200">{project.specs.polyCount}</span>
-                  </div>
-                )}
-
-                {project.specs.deliveryFormat && (
-                  <div>
-                    <span className="text-gray-500 block text-[10px]">Delivery Format</span>
-                    <span className="text-gray-200">{project.specs.deliveryFormat}</span>
-                  </div>
-                )}
-
-                {project.specs.software && (
-                  <div>
-                    <span className="text-gray-500 block text-[10px] mb-1.5">Software Stack</span>
-                    <div className="flex flex-wrap gap-1">
-                      {project.specs.software.map((s, idx) => (
-                        <span key={idx} className="text-[10px] bg-white/[0.06] px-2 py-0.5 rounded text-gray-300">
-                          {s}
-                        </span>
-                      ))}
+                  {project.technicalDecisions && project.technicalDecisions.length > 0 && (
+                    <div>
+                      <h4 className="text-xs font-mono uppercase tracking-wider text-purple-300 font-bold mb-2">
+                        Technical Execution & Decisions
+                      </h4>
+                      <ul className="space-y-2">
+                        {project.technicalDecisions.map((decision, index) => (
+                          <li key={index} className="flex items-start gap-2.5 text-xs text-gray-300 bg-[#171A26] p-3 rounded-xl border border-white/[0.04]">
+                            <span className="w-4 h-4 rounded-full bg-purple-500/20 text-purple-300 text-[10px] font-mono font-bold flex items-center justify-center shrink-0 mt-0.5">
+                              {index + 1}
+                            </span>
+                            <span>{decision}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
+                  )}
+                </div>
+
+                {/* Right Column: Pipeline Specs */}
+                <div className="bg-[#171A26] border border-white/[0.06] rounded-2xl p-4 space-y-3">
+                  <h4 className="text-[10px] font-mono uppercase tracking-wider text-gray-400 font-semibold border-b border-white/[0.06] pb-2">
+                    Pipeline Specifications
+                  </h4>
+
+                  <div className="space-y-3 text-xs font-mono">
+                    {project.specs.renderEngine && (
+                      <div>
+                        <span className="text-gray-500 block text-[10px]">Render Engine</span>
+                        <span className="text-gray-200 font-bold">{project.specs.renderEngine}</span>
+                      </div>
+                    )}
+
+                    {project.specs.polyCount && (
+                      <div>
+                        <span className="text-gray-500 block text-[10px]">Polygon Budget</span>
+                        <span className="text-gray-200">{project.specs.polyCount}</span>
+                      </div>
+                    )}
+
+                    {project.specs.deliveryFormat && (
+                      <div>
+                        <span className="text-gray-500 block text-[10px]">Delivery Format</span>
+                        <span className="text-gray-200">{project.specs.deliveryFormat}</span>
+                      </div>
+                    )}
+
+                    {project.specs.software && (
+                      <div>
+                        <span className="text-gray-500 block text-[10px] mb-1.5">Software Stack</span>
+                        <div className="flex flex-wrap gap-1">
+                          {project.specs.software.map((s, idx) => (
+                            <span key={idx} className="text-[10px] bg-white/[0.06] px-2 py-0.5 rounded text-gray-300">
+                              {s}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
-                )}
+                </div>
+
               </div>
-            </div>
+            </>
+          )}
 
-          </div>
-
-        </div>
-
-        {/* Modal Footer */}
-        <div className="px-6 py-4 bg-[#141724]/90 border-t border-white/[0.08] flex items-center justify-between text-xs font-mono text-gray-400 sticky bottom-0 z-30 backdrop-blur-xl">
-          <div className="flex items-center gap-4">
-            <span className="hidden sm:inline">Enterprise Real-Time & Spatial Quality</span>
-            {onNavigateNext && (
-              <button
-                onClick={onNavigateNext}
-                className="text-purple-300 hover:text-white flex items-center gap-1.5 transition-colors font-sans font-medium"
-              >
-                <span>Next Case Study</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
-            )}
-          </div>
-          <button
-            onClick={onClose}
-            className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-mono font-bold text-white transition-colors uppercase tracking-wider"
-          >
-            Close (Esc)
-          </button>
         </div>
 
       </div>
@@ -530,7 +892,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
       {/* Lightbox Overlay for Fullscreen Image or Blueprint Inspection */}
       {lightboxItem && (
         <div
-          className="fixed inset-0 z-[120] bg-black/95 flex flex-col items-center justify-center p-4 sm:p-8 animate-fadeIn"
+          className="fixed inset-0 z-[100020] bg-black/95 flex flex-col items-center justify-center p-4 sm:p-8 animate-fadeIn"
           onClick={() => setLightboxItem(null)}
         >
           <div
@@ -548,12 +910,13 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             <img
               src={lightboxItem.url}
               alt={lightboxItem.title}
+              decoding="async"
               className="max-w-full max-h-[75vh] object-contain rounded-2xl border border-white/20 shadow-2xl"
             />
 
             <div className="mt-4 text-center space-y-1">
               <div className="flex items-center justify-center gap-2">
-                <h4 className="text-sm sm:text-base font-bold text-white font-display uppercase tracking-wide">
+                <h4 className="text-sm sm:text-base font-bold text-white font-sans uppercase tracking-wide">
                   {lightboxItem.title}
                 </h4>
                 {lightboxItem.scale && (

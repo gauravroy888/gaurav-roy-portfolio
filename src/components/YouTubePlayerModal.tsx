@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { X, Play, Youtube, ExternalLink, Sparkles } from 'lucide-react';
+import { X, Play, Youtube, ExternalLink } from 'lucide-react';
+import { useModalScrollLock } from '../utils/modalScrollLock';
 
 interface YouTubePlayerModalProps {
   isOpen: boolean;
@@ -20,10 +21,17 @@ export const YouTubePlayerModal: React.FC<YouTubePlayerModalProps> = ({
   client,
   role,
 }) => {
+  // Global modal scroll lock & interaction blocker
+  useModalScrollLock(isOpen);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/90 backdrop-blur-xl animate-in fade-in duration-200">
+    <div
+      className="fixed inset-0 z-[100000] flex items-center justify-center p-4 sm:p-6 pt-6 sm:pt-8 bg-black/90 backdrop-blur-xl overflow-y-auto overscroll-contain animate-in fade-in duration-200"
+      data-modal-scrollable
+      onClick={onClose}
+    >
       <div
         className="relative w-full max-w-5xl bg-[#0E111A] border border-white/10 rounded-3xl overflow-hidden shadow-2xl shadow-purple-950/40 flex flex-col"
         onClick={(e) => e.stopPropagation()}
@@ -67,12 +75,7 @@ export const YouTubePlayerModal: React.FC<YouTubePlayerModalProps> = ({
         </div>
 
         {/* Video Footer Info */}
-        <div className="px-6 py-4 bg-[#0B0D14] flex flex-wrap items-center justify-between gap-4 border-t border-white/[0.06]">
-          <div className="flex items-center gap-2 text-xs text-gray-400">
-            <Sparkles className="w-4 h-4 text-cyan-400" />
-            <span>4K Master Video Reel • High Bitrate Stream</span>
-          </div>
-
+        <div className="px-6 py-4 bg-[#0B0D14] flex items-center justify-end border-t border-white/[0.06]">
           <a
             href={`https://www.youtube.com/watch?v=${youtubeId}`}
             target="_blank"

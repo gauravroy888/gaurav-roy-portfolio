@@ -408,6 +408,7 @@ export const CapabilitiesSection: React.FC = () => {
             alt={item.alt}
             className="w-full h-full object-contain filter drop-shadow-sm"
             loading="lazy"
+            decoding="async"
           />
         </div>
       );

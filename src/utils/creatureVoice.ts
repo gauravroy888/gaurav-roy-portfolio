@@ -2,7 +2,7 @@
 // High-fidelity natural voice acting with synchronized spatial companion audio
 
 let audioCtx: AudioContext | null = null;
-let soundEnabled = true;
+let soundEnabled = false;
 let pendingSectionVoice: string | null = null;
 let autoplayUnlocked = false;
 
@@ -29,7 +29,7 @@ export const getBasePath = (): string => {
 
 export const getAudioSrc = (trackKey: string): string => {
   const base = getBasePath();
-  return `${base}/audio/spider/${trackKey}.wav`;
+  return `${base}/audio/spider/${trackKey}.mp3`;
 };
 
 const AUDIO_TRACK_KEYS = [
@@ -65,14 +65,8 @@ const getAudioInstance = (key: string): HTMLAudioElement | null => {
   return audio;
 };
 
-// Preload all tracks on client
-if (typeof window !== 'undefined') {
-  AUDIO_TRACK_KEYS.forEach((k) => {
-    try {
-      getAudioInstance(k);
-    } catch (_) {}
-  });
-}
+// Audio tracks are loaded lazily on demand when sound is active
+// (eager preload loop removed to save ~4.5MB on initial page load)
 
 const getAudioContext = (): AudioContext | null => {
   if (typeof window === 'undefined') return null;
@@ -114,11 +108,18 @@ export const unlockAudio = () => {
 };
 
 if (typeof window !== 'undefined') {
+  const GESTURE_EVENTS = ['pointerdown', 'click', 'keydown', 'touchstart'] as const;
   const handleFirstGesture = () => {
     autoplayUnlocked = true;
     unlockAudio();
+    GESTURE_EVENTS.forEach((evt) => {
+      window.removeEventListener(evt, handleFirstGesture, { capture: true });
+      if (typeof document !== 'undefined') {
+        document.removeEventListener(evt, handleFirstGesture, { capture: true });
+      }
+    });
   };
-  ['pointerdown', 'click', 'keydown', 'touchstart'].forEach((evt) => {
+  GESTURE_EVENTS.forEach((evt) => {
     window.addEventListener(evt, handleFirstGesture, { capture: true, passive: true });
     if (typeof document !== 'undefined') {
       document.addEventListener(evt, handleFirstGesture, { capture: true, passive: true });

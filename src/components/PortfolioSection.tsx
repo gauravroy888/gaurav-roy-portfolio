@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { PROJECTS, COLLECTIONS, CollectionItem, ProjectItem } from '../data/portfolioData';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowUpRight, Layers, Play } from 'lucide-react';
 import { GlowBorderCard } from './GlowBorderCard';
 
 interface PortfolioSectionProps {
@@ -187,24 +187,32 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                 <div
                   key={project.id}
                   onClick={() => onSelectProject(project)}
-                  className="group relative bg-[#0E111D]/60 hover:bg-[#141828]/80 backdrop-blur-2xl border border-white/10 hover:border-purple-400/50 rounded-3xl p-6 sm:p-7 cursor-pointer transition-all duration-500 flex flex-col justify-between shadow-2xl hover:scale-[1.01] hover:shadow-purple-500/10"
+                  className="group/webxr relative bg-[#0E111D]/60 hover:bg-[#141828]/80 backdrop-blur-2xl border border-white/10 hover:border-purple-400/50 rounded-3xl p-6 sm:p-7 cursor-pointer transition-colors duration-300 flex flex-col justify-between shadow-2xl hover:shadow-purple-500/10"
                 >
-                  {/* Front-playing Video without Audio */}
+                  {/* Front-playing Video Poster / Cover */}
                   <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden mb-5 bg-black shadow-inner">
                     {project.youtubeId ? (
-                      <iframe
-                        src={`https://www.youtube.com/embed/${project.youtubeId}?autoplay=1&mute=1&controls=0&playsinline=1&rel=0`}
-                        title={project.title}
-                        className="w-full h-full object-cover pointer-events-none scale-105"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerPolicy="strict-origin-when-cross-origin"
-                        tabIndex={-1}
-                      />
+                      <div className="relative w-full h-full group/video">
+                        <img
+                          src={`https://img.youtube.com/vi/${project.youtubeId}/hqdefault.jpg`}
+                          alt={project.title}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover group-hover/webxr:scale-105 transition-transform duration-700 opacity-90 group-hover/webxr:opacity-100"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/35 group-hover/webxr:bg-black/15 transition-colors">
+                          <div className="w-12 h-12 rounded-full bg-purple-600/90 text-white flex items-center justify-center shadow-xl group-hover/webxr:scale-110 group-hover/webxr:bg-purple-500 transition-all backdrop-blur-md border border-purple-400/40">
+                            <Play className="w-5 h-5 ml-0.5 fill-white" />
+                          </div>
+                        </div>
+                      </div>
                     ) : (
                       <img
                         src={project.coverImage}
                         alt={project.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100"
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover group-hover/webxr:scale-105 transition-transform duration-700 opacity-90 group-hover/webxr:opacity-100"
                       />
                     )}
 
@@ -223,7 +231,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                       </span>
                     </div>
 
-                    <h3 className="text-xl sm:text-2xl font-display text-white tracking-wide uppercase group-hover:text-cyan-300 transition-colors line-clamp-1">
+                    <h3 className="text-xl sm:text-2xl font-display text-white tracking-wide uppercase group-hover/webxr:text-cyan-300 transition-colors line-clamp-1">
                       {project.title}
                     </h3>
 
@@ -241,37 +249,59 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                   <div
                     key={category.id}
                     onClick={() => onSelectCategory(category)}
-                    className="group relative bg-[#0E111D]/60 hover:bg-[#141828]/80 backdrop-blur-2xl border border-white/10 hover:border-purple-400/50 rounded-3xl p-6 sm:p-7 cursor-pointer transition-all duration-500 flex flex-col justify-between shadow-2xl hover:scale-[1.01] hover:shadow-purple-500/10"
+                    className="group/card relative bg-[#0E111D]/80 hover:bg-[#131A2E]/95 backdrop-blur-2xl border border-white/10 hover:border-cyan-400/50 rounded-3xl p-6 sm:p-7 cursor-pointer transition-colors duration-300 flex flex-col justify-between shadow-2xl hover:shadow-[0_20px_50px_rgba(6,182,212,0.15)]"
                   >
                     {/* Clean Category Thumbnail with hardware-level alpha mask */}
-                    <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden mb-5 bg-black">
+                    <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden mb-5 bg-black border border-white/10 group-hover/card:border-cyan-500/30 transition-colors">
                       {category.youtubeId ? (
-                        <iframe
-                          src={`https://www.youtube.com/embed/${category.youtubeId}?autoplay=1&mute=1&controls=0&playsinline=1&rel=0`}
-                          title={category.title}
-                          className="w-full h-full object-cover pointer-events-none scale-105"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                          referrerPolicy="strict-origin-when-cross-origin"
-                          tabIndex={-1}
-                        />
+                        <div className="relative w-full h-full group/video">
+                          <img
+                            src={category.thumbnail || `https://img.youtube.com/vi/${category.youtubeId}/hqdefault.jpg`}
+                            alt={category.title}
+                            loading="lazy"
+                            decoding="async"
+                            className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-700 opacity-90 group-hover/card:opacity-100"
+                            style={{
+                              WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 72%, rgba(0,0,0,0) 97%)',
+                              maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 72%, rgba(0,0,0,0) 97%)',
+                            }}
+                          />
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover/card:bg-black/15 transition-colors">
+                            <div className="w-12 h-12 rounded-full bg-cyan-600/90 text-white flex items-center justify-center shadow-xl group-hover/card:scale-110 group-hover/card:bg-cyan-500 transition-all backdrop-blur-md border border-cyan-400/40">
+                              <Play className="w-5 h-5 ml-0.5 fill-white" />
+                            </div>
+                          </div>
+                        </div>
                       ) : (
                         <img
                           src={category.thumbnail}
                           alt={category.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100"
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-700 opacity-90 group-hover/card:opacity-100"
                           style={{
                             WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 72%, rgba(0,0,0,0) 97%)',
                             maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 72%, rgba(0,0,0,0) 97%)',
                           }}
                         />
                       )}
+
+                      {/* Floating Category Pill in bottom-right of thumbnail */}
+                      <div className="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-black/80 backdrop-blur-md text-[10px] font-mono text-cyan-300 border border-cyan-500/30 flex items-center gap-1.5 shadow-md">
+                        <Layers className="w-3 h-3 text-cyan-400" />
+                        <span>Explore Tab</span>
+                        <ArrowUpRight className="w-3 h-3 text-cyan-400 group-hover/card:translate-x-0.5 group-hover/card:-translate-y-0.5 transition-transform" />
+                      </div>
                     </div>
 
                     {/* Exactly Two Lines: 1 for Heading, 1 for Explanation */}
                     <div className="space-y-2">
-                      <h3 className="text-xl sm:text-2xl font-display text-white tracking-wide uppercase group-hover:text-cyan-300 transition-colors line-clamp-1">
-                        {category.title}
-                      </h3>
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-xl sm:text-2xl font-display text-white tracking-wide uppercase group-hover/card:text-cyan-300 transition-colors line-clamp-1">
+                          {category.title}
+                        </h3>
+                        <ArrowUpRight className="w-5 h-5 text-cyan-400 opacity-0 group-hover/card:opacity-100 transition-all -translate-x-1 group-hover/card:translate-x-0" />
+                      </div>
 
                       <p className="text-sm text-gray-300 leading-relaxed font-sans line-clamp-2">
                         {category.description}

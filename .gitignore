@@ -34,4 +34,13 @@ next-env.d.ts
 
 # raw large design source archives
 Accets for info/
+public/images/portfolio/**/high-res/*.png
+
+# Large source PNG renders (web-optimized WebP equivalents are committed instead)
+public/images/portfolio/**/*-original.png
+public/images/portfolio/**/angle-*.png
+public/images/portfolio/**/kitchen-beam-*.png
+public/images/portfolio/**/kitchen-cp-*.png
+public/images/portfolio/**/kitchen-layout*.png
+public/images/portfolio/**/master-original.png
 

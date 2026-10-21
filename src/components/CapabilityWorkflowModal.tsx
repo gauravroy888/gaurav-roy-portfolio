@@ -22,6 +22,7 @@ import {
   CapabilityWorkflow,
   WorkflowNode,
 } from '../data/capabilitiesWorkflowData';
+import { useModalScrollLock } from '../utils/modalScrollLock';
 
 interface CapabilityWorkflowModalProps {
   initialCapabilityId: string | null;
@@ -34,6 +35,9 @@ export const CapabilityWorkflowModal: React.FC<CapabilityWorkflowModalProps> = (
   isOpen,
   onClose,
 }) => {
+  // Global modal scroll lock & interaction blocker
+  useModalScrollLock(isOpen);
+
   const [activeId, setActiveId] = useState<string>('3d-unreal');
   const [zoomLevel, setZoomLevel] = useState<number>(1);
   const [selectedNode, setSelectedNode] = useState<WorkflowNode | null>(null);
@@ -58,18 +62,6 @@ export const CapabilityWorkflowModal: React.FC<CapabilityWorkflowModalProps> = (
       setSelectedNode(null);
     }
   }, [initialCapabilityId, isOpen]);
-
-  // Lock body scroll when modal is active
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen]);
 
   // Keyboard navigation
   const capabilityKeys = Object.keys(capabilitiesWorkflows);
@@ -200,7 +192,8 @@ export const CapabilityWorkflowModal: React.FC<CapabilityWorkflowModalProps> = (
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[9990] flex items-center justify-center p-2.5 sm:p-6 lg:p-8 pt-16 sm:pt-20 bg-black/50 backdrop-blur-[2px] overflow-hidden animate-in fade-in duration-200"
+      className="fixed inset-0 z-[9990] flex items-center justify-center p-2.5 sm:p-6 lg:p-8 pt-16 sm:pt-20 bg-black/50 backdrop-blur-[2px] overflow-hidden overscroll-contain animate-in fade-in duration-200"
+      data-modal-scrollable
       onClick={onClose}
     >
       <div
@@ -320,7 +313,7 @@ export const CapabilityWorkflowModal: React.FC<CapabilityWorkflowModalProps> = (
         </div>
 
         {/* Main Flowchart Content Area */}
-        <div ref={scrollContainerRef} className="flex-1 overflow-auto bg-[#080A10] p-2.5 sm:p-6 lg:p-8 relative custom-scrollbar">
+        <div ref={scrollContainerRef} className="flex-1 overflow-auto overscroll-contain bg-[#080A10] p-2.5 sm:p-6 lg:p-8 relative custom-scrollbar" data-modal-scrollable>
           
           {/* Subtle blueprint grid background */}
           <div 

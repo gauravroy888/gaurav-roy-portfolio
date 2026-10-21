@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { X, Printer, Download, Copy, Check, FileText, Sparkles, Mail, Phone, MapPin, Globe } from 'lucide-react';
+import { useModalScrollLock } from '../utils/modalScrollLock';
 
 interface ResumeModalProps {
   isOpen: boolean;
@@ -9,6 +10,9 @@ interface ResumeModalProps {
 }
 
 export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => {
+  // Global modal scroll lock & interaction blocker
+  useModalScrollLock(isOpen);
+
   const [copied, setCopied] = useState(false);
 
   if (!isOpen) return null;
@@ -55,7 +59,8 @@ EDUCATION
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/90 backdrop-blur-2xl overflow-y-auto animate-in fade-in duration-200"
+      className="fixed inset-0 z-[100000] flex items-center justify-center p-3 sm:p-6 pt-6 sm:pt-8 bg-black/90 backdrop-blur-2xl overflow-y-auto overscroll-contain animate-in fade-in duration-200"
+      data-modal-scrollable
       onClick={onClose}
     >
       <div
@@ -100,7 +105,7 @@ EDUCATION
         </div>
 
         {/* Scrollable Printable Resume Sheet */}
-        <div className="overflow-y-auto p-6 sm:p-10 space-y-8 bg-[#0D101A] text-gray-200 text-sm leading-relaxed">
+        <div className="overflow-y-auto overscroll-contain p-6 sm:p-10 space-y-8 bg-[#0D101A] text-gray-200 text-sm leading-relaxed" data-modal-scrollable>
           
           {/* Header Block */}
           <div className="border-b border-white/[0.08] pb-6">

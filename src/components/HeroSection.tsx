@@ -5,9 +5,10 @@ import { ArrowUpRight, ArrowDown } from 'lucide-react';
 
 interface HeroSectionProps {
   onOpenResume: () => void;
+  onOpenStory?: () => void;
 }
 
-export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
+export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onOpenStory }) => {
   return (
     <section className="relative pt-28 sm:pt-32 md:pt-36 lg:pt-32 pb-0 z-10">
       
@@ -142,7 +143,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
               <div className="relative z-10 w-full flex justify-center items-end">
                 {(() => {
                   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
-                  const portraitUrl = `${basePath}/images/gaurav_portrait.png`;
+                  const portraitUrl = `${basePath}/images/gaurav_portrait.webp`;
                   return (
                     <>
                       {/* 1. Base Portrait Image */}
@@ -150,6 +151,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
                         id="hero-portrait-img"
                         src={portraitUrl}
                         alt="Gaurav Roy — Creative Technologist Portrait"
+                        width={682}
+                        height={1024}
+                        // @ts-ignore fetchPriority support
+                        fetchPriority="high"
+                        decoding="async"
                         className="w-full max-w-[290px] sm:max-w-[340px] md:max-w-[380px] lg:max-w-[420px] h-auto object-contain block drop-shadow-[0_0_35px_rgba(14,165,233,0.18)] drop-shadow-[0_20px_45px_rgba(0,0,0,0.95)] translate-y-7 sm:translate-y-10 lg:translate-y-14 transition-all duration-500 hover:brightness-105"
                         style={{
                           filter: 'grayscale(22%) contrast(114%) brightness(97%)',
@@ -176,18 +182,26 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume }) => {
                 })()}
               </div>
 
-              {/* Floating Minimal Badge Beside Torso */}
-              <div className="absolute bottom-4 sm:bottom-8 right-2 sm:right-6 lg:-right-2 z-20 luxury-card rounded-xl px-4 sm:px-5 py-2.5 sm:py-3 shadow-2xl text-right border border-white/20 backdrop-blur-md">
-                <span className="text-[9px] sm:text-[10px] font-mono tracking-widest text-gray-300 uppercase block font-semibold">
-                  Available for
+              {/* Floating Interactive Story Button Beside Torso */}
+              <button
+                type="button"
+                onClick={onOpenStory}
+                className="absolute bottom-4 sm:bottom-8 right-2 sm:right-6 lg:-right-2 z-20 luxury-card rounded-2xl px-4 sm:px-5 py-2.5 sm:py-3 shadow-2xl text-right border border-white/20 hover:border-purple-400/60 bg-[#0E111E]/85 hover:bg-[#15192C]/95 backdrop-blur-xl transition-all duration-300 hover:scale-105 active:scale-95 group cursor-pointer shadow-[0_10px_35px_rgba(0,0,0,0.85)] hover:shadow-[0_0_25px_rgba(168,85,247,0.35)]"
+                title="Click to explore Gaurav's creative journey and story"
+              >
+                <div className="flex items-center justify-end gap-1.5 mb-0.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                  <span className="text-[9px] sm:text-[10px] font-mono tracking-widest text-cyan-300 uppercase block font-bold">
+                    Interactive Journey
+                  </span>
+                </div>
+                <span className="text-xs sm:text-sm font-display font-extrabold text-white tracking-wider uppercase block group-hover:text-purple-300 transition-colors">
+                  Check What&apos;s My Story
                 </span>
-                <span className="text-xs sm:text-sm font-display font-bold text-white tracking-wider uppercase block">
-                  Freelance
+                <span className="text-[9px] sm:text-[10px] font-mono text-purple-300 uppercase flex items-center justify-end gap-1 mt-0.5 font-bold group-hover:translate-x-0.5 transition-transform">
+                  Timeline ✦ <ArrowUpRight className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-purple-300" />
                 </span>
-                <span className="text-[9px] sm:text-[10px] font-mono text-purple-300 uppercase flex items-center justify-end gap-1 mt-0.5 font-bold">
-                  Projects <ArrowUpRight className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-purple-300" />
-                </span>
-              </div>
+              </button>
 
             </div>
 
