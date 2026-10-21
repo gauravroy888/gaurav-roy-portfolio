@@ -120,6 +120,7 @@ body {
 .transition-reveal {
   transition-property: opacity, transform;
   transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-anchor: none;
 }
 
 /* Complete background scroll lock & overscroll containment when any modal is active */

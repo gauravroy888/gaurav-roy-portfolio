@@ -111,7 +111,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark scroll-smooth">
+    <html lang="en" className="dark">
       <body className={`${inter.variable} ${bebasNeue.variable} ${cinzel.variable} font-sans bg-[#0E0F14] text-[#E4E7EE] antialiased selection:bg-white selection:text-black min-h-screen flex flex-col`}>
         <script
           type="application/ld+json"

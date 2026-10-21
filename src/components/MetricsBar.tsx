@@ -29,16 +29,16 @@ export const MetricsBar: React.FC = () => {
   ];
 
   return (
-    <section className="pt-0 pb-6 relative z-10">
+    <section className="pt-0 pb-6 relative z-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 relative">
         
         {/* Luminous Purple Top Rim Gradient Highlight (Exact match to Option 3 reference) */}
-        <div className="absolute -top-[1px] left-8 right-8 sm:left-16 sm:right-16 lg:left-32 lg:right-32 h-[2px] bg-gradient-to-r from-transparent via-purple-400/95 to-transparent shadow-[0_-4px_24px_rgba(192,132,252,0.85)] pointer-events-none z-20" />
-        <div className="absolute -top-[10px] left-12 right-12 sm:left-24 sm:right-24 lg:left-48 lg:right-48 h-[20px] bg-gradient-to-r from-transparent via-purple-500/35 to-transparent blur-md pointer-events-none z-10" />
+        <div className="absolute -top-[1px] left-8 right-8 sm:left-16 sm:right-16 lg:left-32 lg:right-32 h-[2px] bg-gradient-to-r from-transparent via-purple-400/95 to-transparent shadow-[0_-4px_24px_rgba(192,132,252,0.85)] pointer-events-none z-30" />
+        <div className="absolute -top-[10px] left-12 right-12 sm:left-24 sm:right-24 lg:left-48 lg:right-48 h-[20px] bg-gradient-to-r from-transparent via-purple-500/35 to-transparent blur-md pointer-events-none z-20" />
 
         <GlowBorderCard
           roundedClassName="rounded-2xl sm:rounded-3xl"
-          innerClassName="p-6 sm:p-10 shadow-2xl bg-white/[0.02] border-t border-purple-400/35"
+          innerClassName="p-6 sm:p-10 shadow-2xl bg-[#080B14]/92 backdrop-blur-2xl border-t border-purple-400/35 relative z-20"
         >
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {metrics.map((item, index) => {

@@ -80,6 +80,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onOpenSt
                 id="hero-btn-work"
                 href="#work"
                 onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' });
                   if (typeof window !== 'undefined') {
                     window.dispatchEvent(new CustomEvent('spider-event', { detail: { action: 'work' } }));
                   }
@@ -140,8 +142,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onOpenSt
 
               </div>
 
-              {/* Seamless Cutout Portrait with Split-Toned Deep Blue Atmospheric Wash */}
-              <div className="relative z-10 w-full flex justify-center items-end">
+              {/* Seamless Cutout Portrait with Split-Toned Deep Blue Atmospheric Wash & Bottom Fade */}
+              <div
+                className="relative z-10 w-full flex justify-center items-end"
+                style={{
+                  WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 97%)',
+                  maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 97%)',
+                }}
+              >
                 {(() => {
                   const portraitUrl = assetPath('/images/gaurav_portrait.webp');
                   return (

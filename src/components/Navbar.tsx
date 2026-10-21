@@ -62,6 +62,19 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onOpenContact, onO
     };
   }, []);
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    if (!id || id === 'top') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    setMobileMenuOpen(false);
+  };
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
@@ -74,7 +87,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onOpenContact, onO
         <div className="flex items-center justify-between">
           
           {/* Serif Name Logo */}
-          <a href="#" className="font-serif font-bold text-2xl sm:text-3xl text-white tracking-wide hover:opacity-80 transition-opacity">
+          <a
+            href="#"
+            onClick={(e) => handleNavClick(e, 'top')}
+            className="font-serif font-bold text-2xl sm:text-3xl text-white tracking-wide hover:opacity-80 transition-opacity"
+          >
             Gaurav
           </a>
 
@@ -86,6 +103,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onOpenContact, onO
                 <a
                   key={link.id}
                   href={`#${link.id}`}
+                  onClick={(e) => handleNavClick(e, link.id)}
                   className={`px-4 py-1.5 rounded-full text-xs uppercase tracking-[0.18em] transition-all font-medium ${
                     isActive
                       ? 'bg-white/20 text-white shadow-sm font-semibold'
@@ -103,6 +121,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onOpenContact, onO
 
             <a
               href="#contact"
+              onClick={(e) => handleNavClick(e, 'contact')}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-black text-xs font-bold uppercase tracking-wider hover:bg-gray-200 transition-all hover:scale-105 active:scale-95 shadow-md"
             >
               <span>Let&apos;s Talk</span>
@@ -127,35 +146,35 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onOpenContact, onO
         <div className="lg:hidden bg-[#0A0B10]/98 backdrop-blur-2xl border-b border-white/10 px-6 py-6 space-y-4">
           <a
             href="#work"
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={(e) => handleNavClick(e, 'work')}
             className="block text-sm uppercase tracking-widest text-gray-200 py-2"
           >
             Work & Projects
           </a>
           <a
             href="#specialties"
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={(e) => handleNavClick(e, 'specialties')}
             className="block text-sm uppercase tracking-widest text-gray-200 py-2"
           >
             Services
           </a>
           <a
             href="#capabilities"
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={(e) => handleNavClick(e, 'capabilities')}
             className="block text-sm uppercase tracking-widest text-gray-200 py-2"
           >
             Capabilities & Tools
           </a>
           <a
             href="#process"
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={(e) => handleNavClick(e, 'process')}
             className="block text-sm uppercase tracking-widest text-gray-200 py-2"
           >
             Design Process
           </a>
           <a
             href="#contact"
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={(e) => handleNavClick(e, 'contact')}
             className="block text-sm uppercase tracking-widest text-gray-200 py-2"
           >
             Contact
@@ -164,7 +183,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onOpenContact, onO
           <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
             <a
               href="#contact"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={(e) => handleNavClick(e, 'contact')}
               className="w-full text-center py-3 rounded-full bg-white text-black font-bold text-xs uppercase tracking-wider"
             >
               Let&apos;s Talk

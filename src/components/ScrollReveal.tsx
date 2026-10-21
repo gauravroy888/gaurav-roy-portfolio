@@ -16,8 +16,8 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
   children,
   className = '',
   delay = 0,
-  duration = 700,
-  yOffset = 28,
+  duration = 600,
+  yOffset = 20,
   threshold = 0.05,
   rootMargin = '0px 0px -30px 0px',
 }) => {
@@ -67,6 +67,7 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
         transform: hasAnimated ? 'none' : isVisible ? 'translate3d(0, 0, 0)' : `translate3d(0, ${yOffset}px, 0)`,
         opacity: isVisible ? 1 : 0,
         willChange: isVisible && !hasAnimated ? 'transform, opacity' : 'auto',
+        overflowAnchor: 'none',
       }}
       className={`transition-reveal ${className}`}
     >

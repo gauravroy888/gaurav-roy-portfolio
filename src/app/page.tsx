@@ -199,8 +199,8 @@ export default function Home() {
             onOpenStory={() => setStoryOpen(true)}
           />
 
-          {/* 2. Metrics Bar (Directly connected beneath Hero) */}
-          <ScrollReveal yOffset={24} duration={650}>
+          {/* 2. Metrics Bar (Directly connected beneath Hero - smooth fade without vertical shift) */}
+          <ScrollReveal yOffset={0} duration={600} className="relative z-20">
             <MetricsBar />
           </ScrollReveal>
 
