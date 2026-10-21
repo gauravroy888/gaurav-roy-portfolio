@@ -725,7 +725,7 @@ export const StoryTimelineModal: React.FC<StoryTimelineModalProps> = ({ isOpen, 
       <AnimatePresence>
         {selectedMilestone && (
           <div
-            className="fixed inset-0 z-[100010] flex items-center justify-center p-3 sm:p-5 md:p-8 bg-black/95 backdrop-blur-3xl overflow-y-auto"
+            className="fixed inset-0 z-[100010] flex items-center justify-center p-3 sm:p-5 md:p-8 bg-black/95 backdrop-blur-md overflow-y-auto"
             onClick={() => setSelectedMilestone(null)}
           >
             <motion.div

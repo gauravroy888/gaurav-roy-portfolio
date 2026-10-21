@@ -315,7 +315,7 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
                   className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 z-10 px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-black/80 hover:bg-black text-[11px] sm:text-xs font-mono text-cyan-300 border border-cyan-500/40 backdrop-blur-md flex items-center gap-1.5 shadow-lg transition-transform hover:scale-105"
                 >
                   <Maximize2 className="w-3.5 h-3.5 text-cyan-400" />
-                  <span className="hidden sm:inline">{currentView.highResUrl ? 'Full Raw Image' : 'Full View'}</span>
+                  <span className="hidden sm:inline">Full View</span>
                   <span className="sm:hidden">Zoom</span>
                 </button>
 
@@ -731,58 +731,30 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
       {/* LIGHTBOX MODAL FOR FULL-RESOLUTION INSPECTION */}
       {lightboxImage && (
         <div
-          className="fixed inset-0 z-[100050] bg-black/98 backdrop-blur-2xl flex items-center justify-center p-2 sm:p-4 md:p-6 animate-in fade-in duration-150"
+          className="fixed inset-0 z-[100050] bg-black flex items-center justify-center p-2 sm:p-4 select-none animate-fadeIn"
           onClick={() => setLightboxImage(null)}
         >
-          <div
-            className="relative w-[92vw] h-[86vh] max-w-[1800px] flex items-center justify-center select-none"
-            onClick={(e) => e.stopPropagation()}
+          {/* Prominent Fixed Top-Right Close Button */}
+          <button
+            onClick={() => setLightboxImage(null)}
+            className="fixed top-4 right-4 z-[100060] p-2.5 sm:p-3 text-white/80 hover:text-white bg-black/60 hover:bg-black border border-white/20 rounded-full transition-all shadow-xl backdrop-blur-md cursor-pointer active:scale-95"
+            title="Close Full View (Esc)"
           >
-            {/* Top-Right Prominent Close Button */}
-            <button
-              onClick={() => setLightboxImage(null)}
-              className="absolute -top-2 -right-2 sm:top-2 sm:right-2 z-30 p-2 sm:p-2.5 text-gray-300 hover:text-white bg-black/80 hover:bg-black border border-white/20 rounded-full hover:scale-105 transition-all shadow-xl backdrop-blur-md"
-              title="Close Full View (Esc)"
-            >
-              <X className="w-5 h-5" />
-            </button>
+            <X className="w-6 h-6" />
+          </button>
 
-            {/* Maximum-coverage Raw Image */}
+          <div
+            className="relative w-full h-full max-w-[1920px] max-h-[96vh] flex items-center justify-center"
+            onClick={() => setLightboxImage(null)}
+          >
+            {/* Pure, Unobstructed Full View Render (Zero bottom tab) */}
             <img
               src={assetPath(lightboxImage.url)}
               alt={lightboxImage.title}
               decoding="async"
-              className="w-full h-full max-w-full max-h-full object-contain rounded-xl sm:rounded-2xl border border-white/10 shadow-[0_25px_100px_rgba(0,0,0,0.95)]"
+              className="w-auto h-auto max-w-full max-h-full object-contain rounded-lg sm:rounded-xl shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
             />
-
-            {/* Sleek Floating Bottom HUD Overlay */}
-            <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 px-4 py-2 rounded-2xl bg-black/85 hover:bg-black/95 border border-white/15 backdrop-blur-xl shadow-2xl flex flex-col sm:flex-row items-center gap-2 sm:gap-4 max-w-[94%] transition-all">
-              <div className="flex items-center gap-2 min-w-0">
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shrink-0" />
-                <h4 className="text-xs sm:text-sm font-bold text-white font-sans uppercase tracking-wide truncate">
-                  {lightboxImage.title}
-                </h4>
-              </div>
-
-              <div className="flex items-center gap-2 shrink-0">
-                <a
-                  href={lightboxImage.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[10px] sm:text-[11px] font-mono px-3 py-1 rounded-full bg-cyan-500/20 hover:bg-cyan-500/35 text-cyan-300 border border-cyan-500/35 transition-colors flex items-center gap-1 font-semibold"
-                  title="Open raw full-resolution file in new browser tab"
-                >
-                  <span>Open Raw File</span>
-                  <span>↗</span>
-                </a>
-                <button
-                  onClick={() => setLightboxImage(null)}
-                  className="text-[10px] sm:text-[11px] font-mono px-2.5 py-1 rounded-full bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white border border-white/15 transition-colors"
-                >
-                  Close (Esc)
-                </button>
-              </div>
-            </div>
           </div>
         </div>
       )}

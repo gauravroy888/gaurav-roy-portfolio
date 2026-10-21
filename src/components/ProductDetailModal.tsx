@@ -899,45 +899,47 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
       {/* Lightbox Overlay for Fullscreen Image or Blueprint Inspection */}
       {lightboxItem && (
         <div
-          className="fixed inset-0 z-[100020] bg-black/95 flex flex-col items-center justify-center p-4 sm:p-8 animate-fadeIn"
+          className="fixed inset-0 z-[100020] bg-black flex items-center justify-center p-2 sm:p-4 select-none animate-fadeIn"
           onClick={() => setLightboxItem(null)}
         >
-          <div
-            className="relative max-w-5xl max-h-[85vh] flex flex-col items-center"
-            onClick={(e) => e.stopPropagation()}
+          {/* Prominent Fixed Top-Right Close Button */}
+          <button
+            onClick={() => setLightboxItem(null)}
+            className="fixed top-4 right-4 z-[100030] p-2.5 sm:p-3 text-white/80 hover:text-white bg-black/60 hover:bg-black border border-white/20 rounded-full transition-all shadow-xl backdrop-blur-md cursor-pointer active:scale-95"
+            title="Close Full View (Esc)"
           >
-            <button
-              onClick={() => setLightboxItem(null)}
-              className="absolute -top-10 right-0 p-1.5 text-gray-300 hover:text-white bg-white/10 rounded-full"
-              title="Close Full View (Esc)"
-            >
-              <X className="w-5 h-5" />
-            </button>
+            <X className="w-6 h-6" />
+          </button>
 
+          <div
+            className="relative w-full h-full max-w-[1920px] max-h-[96vh] flex flex-col items-center justify-center"
+            onClick={() => setLightboxItem(null)}
+          >
             <img
               src={assetPath(lightboxItem.url)}
               alt={lightboxItem.title}
               decoding="async"
-              className="max-w-full max-h-[75vh] object-contain rounded-2xl border border-white/20 shadow-2xl"
+              className="w-auto h-auto max-w-full max-h-[88vh] sm:max-h-[92vh] object-contain rounded-lg sm:rounded-xl shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
             />
 
-            <div className="mt-4 text-center space-y-1">
-              <div className="flex items-center justify-center gap-2">
-                <h4 className="text-sm sm:text-base font-bold text-white font-sans uppercase tracking-wide">
-                  {lightboxItem.title}
-                </h4>
-                {lightboxItem.scale && (
-                  <span className="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-[10px] font-mono">
-                    {lightboxItem.scale}
-                  </span>
-                )}
+            {(lightboxItem.title || lightboxItem.scale) && (
+              <div
+                className="mt-2 text-center max-w-lg px-4 hidden sm:block"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex items-center justify-center gap-2">
+                  <h4 className="text-xs sm:text-sm font-bold text-white font-sans uppercase tracking-wide">
+                    {lightboxItem.title}
+                  </h4>
+                  {lightboxItem.scale && (
+                    <span className="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-[10px] font-mono">
+                      {lightboxItem.scale}
+                    </span>
+                  )}
+                </div>
               </div>
-              {lightboxItem.subtitle && (
-                <p className="text-xs text-gray-400 font-sans max-w-lg">
-                  {lightboxItem.subtitle}
-                </p>
-              )}
-            </div>
+            )}
           </div>
         </div>
       )}
