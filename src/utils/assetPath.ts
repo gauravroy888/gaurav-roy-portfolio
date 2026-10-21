@@ -14,6 +14,7 @@ export const BASE_PATH: string = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 /**
  * Prepend the GitHub Pages basePath to any root-relative asset URL.
  * External URLs (http/https/data:) and empty strings are returned unchanged.
+ * If the path is already prefixed with BASE_PATH, it is returned without duplicate prefix.
  */
 export const assetPath = (path: string | undefined | null): string => {
   if (!path) return '';
@@ -21,5 +22,10 @@ export const assetPath = (path: string | undefined | null): string => {
   if (path.startsWith('http') || path.startsWith('//') || path.startsWith('data:')) {
     return path;
   }
-  return `${BASE_PATH}${path}`;
+  // If path is already prefixed with BASE_PATH, do not duplicate it
+  if (BASE_PATH && (path === BASE_PATH || path.startsWith(`${BASE_PATH}/`))) {
+    return path;
+  }
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${BASE_PATH}${cleanPath}`;
 };

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { ArrowUpRight, ArrowDown } from 'lucide-react';
+import { assetPath } from '../utils/assetPath';
 
 interface HeroSectionProps {
   onOpenResume: () => void;
@@ -142,8 +143,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onOpenSt
               {/* Seamless Cutout Portrait with Split-Toned Deep Blue Atmospheric Wash */}
               <div className="relative z-10 w-full flex justify-center items-end">
                 {(() => {
-                  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
-                  const portraitUrl = `${basePath}/images/gaurav_portrait.webp`;
+                  const portraitUrl = assetPath('/images/gaurav_portrait.webp');
                   return (
                     <>
                       {/* 1. Base Portrait Image */}
