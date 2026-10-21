@@ -100,11 +100,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const stillsList = project.stills || [];
 
   return (
-    <div
-      className="fixed inset-0 z-[100010] flex items-center justify-center p-2 sm:p-5 md:p-8 pt-4 sm:pt-8 bg-black/90 backdrop-blur-md overflow-y-auto overscroll-contain animate-fadeIn"
-      data-modal-scrollable
-      onClick={onClose}
-    >
+    <>
+      <div
+        className="fixed inset-0 z-[100010] flex items-center justify-center p-2 sm:p-5 md:p-8 pt-4 sm:pt-8 bg-black/90 backdrop-blur-md overflow-y-auto overscroll-contain animate-fadeIn"
+        data-modal-scrollable
+        onClick={onClose}
+      >
       <div
         className="relative w-full max-w-5xl bg-[#0F121C] border border-white/15 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl shadow-black my-auto flex flex-col max-h-[92vh] text-white animate-modal-pop"
         onClick={(e) => e.stopPropagation()}
@@ -893,18 +894,26 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           )}
 
         </div>
-
       </div>
+    </div>
 
-      {/* Lightbox Overlay for Fullscreen Image or Blueprint Inspection */}
+      {/* Lightbox Overlay for Fullscreen Image or Blueprint Inspection (Sibling of modal, completely isolated from onClose) */}
       {lightboxItem && (
         <div
           className="fixed inset-0 z-[100020] bg-black flex items-center justify-center p-2 sm:p-4 select-none animate-fadeIn"
-          onClick={() => setLightboxItem(null)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setLightboxItem(null);
+          }}
+          onPointerDown={(e) => e.stopPropagation()}
         >
           {/* Prominent Fixed Top-Right Close Button */}
           <button
-            onClick={() => setLightboxItem(null)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setLightboxItem(null);
+            }}
+            onPointerDown={(e) => e.stopPropagation()}
             className="fixed top-4 right-4 z-[100030] p-2.5 sm:p-3 text-white/80 hover:text-white bg-black/60 hover:bg-black border border-white/20 rounded-full transition-all shadow-xl backdrop-blur-md cursor-pointer active:scale-95"
             title="Close Full View (Esc)"
           >
@@ -913,7 +922,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
           <div
             className="relative w-full h-full max-w-[1920px] max-h-[96vh] flex flex-col items-center justify-center"
-            onClick={() => setLightboxItem(null)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setLightboxItem(null);
+            }}
+            onPointerDown={(e) => e.stopPropagation()}
           >
             <img
               src={assetPath(lightboxItem.url)}
@@ -921,6 +934,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               decoding="async"
               className="w-auto h-auto max-w-full max-h-[88vh] sm:max-h-[92vh] object-contain rounded-lg sm:rounded-xl shadow-2xl"
               onClick={(e) => e.stopPropagation()}
+              onPointerDown={(e) => e.stopPropagation()}
             />
 
             {(lightboxItem.title || lightboxItem.scale) && (
@@ -943,7 +957,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           </div>
         </div>
       )}
-
-    </div>
+    </>
   );
 };

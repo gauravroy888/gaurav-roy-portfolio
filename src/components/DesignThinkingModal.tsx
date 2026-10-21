@@ -152,11 +152,12 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
   }, [viewAngles, project?.clayImage]);
 
   return (
-    <div
-      className="fixed inset-0 z-[100010] flex items-center justify-center p-3 sm:p-5 md:p-8 pt-6 sm:pt-8 bg-black/92 backdrop-blur-3xl overflow-y-auto overscroll-contain animate-in fade-in duration-200"
-      data-modal-scrollable
-      onClick={onClose}
-    >
+    <>
+      <div
+        className="fixed inset-0 z-[100010] flex items-center justify-center p-3 sm:p-5 md:p-8 pt-6 sm:pt-8 bg-black/92 backdrop-blur-3xl overflow-y-auto overscroll-contain animate-in fade-in duration-200"
+        data-modal-scrollable
+        onClick={onClose}
+      >
       <div
         className="relative w-full max-w-6xl bg-[#090D18] border border-cyan-500/25 rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_30px_100px_rgba(0,0,0,0.95)] my-auto flex flex-col max-h-[94vh] sm:max-h-[92vh] text-white animate-modal-pop"
         onClick={(e) => e.stopPropagation()}
@@ -727,16 +728,25 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
 
         </div>
       </div>
+    </div>
 
-      {/* LIGHTBOX MODAL FOR FULL-RESOLUTION INSPECTION */}
+      {/* LIGHTBOX MODAL FOR FULL-RESOLUTION INSPECTION (Sibling of modal, completely isolated from onClose) */}
       {lightboxImage && (
         <div
           className="fixed inset-0 z-[100050] bg-black flex items-center justify-center p-2 sm:p-4 select-none animate-fadeIn"
-          onClick={() => setLightboxImage(null)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setLightboxImage(null);
+          }}
+          onPointerDown={(e) => e.stopPropagation()}
         >
           {/* Prominent Fixed Top-Right Close Button */}
           <button
-            onClick={() => setLightboxImage(null)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setLightboxImage(null);
+            }}
+            onPointerDown={(e) => e.stopPropagation()}
             className="fixed top-4 right-4 z-[100060] p-2.5 sm:p-3 text-white/80 hover:text-white bg-black/60 hover:bg-black border border-white/20 rounded-full transition-all shadow-xl backdrop-blur-md cursor-pointer active:scale-95"
             title="Close Full View (Esc)"
           >
@@ -745,7 +755,11 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
 
           <div
             className="relative w-full h-full max-w-[1920px] max-h-[96vh] flex items-center justify-center"
-            onClick={() => setLightboxImage(null)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setLightboxImage(null);
+            }}
+            onPointerDown={(e) => e.stopPropagation()}
           >
             {/* Pure, Unobstructed Full View Render (Zero bottom tab) */}
             <img
@@ -754,10 +768,11 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
               decoding="async"
               className="w-auto h-auto max-w-full max-h-full object-contain rounded-lg sm:rounded-xl shadow-2xl"
               onClick={(e) => e.stopPropagation()}
+              onPointerDown={(e) => e.stopPropagation()}
             />
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
