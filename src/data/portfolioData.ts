@@ -448,6 +448,189 @@ export const KOHLER_LAYOUT_7_DESIGN_THINKING: DesignThinkingData = {
 
 export const KOHLER_VERTICAL_LAYOUTS_DESIGN_THINKING: DesignThinkingData = KOHLER_LAYOUT_1_DESIGN_THINKING;
 
+export const LUX_BATHROOM_LAYOUT_A_DESIGN_THINKING: DesignThinkingData = {
+  conceptTitle: 'MINIMALIST FLOATING TEAK VANITY PENTHOUSE MASTER',
+  tagline: 'LINEAR GEOMETRY & SOFT AMBIENT COVE UNDERGLOW',
+  philosophyQuote: 'True architectural luxury is found in continuous linear planes, concealed ambient illumination, and uncluttered spatial breathing room.',
+  colorPalette: [
+    { name: 'Warm Sand Plaster', hex: '#DDD2C1', description: 'Hand-troweled monolithic lime plaster base' },
+    { name: 'Oiled Teak', hex: '#7B4E2B', description: 'Linear grain floating architectural vanity plinth' },
+    { name: 'Honed Basalt Slate', hex: '#2E3135', description: 'Low-sheen charcoal stone countertops' },
+    { name: '2700K Ambient Glow', hex: '#FFE4B5', description: 'Concealed LED linear cove fixture' },
+    { name: 'Polished Chrome', hex: '#E2E8F0', description: 'Minimalist wall-mounted basin spout & mixer' },
+  ],
+  materials: [
+    { name: 'Monolithic Lime Plaster', category: 'Architectural Wall Finish', sampleColor: '#DDD2C1', textureGradient: 'linear-gradient(135deg, #E6DDD0 0%, #D0C3AF 100%)', finish: 'Hand-Troweled Matte' },
+    { name: 'Architectural Oiled Teak', category: 'Joinery & Millwork', sampleColor: '#7B4E2B', textureGradient: 'linear-gradient(180deg, #8A5832 0%, #683E1F 100%)', finish: 'Zero-Sheen Deep Grain Oil' },
+    { name: 'Honed Basalt Slab', category: 'Countertops & Plinths', sampleColor: '#2E3135', textureGradient: 'linear-gradient(135deg, #3B3F44 0%, #202225 100%)', finish: 'Micro-Textured Honed' },
+    { name: 'Clear Float Glass', category: 'Architectural Glazing', sampleColor: '#C8DDE2', textureGradient: 'linear-gradient(135deg, #D4E8EC 0%, #B8CED3 100%)', finish: 'Low-Iron Clear' },
+  ],
+  keyFeatures: [
+    { icon: 'Sparkles', title: 'Corona Photorealistic GI', description: 'Calculated soft indirect illumination bouncing off monolithic plastered walls.' },
+    { icon: 'Box', title: 'Floating Cantilever Engineering', description: 'Wall-anchored floating timber vanity with concealed structural mounting.' },
+  ],
+  coreAttributes: [
+    { icon: 'Box', label: 'Cinema 4D + Corona' },
+    { icon: 'Layers', label: '4K Master (4000x2800)' },
+  ],
+};
+
+export const LUX_BATHROOM_LAYOUT_B_DESIGN_THINKING: DesignThinkingData = {
+  conceptTitle: 'LUMINOUS HORIZON SPA SUITE',
+  tagline: 'HIGH-KEY ARCHITECTURAL DAYLIGHT & BRUSHED BRASS',
+  philosophyQuote: 'A bath suite should celebrate natural horizon light, turning morning rituals into a radiant, contemplative experience.',
+  colorPalette: [
+    { name: 'Calacatta Pure White', hex: '#F4F4F2', description: 'Seamless large-format porcelain slabs' },
+    { name: 'Brushed Champagne Brass', hex: '#D4AF37', description: 'Warm metallic accents and architectural trim' },
+    { name: 'Fluted Frosted Glass', hex: '#CFE2E6', description: 'Translucent light-diffusing privacy partitions' },
+    { name: 'Natural Bleached Ash', hex: '#C4B196', description: 'Warm pale timber floating cabinetry' },
+  ],
+  materials: [
+    { name: 'Calacatta Pure Slabs', category: 'Wall & Floor Surfaces', sampleColor: '#F4F4F2', textureGradient: 'linear-gradient(135deg, #FFFFFF 0%, #E8E8E4 100%)', finish: 'Satin Honed Porcelain' },
+    { name: 'Brushed Champagne Brass', category: 'Sanitaryware & Hardware', sampleColor: '#D4AF37', textureGradient: 'linear-gradient(135deg, #E5C358 0%, #BD9626 100%)', finish: 'Directional Brushed PVD' },
+    { name: 'Fluted Glass Partitions', category: 'Architectural Glazing', sampleColor: '#CFE2E6', textureGradient: 'repeating-linear-gradient(90deg, #D5E7EB, #C1D8DD 6px, #AFC5CA 12px)', finish: 'Diffused Fluted' },
+    { name: 'Bleached Ash Millwork', category: 'Joinery & Cabinetry', sampleColor: '#C4B196', textureGradient: 'linear-gradient(180deg, #D0BDA2 0%, #B49F83 100%)', finish: 'Matte Lacquer' },
+  ],
+  keyFeatures: [
+    { icon: 'Sparkles', title: 'High-Key Global Illumination', description: 'Balanced secondary bounces capturing expansive window daylighting without specular burnout.' },
+    { icon: 'Layers', title: 'Porcelain Micro-Roughness', description: 'Calibrated Fresnel reflection maps on ultra-large porcelain floor slabs.' },
+  ],
+  coreAttributes: [
+    { icon: 'Box', label: 'Cinema 4D + Corona' },
+    { icon: 'Layers', label: '4K Horizon Master' },
+  ],
+};
+
+export const LUX_BATHROOM_LAYOUT_C_DESIGN_THINKING: DesignThinkingData = {
+  conceptTitle: 'LUSH HONED MASTER SUITE - PHASE 01',
+  tagline: 'LUSH HONED BASIN & BESPOKE FLUTED ARCHITECTURAL ACOUSTICS',
+  philosophyQuote: 'Tactile green ceramics combined with vertical rhythm bring biophilic calm into contemporary architectural master bathrooms.',
+  colorPalette: [
+    { name: 'Lush Honed Forest Green', hex: '#2D4B3E', description: 'Signature matte honed ceramic glaze' },
+    { name: 'Smoked Walnut Slats', hex: '#4A3728', description: 'Vertical acoustic timber wall paneling' },
+    { name: 'Honed Grigio Carnico', hex: '#383B3E', description: 'Fine white-veined charcoal marble vanity top' },
+    { name: 'Halo Mirror Rim Light', hex: '#FFE8C2', description: '2700K integrated LED circumferential strip' },
+  ],
+  materials: [
+    { name: 'Lush Honed Ceramic Glaze', category: 'Products Finish', sampleColor: '#2D4B3E', textureGradient: 'linear-gradient(135deg, #395D4E 0%, #1F362C 100%)', finish: 'Micro-Crystalline Honed' },
+    { name: 'Smoked Walnut Paneling', category: 'Architectural Wall Finish', sampleColor: '#4A3728', textureGradient: 'repeating-linear-gradient(90deg, #533E2E, #433123 8px, #36271B 16px)', finish: 'Open Grain Satin' },
+    { name: 'Honed Grigio Carnico Marble', category: 'Vanity Slab', sampleColor: '#383B3E', textureGradient: 'linear-gradient(135deg, #44484C 0%, #292B2D 100%)', finish: 'Silk Honed Finish' },
+    { name: 'Matte Graphite PVD Brassware', category: 'Sanitary Fittings', sampleColor: '#1E2022', textureGradient: 'linear-gradient(135deg, #2D3033 0%, #151617 100%)', finish: 'PVD Physical Vapor Deposition' },
+  ],
+  keyFeatures: [
+    { icon: 'Sparkles', title: 'Subsurface Ceramic Absorption', description: 'Micro-crystalline subsurface scattering on the custom Lush green honed basin ceramic.' },
+    { icon: 'Box', title: 'Vertical Slat Geometry', description: 'Precision parametric modeling of acoustic fluted timber with shadow chamfers.' },
+  ],
+  coreAttributes: [
+    { icon: 'Box', label: 'Cinema 4D + Corona' },
+    { icon: 'Layers', label: 'Multi-Angle Study' },
+  ],
+};
+
+export const LUX_BATHROOM_LAYOUT_D_DESIGN_THINKING: DesignThinkingData = {
+  conceptTitle: 'LUSH HONED MASTER SUITE - PHASE 02',
+  tagline: 'EXPANDED WET ZONE SANCTUARY & DUAL TONE ARCHITECTURE',
+  philosophyQuote: 'Balancing monumental dark stone with gentle timber fluting creates an intimate sanctuary that calms the senses.',
+  colorPalette: [
+    { name: 'Deep Forest Glaze', hex: '#243C32', description: 'Rich earthy ceramic basin finish' },
+    { name: 'Warm Fluted Oak', hex: '#7A5738', description: 'Tactile acoustic vertical woodwork' },
+    { name: 'Pietra Grey Marble', hex: '#4B4A48', description: 'Soft cloudy veined limestone wall panels' },
+    { name: 'Brushed Titanium Fixtures', hex: '#73767B', description: 'Sleek muted industrial metallic faucets' },
+  ],
+  materials: [
+    { name: 'Honed Ceramic Sanitary Glaze', category: 'Sanitaryware', sampleColor: '#243C32', textureGradient: 'linear-gradient(135deg, #2E4C3F 0%, #192922 100%)', finish: 'Silky Honed Glaze' },
+    { name: 'Fluted Oak Timber Wall', category: 'Architectural Millwork', sampleColor: '#7A5738', textureGradient: 'repeating-linear-gradient(90deg, #886240, #6E4E32 6px, #583D26 12px)', finish: 'Natural Matte Wax' },
+    { name: 'Pietra Grey Honed Slabs', category: 'Floor & Wall Cladding', sampleColor: '#4B4A48', textureGradient: 'linear-gradient(135deg, #5A5957 0%, #3A3937 100%)', finish: 'Honed Non-Slip R10' },
+    { name: 'Brushed Titanium Brassware', category: 'Plumbing Trim', sampleColor: '#73767B', textureGradient: 'linear-gradient(135deg, #85898F 0%, #5E6165 100%)', finish: 'Directional Brushed Satin' },
+  ],
+  keyFeatures: [
+    { icon: 'Sparkles', title: 'Wet Zone Water Caustics', description: 'Corona secondary caustics across wet-room glass partitions and drain channels.' },
+    { icon: 'Box', title: 'Multi-Perspective Layout', description: 'Complete 3-camera architectural layout showing wet-room partition and vanity details.' },
+  ],
+  coreAttributes: [
+    { icon: 'Box', label: 'Cinema 4D + Corona' },
+    { icon: 'Layers', label: '3-Camera Suite' },
+  ],
+};
+
+export const LUX_BATHROOM_LAYOUT_E_DESIGN_THINKING: DesignThinkingData = {
+  conceptTitle: 'DUAL HALO MIRROR MASTER SANCTUARY',
+  tagline: 'TWIN CIRCULAR LUMINAIRES & FLOATING TRAVERTINE DOUBLE PLINTH',
+  philosophyQuote: 'Symmetrical circular light portals ground the vanity experience, producing soft shadow-free illumination for the human face.',
+  colorPalette: [
+    { name: 'Warm Navona Travertine', hex: '#CDBBA2', description: 'Cross-cut Roman travertine plinth' },
+    { name: 'Halo Perimeter LED', hex: '#FFF0D4', description: 'Even diffused 3000K circular backlighting' },
+    { name: 'Matte White Ceramic Vessels', hex: '#F7F7F6', description: 'Twin minimalist surface-mounted basins' },
+    { name: 'Brushed Bronze Wall-Mixers', hex: '#7C5D37', description: 'Minimalist twin spout assemblies' },
+  ],
+  materials: [
+    { name: 'Navona Travertine Plinth', category: 'Vanity Architecture', sampleColor: '#CDBBA2', textureGradient: 'linear-gradient(45deg, #D8C7AF 0%, #BFAC92 100%)', finish: 'Filled & Honed Smooth' },
+    { name: 'Dual Circular Halo Mirrors', category: 'Vanity Luminaires', sampleColor: '#FFF0D4', textureGradient: 'radial-gradient(circle, #FFFDF8 60%, #E8D3B0 100%)', finish: '3000K Diffused Edge Glow' },
+    { name: 'Matte White Engineered Ceramic', category: 'Sanitaryware', sampleColor: '#F7F7F6', textureGradient: 'linear-gradient(135deg, #FFFFFF 0%, #EDEDEB 100%)', finish: 'Velvet Matte Glaze' },
+    { name: 'Brushed PVD Bronze Trim', category: 'Plumbing Hardware', sampleColor: '#7C5D37', textureGradient: 'linear-gradient(135deg, #916E43 0%, #634828 100%)', finish: 'Directional Satin PVD' },
+  ],
+  keyFeatures: [
+    { icon: 'Sparkles', title: 'Twin Halo Light Mix', description: 'Independently controlled Corona LightMix channels for dual circumferential LED mirrors.' },
+    { icon: 'Box', title: 'Double Plinth Floating Geometry', description: 'Heavy-duty steel subframe cantilevering monolithic 3-meter travertine bench.' },
+  ],
+  coreAttributes: [
+    { icon: 'Box', label: 'Cinema 4D + Corona' },
+    { icon: 'Layers', label: 'Dual Rig Proof' },
+  ],
+};
+
+export const LUX_BATHROOM_LAYOUT_F_DESIGN_THINKING: DesignThinkingData = {
+  conceptTitle: 'SCULPTURAL LED MIRROR SUITE',
+  tagline: 'FOCUSED MONOLITHIC VANITY & AMBIENT SHADOW REVEALS',
+  philosophyQuote: 'A single iconic illuminated mirror commands the room, casting gentle ambient shadows that highlight the natural grain of dark stone.',
+  colorPalette: [
+    { name: 'Nordic Slate Gray', hex: '#3C3F44', description: 'Monolithic dark stone vanity surround' },
+    { name: 'Warm Ambient Halo', hex: '#FFE7BF', description: 'High-CRI 95+ concealed perimeter LED' },
+    { name: 'Warm Walnut Base', hex: '#5A3B24', description: 'Concealed finger-pull soft-close drawers' },
+    { name: 'Brushed Gunmetal Brassware', hex: '#4A4D52', description: 'Precision architectural mixer' },
+  ],
+  materials: [
+    { name: 'Honed Slate Cladding', category: 'Wall & Surround', sampleColor: '#3C3F44', textureGradient: 'linear-gradient(135deg, #484C52 0%, #2F3135 100%)', finish: 'Natural Cleft Honed' },
+    { name: 'Architectural Halo Mirror', category: 'Mirror & Light', sampleColor: '#FFE7BF', textureGradient: 'radial-gradient(circle, #FFFDF0 65%, #ECCAA0 100%)', finish: 'Copper-Free Silvered' },
+    { name: 'Rich Walnut Veneer', category: 'Cabinetry', sampleColor: '#5A3B24', textureGradient: 'linear-gradient(180deg, #68452B 0%, #4B301C 100%)', finish: 'Matte Polyurethane' },
+    { name: 'Gunmetal PVD Hardware', category: 'Sanitaryware', sampleColor: '#4A4D52', textureGradient: 'linear-gradient(135deg, #585C62 0%, #3B3D41 100%)', finish: 'Brushed Micro-PVD' },
+  ],
+  keyFeatures: [
+    { icon: 'Sparkles', title: 'Concealed Shadow Gap Lighting', description: 'Recessed channel LEDs washing stone textures with grazing angle illumination.' },
+    { icon: 'Box', title: 'Monolithic Geometric Carving', description: 'Seamless mitred stone box vanity with integrated slope-bottom basin.' },
+  ],
+  coreAttributes: [
+    { icon: 'Box', label: 'Cinema 4D + Corona' },
+    { icon: 'Layers', label: 'Wireframe Proof' },
+  ],
+};
+
+export const LUX_BATHROOM_LAYOUT_G_DESIGN_THINKING: DesignThinkingData = {
+  conceptTitle: 'NORDIC SPA RETREAT & OBSIDIAN SLATE',
+  tagline: 'CEDAR WOOD SLATS, MATTE BLACK SANITARYWARE & STEAM ZONE',
+  philosophyQuote: 'Channeling Scandinavian sauna rituals into a residential master suite through fragrant cedar woodwork and obsidian black sanitaryware.',
+  colorPalette: [
+    { name: 'Nordic Red Cedar', hex: '#8B5032', description: 'Horizontal aromatic cedar slats' },
+    { name: 'Obsidian Nero Slate', hex: '#1F2022', description: 'Honed anti-slip charcoal floor & wall slabs' },
+    { name: 'Matte Black Sanitaryware', hex: '#141416', description: 'Monolithic black ceramic bowl and tub' },
+    { name: 'Linear Steam Cove Light', hex: '#FFD89E', description: 'Concealed 2400K ultra-warm amber LEDs' },
+  ],
+  materials: [
+    { name: 'Nordic Red Cedar Slats', category: 'Sauna & Feature Walls', sampleColor: '#8B5032', textureGradient: 'repeating-linear-gradient(0deg, #9C5B3A, #7A4328 10px, #61331D 18px)', finish: 'Raw Brushed Cedar' },
+    { name: 'Nero Marquina Slate', category: 'Wet Area Floor & Walls', sampleColor: '#1F2022', textureGradient: 'linear-gradient(135deg, #2D2E31 0%, #141416 100%)', finish: 'Thermal Flamed Honed' },
+    { name: 'Matte Black Vitreous Ceramic', category: 'Sanitaryware', sampleColor: '#141416', textureGradient: 'linear-gradient(135deg, #222326 0%, #0D0E0F 100%)', finish: 'Silk Matte Glaze' },
+    { name: 'Amber Cove Architectural LED', category: 'Lighting', sampleColor: '#FFD89E', textureGradient: 'linear-gradient(90deg, #FFE5B5 0%, #F5C67E 100%)', finish: '2400K Ambient Nichia LED' },
+  ],
+  keyFeatures: [
+    { icon: 'Sparkles', title: 'Atmospheric Steam Volume Scatter', description: 'Volumetric light beams interacting with micro-droplet steam in the walk-in zone.' },
+    { icon: 'Box', title: 'Acoustic Slatted Millwork', description: 'Detailed horizontal cedar wall assembly with authentic joinery details.' },
+  ],
+  coreAttributes: [
+    { icon: 'Box', label: 'Cinema 4D + Corona' },
+    { icon: 'Layers', label: '3-Camera Master' },
+  ],
+};
+
 export const KITCHEN_LAYOUT_1_DESIGN_THINKING: DesignThinkingData = {
   conceptTitle: 'VILLA 1: KOHLER MASTER WORKSTATION KITCHEN',
   tagline: 'NEOLITH CALACATTA • KOI MATTE BLACK • TASK NEOROC',
@@ -957,7 +1140,7 @@ export const COLLECTIONS: CollectionItem[] = [
     subtitle: 'Photorealistic Architectural & Luxury Hospitality Suites',
     folderName: 'Luxury Bathrooms',
     description: 'High-end architectural renders, custom sanitaryware suites, and ambient spatial lighting.',
-    itemCount: 8,
+    itemCount: 15,
     thumbnail: '/images/portfolio/teakberry/master.webp',
     badge: 'Architectural CGI',
   },
@@ -1198,6 +1381,69 @@ export const PROJECTS: ProjectItem[] = [
     ]
   },
   {
+    id: 'proj-lux-bathroom-layout-a',
+    slug: 'lux-bathroom-layout-a-minimalist-floating-vanity',
+    title: 'Layout A: Minimalist Floating Vanity Penthouse Master',
+    subtitle: 'Sleek Floating Teak Vanity, Under-Cabinet Ambient Glow & Minimalist Geometry',
+    domainId: '3d-spatial',
+    collectionId: 'interior-design',
+    client: 'Private Residence Penthouse',
+    year: '2025',
+    role: 'Lead 3D Visualizer & Spatial Artist',
+    coverImage: '/images/portfolio/lux-bathrooms/layout-a/main.webp',
+    clayImage: '/images/portfolio/lux-bathrooms/layout-a/viewport.webp',
+    finalImage: '/images/portfolio/lux-bathrooms/layout-a/main.webp',
+    badge: 'Penthouse Master',
+    featured: true,
+    aspectRatio: 'wide',
+    designThinking: LUX_BATHROOM_LAYOUT_A_DESIGN_THINKING,
+    shortDescription: 'Modern penthouse master suite featuring a seamless floating teak vanity, 2700K concealed linear underglow, monolithic lime plaster walls, and frameless glazing.',
+    fullOverview: 'An ultra-refined penthouse master bathroom suite designed around clean architectural sightlines and floating joinery. Created in Cinema 4D and rendered with Corona Render Engine, emphasizing soft physical indirect global illumination that washes textured lime plaster walls. The floating teak vanity plinth features precision shadow reveals and concealed under-cabinet warm LEDs.',
+    technicalDecisions: [
+      'Calibrated Corona Physical Material for hand-troweled lime plaster with micro-normal variation.',
+      'Concealed linear LED strip (2700K) with physical falloff washing the floor slab.',
+      'Cinema 4D viewport quad topology optimization for seamless bevels and curvature.',
+      '32-bit linear EXR tone mapping with subtle highlight compression in Photoshop.'
+    ],
+    specs: {
+      software: ['Cinema 4D', 'Corona Render Engine', 'Photoshop'],
+      polyCount: '3.8M Polygons (Subdivided Quad Geometry)',
+      renderEngine: 'Corona Physical GI & Tone Mapping',
+      lightingSetup: 'Corona Sun, Ambient Sky Portal & 2700K Concealed Linear LED Emitters',
+      deliveryFormat: '4K Architectural Master (4000 x 2800 px)'
+    },
+    metrics: [
+      { label: 'Render Quality', value: '4K Master Ultra HD' },
+      { label: 'Resolution', value: '4000 x 2800 px' },
+      { label: 'Aesthetic', value: 'Minimalist Teak' },
+      { label: 'Geometry', value: '100% SubD Quads' }
+    ],
+    galleryImages: [
+      '/images/portfolio/lux-bathrooms/layout-a/main.webp',
+      '/images/portfolio/lux-bathrooms/layout-a/viewport.webp',
+    ],
+    views: [
+      {
+        id: 'lux-layout-a-v1',
+        camNumber: 'CAM 01',
+        name: 'Penthouse Master Perspective',
+        tag: 'Master Full View',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-a/main.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-a/high-res/main.webp',
+        description: 'Primary architectural wide perspective showcasing the floating teak vanity, monolithic lime plaster surfaces, and warm ambient floor wash.'
+      },
+      {
+        id: 'lux-layout-a-viewport',
+        camNumber: 'VIEWPORT',
+        name: 'Cinema 4D Viewport Proof',
+        tag: 'C4D Wireframe Proof',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-a/viewport.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-a/high-res/viewport.webp',
+        description: 'Cinema 4D viewport shaded workspace view showing complete scene geometry, camera positioning, and polygonal modeling proof.'
+      }
+    ]
+  },
+  {
     id: 'proj-kohler-vertical-layout-2',
     slug: 'kohler-vertical-layout-2-japandi-fluted-oak',
     title: 'Layout 2: Japandi Fluted Oak & Bonsai Suite',
@@ -1267,6 +1513,69 @@ export const PROJECTS: ProjectItem[] = [
         imageUrl: '/images/portfolio/kohler-vertical-layouts/layout-02-moodboard.webp',
         highResUrl: '/images/portfolio/kohler-vertical-layouts/high-res/layout-02-moodboard.webp',
         description: 'Interior Design Concept Mood Board — "Japandi Fluted Oak & Bonsai Suite". Curated palette showcasing natural fluted white oak timber, Kohler Polished Chrome (CP) tapware, ribbed privacy glass, and Chalice vessel porcelain.'
+      }
+    ]
+  },
+  {
+    id: 'proj-lux-bathroom-layout-b',
+    slug: 'lux-bathroom-layout-b-luminous-horizon-spa',
+    title: 'Layout B: Luminous Horizon Spa Bath Suite',
+    subtitle: 'High-Key Architectural Daylight, Brushed Brass Accents & Pure White Marble',
+    domainId: '3d-spatial',
+    collectionId: 'interior-design',
+    client: 'Horizon Highrise Master',
+    year: '2025',
+    role: 'Lead 3D Visualizer & Spatial Artist',
+    coverImage: '/images/portfolio/lux-bathrooms/layout-b/main.webp',
+    clayImage: '/images/portfolio/lux-bathrooms/layout-b/viewport.webp',
+    finalImage: '/images/portfolio/lux-bathrooms/layout-b/main.webp',
+    badge: 'Luminous Spa',
+    featured: true,
+    aspectRatio: 'wide',
+    designThinking: LUX_BATHROOM_LAYOUT_B_DESIGN_THINKING,
+    shortDescription: 'Expansive high-key spa bathroom bathed in soft natural horizon daylight, finished in Calacatta porcelain slabs, brushed brass fittings, and fluted glass.',
+    fullOverview: 'Developed to capture the serene morning ambiance of a high-floor corner residence. The visualization balances immense natural daylight streaming through floor-to-ceiling perimeter windows with warm internal accents. Large-format seamless Calacatta porcelain slabs reflect soft skylight while brushed champagne brass fixtures add timeless warmth.',
+    technicalDecisions: [
+      'High-key Corona Sun & Sky calibration avoiding overexposed blowout while retaining soft shadow gradients.',
+      'Anisotropic reflection roughness on brushed champagne brass taps and hardware.',
+      'Fluted glass partition shader with physically accurate refraction and transmission dispersion.',
+      'Linear EXR color balance and local contrast enhancement in Photoshop.'
+    ],
+    specs: {
+      software: ['Cinema 4D', 'Corona Render Engine', 'Photoshop'],
+      polyCount: '4.1M Polygons (Subdivided Quad Geometry)',
+      renderEngine: 'Corona Render Engine Photorealistic GI',
+      lightingSetup: 'Corona Natural Daylight Sky & Recessed Warm IES Ceiling Fixtures',
+      deliveryFormat: '4K Architectural Master (4000 x 2800 px)'
+    },
+    metrics: [
+      { label: 'Render Engine', value: 'Corona GI' },
+      { label: 'Resolution', value: '4000 x 2800 px' },
+      { label: 'Lighting', value: 'High-Key Daylight' },
+      { label: 'Materials', value: 'Calacatta & Brass' }
+    ],
+    galleryImages: [
+      '/images/portfolio/lux-bathrooms/layout-b/main.webp',
+      '/images/portfolio/lux-bathrooms/layout-b/viewport.webp',
+    ],
+    views: [
+      {
+        id: 'lux-layout-b-v1',
+        camNumber: 'CAM 01',
+        name: 'Daylight Bath Sanctuary',
+        tag: 'Master Full View',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-b/main.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-b/high-res/main.webp',
+        description: 'Wide architectural view overlooking the horizon daylit master suite with Calacatta porcelain surfaces and brass accents.'
+      },
+      {
+        id: 'lux-layout-b-viewport',
+        camNumber: 'VIEWPORT',
+        name: 'Cinema 4D Viewport Proof',
+        tag: 'C4D Wireframe Proof',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-b/viewport.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-b/high-res/viewport.webp',
+        description: 'Direct Cinema 4D viewport capture showing scene layout, camera frustum, lighting portals, and polygonal meshes.'
       }
     ]
   },
@@ -1344,6 +1653,89 @@ export const PROJECTS: ProjectItem[] = [
     ]
   },
   {
+    id: 'proj-lux-bathroom-layout-c',
+    slug: 'lux-bathroom-layout-c-lush-honed-suite-phase-1',
+    title: 'Layout C: Lush Honed Master Suite - Phase 01',
+    subtitle: 'Lush Honed Basin, Fluted Acoustic Woodwork & Custom Halo Sconces',
+    domainId: '3d-spatial',
+    collectionId: 'interior-design',
+    client: 'Kohler x Luxury Master Development',
+    year: '2025',
+    role: 'Lead 3D Interior & Sanitaryware CGI Artist',
+    coverImage: '/images/portfolio/lux-bathrooms/layout-c/main.webp',
+    clayImage: '/images/portfolio/lux-bathrooms/layout-c/viewport.webp',
+    finalImage: '/images/portfolio/lux-bathrooms/layout-c/main.webp',
+    badge: 'Lush Honed Master',
+    featured: true,
+    aspectRatio: 'wide',
+    designThinking: LUX_BATHROOM_LAYOUT_C_DESIGN_THINKING,
+    shortDescription: 'Signature architectural master bathroom highlighting the Lush Honed green ceramic basin against vertical fluted timber slats and backlit circular mirror.',
+    fullOverview: 'Phase 01 of the Lush Honed master bathroom development. Centers upon the tactile, non-reflective Lush forest green ceramic basin paired with Grigio Carnico honed marble and vertical walnut acoustic slats. A circumferential halo mirror provides soft facial illumination without harsh shadows.',
+    technicalDecisions: [
+      'Custom micro-crystalline subsurface scattering shader for the matte Lush honed ceramic basin.',
+      'Individual parametric vertical slat modeling with bevelled shadow lines to capture grazing light.',
+      'Circular LED halo light profile with physically measured 2700K color temperature and inverse square falloff.',
+      'Multi-angle master renderings including macro basin close-up and architectural elevation.'
+    ],
+    specs: {
+      software: ['Cinema 4D', 'Corona Render Engine', 'Photoshop'],
+      polyCount: '4.6M Polygons (High-Poly Quad Modeling)',
+      renderEngine: 'Corona Physical GI & Subsurface Scattering',
+      lightingSetup: 'Balanced Warm IES Portals, Halo Circumferential LED & Diffused Daylight',
+      deliveryFormat: 'Ultra HD Multi-Camera Suite (3600 x 2400 px)'
+    },
+    metrics: [
+      { label: 'Sanitary Finish', value: 'Lush Honed Green' },
+      { label: 'Resolution', value: '3600 x 2400 px' },
+      { label: 'Camera Views', value: '3 Master Angles' },
+      { label: 'Proof', value: 'C4D Viewport Validated' }
+    ],
+    galleryImages: [
+      '/images/portfolio/lux-bathrooms/layout-c/main.webp',
+      '/images/portfolio/lux-bathrooms/layout-c/basin.webp',
+      '/images/portfolio/lux-bathrooms/layout-c/modified.webp',
+      '/images/portfolio/lux-bathrooms/layout-c/viewport.webp',
+    ],
+    views: [
+      {
+        id: 'lux-layout-c-v1',
+        camNumber: 'CAM 01',
+        name: 'Master Spatial Perspective',
+        tag: 'Master Full View',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-c/main.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-c/high-res/main.webp',
+        description: 'Full perspective displaying the complete vanity arrangement, vertical timber wall slats, halo mirror, and Lush honed basin.'
+      },
+      {
+        id: 'lux-layout-c-basin',
+        camNumber: 'CAM 02',
+        name: 'Lush Honed Basin Detail',
+        tag: 'Macro Material Angle',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-c/basin.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-c/high-res/basin.webp',
+        description: 'Macro detail highlighting the velvety honed green ceramic glaze, water reflections, and brushed graphite tapware.'
+      },
+      {
+        id: 'lux-layout-c-modified',
+        camNumber: 'CAM 03',
+        name: 'Architectural Elevation Angle',
+        tag: 'Alternative Geometry',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-c/modified.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-c/high-res/modified.webp',
+        description: 'Calibrated eye-level perspective focusing on the flush architectural storage niches and ceiling lighting balance.'
+      },
+      {
+        id: 'lux-layout-c-viewport',
+        camNumber: 'VIEWPORT',
+        name: 'Cinema 4D Viewport Proof',
+        tag: 'C4D Wireframe Proof',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-c/viewport.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-c/high-res/viewport.webp',
+        description: 'Cinema 4D viewport workspace displaying native quad wireframes, camera position, and scene lighting structure.'
+      }
+    ]
+  },
+  {
     id: 'proj-kohler-vertical-layout-4',
     slug: 'kohler-vertical-layout-4-highrise-penthouse-master',
     title: 'Layout 4: High-Rise Penthouse Master Bath Suite',
@@ -1413,6 +1805,89 @@ export const PROJECTS: ProjectItem[] = [
         imageUrl: '/images/portfolio/kohler-vertical-layouts/layout-04-moodboard.webp',
         highResUrl: '/images/portfolio/kohler-vertical-layouts/high-res/layout-04-moodboard.webp',
         description: 'Interior Design Concept Mood Board — "High-Rise Penthouse Master Bath Suite". Curated palette showcasing warm Roman travertine, Kohler Brushed Bronze (BV) Composed valves, Reach drop-in acrylic bath, and horizon pool reflections.'
+      }
+    ]
+  },
+  {
+    id: 'proj-lux-bathroom-layout-d',
+    slug: 'lux-bathroom-layout-d-lush-honed-suite-phase-2',
+    title: 'Layout D: Lush Honed Master Suite - Phase 02',
+    subtitle: 'Dual Tone Honed Finish, Walk-In Wet Zone & Brushed Titanium Fixtures',
+    domainId: '3d-spatial',
+    collectionId: 'interior-design',
+    client: 'Kohler x Luxury Master Development',
+    year: '2025',
+    role: 'Lead 3D Interior & Sanitaryware CGI Artist',
+    coverImage: '/images/portfolio/lux-bathrooms/layout-d/main.webp',
+    clayImage: '/images/portfolio/lux-bathrooms/layout-d/viewport.webp',
+    finalImage: '/images/portfolio/lux-bathrooms/layout-d/main.webp',
+    badge: 'Lush Honed Master II',
+    featured: true,
+    aspectRatio: 'wide',
+    designThinking: LUX_BATHROOM_LAYOUT_D_DESIGN_THINKING,
+    shortDescription: 'Expanded master bathroom suite featuring an integrated walk-in wet room, fluted oak millwork, Lush honed sanitaryware, and brushed titanium trim.',
+    fullOverview: 'Phase 02 expands the master suite into an open-plan wet sanctuary. Dark Pietra Grey honed stone lines the shower enclosure while warm fluted oak millwork surrounds the vanity. Unbiased Corona caustics calculate water and glass interactions seamlessly, creating an authentic luxury resort spa experience.',
+    technicalDecisions: [
+      'Complex glass refraction and secondary caustics across full-height walk-in shower glass divider.',
+      'Dual tone material contrast balancing light absorption of dark Pietra Grey with reflective oak wax.',
+      'Directional brushed titanium PVD shader with microscopic roughness maps for tactile metal feel.',
+      'Multi-camera coverage capturing overall architectural volume and oblique vanity details.'
+    ],
+    specs: {
+      software: ['Cinema 4D', 'Corona Render Engine', 'Photoshop'],
+      polyCount: '5.1M Polygons (Subdivided Quad Geometry)',
+      renderEngine: 'Corona Unbiased GI & Secondary Glass Caustics',
+      lightingSetup: 'Multi-layer Recessed LED Channels, Spot Fixtures & Natural Ingress',
+      deliveryFormat: 'Ultra HD Multi-Camera Suite (3600 x 2400 px)'
+    },
+    metrics: [
+      { label: 'Render Quality', value: 'Master Ultra HD' },
+      { label: 'Resolution', value: '3600 x 2400 px' },
+      { label: 'Wet Zone', value: 'Walk-In Spa' },
+      { label: 'Proof', value: 'C4D Viewport Validated' }
+    ],
+    galleryImages: [
+      '/images/portfolio/lux-bathrooms/layout-d/main.webp',
+      '/images/portfolio/lux-bathrooms/layout-d/angle-1.webp',
+      '/images/portfolio/lux-bathrooms/layout-d/angle-2.webp',
+      '/images/portfolio/lux-bathrooms/layout-d/viewport.webp',
+    ],
+    views: [
+      {
+        id: 'lux-layout-d-v1',
+        camNumber: 'CAM 01',
+        name: 'Wide Angle Master Perspective',
+        tag: 'Master Full View',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-d/main.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-d/high-res/main.webp',
+        description: 'Comprehensive architectural view displaying the full bathroom spatial flow from vanity plinth to the walk-in wet zone.'
+      },
+      {
+        id: 'lux-layout-d-angle1',
+        camNumber: 'CAM 02',
+        name: 'Oblique Vanity Perspective',
+        tag: 'Vanity Detail View',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-d/angle-1.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-d/high-res/angle-1.webp',
+        description: 'Angular perspective focusing on the fluted oak cabinetry, Lush basin, and brushed titanium mixer.'
+      },
+      {
+        id: 'lux-layout-d-angle2',
+        camNumber: 'CAM 03',
+        name: 'Wet Zone Variation View',
+        tag: 'Spatial Evolution',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-d/angle-2.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-d/high-res/angle-2.webp',
+        description: 'Alternative spatial framing demonstrating wet-room partition glass and dark Pietra Grey wall textures.'
+      },
+      {
+        id: 'lux-layout-d-viewport',
+        camNumber: 'VIEWPORT',
+        name: 'Cinema 4D Viewport Proof',
+        tag: 'C4D Wireframe Proof',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-d/viewport.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-d/high-res/viewport.webp',
+        description: 'Cinema 4D shaded wireframe viewport capture showing complete polygonal modeling hierarchy and camera setup.'
       }
     ]
   },
@@ -1490,6 +1965,89 @@ export const PROJECTS: ProjectItem[] = [
     ]
   },
   {
+    id: 'proj-lux-bathroom-layout-e',
+    slug: 'lux-bathroom-layout-e-dual-halo-mirror-sanctuary',
+    title: 'Layout E: Dual Halo Mirror Sanctuary',
+    subtitle: 'Backlit Circular Mirrors, Floating Travertine Double Plinth & Bronze Hardware',
+    domainId: '3d-spatial',
+    collectionId: 'interior-design',
+    client: 'Boutique Villa Master',
+    year: '2025',
+    role: 'Lead 3D Visualizer & Spatial Artist',
+    coverImage: '/images/portfolio/lux-bathrooms/layout-e/main.webp',
+    clayImage: '/images/portfolio/lux-bathrooms/layout-e/viewport-1.webp',
+    finalImage: '/images/portfolio/lux-bathrooms/layout-e/main.webp',
+    badge: 'Dual Halo Sanctuary',
+    featured: true,
+    aspectRatio: 'wide',
+    designThinking: LUX_BATHROOM_LAYOUT_E_DESIGN_THINKING,
+    shortDescription: 'Monumental master bathroom suite anchored by twin illuminated circular halo mirrors over an expansive floating travertine double vanity plinth.',
+    fullOverview: 'Designed for a luxury boutique villa, this sanctuary organizes spatial flow around monumental symmetry. Twin circular halo mirrors cast soft, ambient circumferential light across warm Navona travertine walls and countertops. Two minimalist ceramic vessel sinks and brushed bronze wall-mounted spouts complete the tranquil aesthetic.',
+    technicalDecisions: [
+      'Corona LightMix balancing twin circular LED emitters with concealed ceiling grazing fixtures.',
+      'Procedural vein distribution on Roman Navona travertine plinth with physically filled pore roughness.',
+      'Symmetrical camera frustum alignment ensuring distortion-free architectural perspective.',
+      'Dual C4D viewport validation captures showing camera rig and lighting setups.'
+    ],
+    specs: {
+      software: ['Cinema 4D', 'Corona Render Engine', 'Photoshop'],
+      polyCount: '4.8M Polygons (Subdivided Quad Geometry)',
+      renderEngine: 'Corona Physical GI & LightMix',
+      lightingSetup: 'Dual Circumferential LED Rings (3000K), Recessed Ceiling Pinspots & Floor Wash',
+      deliveryFormat: 'Ultra HD Architectural Stills (3000 x 1875 px)'
+    },
+    metrics: [
+      { label: 'Render Quality', value: 'Ultra HD Master' },
+      { label: 'Vanity Plinth', value: '3.2m Floating Travertine' },
+      { label: 'Mirrors', value: 'Twin 3000K Halo LEDs' },
+      { label: 'Proof', value: 'Dual C4D Viewports' }
+    ],
+    galleryImages: [
+      '/images/portfolio/lux-bathrooms/layout-e/main.webp',
+      '/images/portfolio/lux-bathrooms/layout-e/angle-b.webp',
+      '/images/portfolio/lux-bathrooms/layout-e/viewport-1.webp',
+      '/images/portfolio/lux-bathrooms/layout-e/viewport-2.webp',
+    ],
+    views: [
+      {
+        id: 'lux-layout-e-v1',
+        camNumber: 'CAM 01',
+        name: 'Dual Halo Mirror Vanity Perspective',
+        tag: 'Master Full View',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-e/main.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-e/high-res/main.webp',
+        description: 'Hero architectural view featuring twin circular backlit mirrors over the continuous floating travertine double vanity.'
+      },
+      {
+        id: 'lux-layout-e-angleb',
+        camNumber: 'CAM 02',
+        name: 'Close Vanity Glaze Angle',
+        tag: 'Detail Perspective',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-e/angle-b.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-e/high-res/angle-b.webp',
+        description: 'Tighter framing focusing on ceramic basin surface glaze, brushed bronze brassware, and subtle stone veining.'
+      },
+      {
+        id: 'lux-layout-e-vp1',
+        camNumber: 'VIEWPORT 01',
+        name: 'C4D Viewport Rig Perspective',
+        tag: 'C4D Geometry Proof',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-e/viewport-1.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-e/high-res/viewport-1.webp',
+        description: 'Cinema 4D viewport workspace displaying full scene meshes, camera rig positioning, and geometric quad subdivisions.'
+      },
+      {
+        id: 'lux-layout-e-vp2',
+        camNumber: 'VIEWPORT 02',
+        name: 'C4D Viewport Lighting Hierarchy',
+        tag: 'C4D Lighting Proof',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-e/viewport-2.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-e/high-res/viewport-2.webp',
+        description: 'Alternative Cinema 4D workspace view revealing light emitter objects, shadow channels, and materials assignment.'
+      }
+    ]
+  },
+  {
     id: 'proj-kohler-vertical-layout-6',
     slug: 'kohler-vertical-layout-6-mediterranean-biophilic-spa',
     title: 'Layout 6: Mediterranean Biophilic Spa & Whirlpool Suite',
@@ -1563,6 +2121,69 @@ export const PROJECTS: ProjectItem[] = [
     ]
   },
   {
+    id: 'proj-lux-bathroom-layout-f',
+    slug: 'lux-bathroom-layout-f-sculptural-led-mirror-suite',
+    title: 'Layout F: Sculptural LED Mirror Suite',
+    subtitle: 'Refined Halo Reflection, Minimalist Monolithic Vanity & Warm Accent Fixtures',
+    domainId: '3d-spatial',
+    collectionId: 'interior-design',
+    client: 'Modernist Master Bath',
+    year: '2025',
+    role: 'Lead 3D Visualizer & Spatial Artist',
+    coverImage: '/images/portfolio/lux-bathrooms/layout-f/main.webp',
+    clayImage: '/images/portfolio/lux-bathrooms/layout-f/viewport.webp',
+    finalImage: '/images/portfolio/lux-bathrooms/layout-f/main.webp',
+    badge: 'Sculptural Master',
+    featured: true,
+    aspectRatio: 'wide',
+    designThinking: LUX_BATHROOM_LAYOUT_F_DESIGN_THINKING,
+    shortDescription: 'Modernist bathroom concept celebrating a single monumental circular illuminated mirror, dark stone surround, and warm walnut floating cabinetry.',
+    fullOverview: 'A study in architectural focal points. This suite uses a large-format circular halo mirror to command the room. The soft circumferential glow illuminates deep slate gray wall slabs while bringing out the organic grain of the floating walnut vanity drawers beneath.',
+    technicalDecisions: [
+      'Grazing angle illumination calibrated across dark slate wall cladding to emphasize stone texture.',
+      'High-CRI circular LED emitter configured for flattering, shadowless facial reflections.',
+      'Precision mitred edge modeling on floating vanity plinth with flush handle reveals.',
+      'Cinema 4D viewport capture authenticating polygonal construction and material hierarchy.'
+    ],
+    specs: {
+      software: ['Cinema 4D', 'Corona Render Engine', 'Photoshop'],
+      polyCount: '3.9M Polygons (Subdivided Quad Geometry)',
+      renderEngine: 'Corona Photorealistic GI',
+      lightingSetup: 'High-CRI 95+ Circumferential LED Strip & Warm Recessed Downlights',
+      deliveryFormat: 'Ultra HD Architectural Master (3000 x 1875 px)'
+    },
+    metrics: [
+      { label: 'Render Engine', value: 'Corona GI' },
+      { label: 'Resolution', value: '3000 x 1875 px' },
+      { label: 'Focal Feature', value: 'Sculptural LED Mirror' },
+      { label: 'Materials', value: 'Slate & Walnut' }
+    ],
+    galleryImages: [
+      '/images/portfolio/lux-bathrooms/layout-f/main.webp',
+      '/images/portfolio/lux-bathrooms/layout-f/viewport.webp',
+    ],
+    views: [
+      {
+        id: 'lux-layout-f-v1',
+        camNumber: 'CAM 01',
+        name: 'Centered Sculptural Mirror Suite',
+        tag: 'Master Full View',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-f/main.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-f/high-res/main.webp',
+        description: 'Hero frontal perspective highlighting the circular illuminated mirror, dark stone cladding, and warm walnut drawers.'
+      },
+      {
+        id: 'lux-layout-f-viewport',
+        camNumber: 'VIEWPORT',
+        name: 'Cinema 4D Viewport Proof',
+        tag: 'C4D Wireframe Proof',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-f/viewport.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-f/high-res/viewport.webp',
+        description: 'Cinema 4D viewport shaded workspace view confirming native quad geometry and camera positioning.'
+      }
+    ]
+  },
+  {
     id: 'proj-kohler-vertical-layout-7',
     slug: 'kohler-vertical-layout-7-laurent-gold-ultra-luxury',
     title: 'Layout 7: Laurent Gold Ultra-Luxury Master Suite',
@@ -1632,6 +2253,89 @@ export const PROJECTS: ProjectItem[] = [
         imageUrl: '/images/portfolio/kohler-vertical-layouts/layout-07-moodboard.webp',
         highResUrl: '/images/portfolio/kohler-vertical-layouts/high-res/layout-07-moodboard.webp',
         description: 'Interior Design Concept Mood Board — "Laurent Gold Ultra-Luxury Master Suite". Curated palette highlighting Nero Marquina gold-veined marble, freestanding architectural soaking tub, cluster chandeliers, and Kohler Fluence Brushed Bronze fixtures.'
+      }
+    ]
+  },
+  {
+    id: 'proj-lux-bathroom-layout-g',
+    slug: 'lux-bathroom-layout-g-nordic-spa-retreat',
+    title: 'Layout G: Nordic Spa Retreat & Obsidian Slate',
+    subtitle: 'Nordic Cedar Slats, Dark Nero Marquina Slate & Integrated Concealed Lighting',
+    domainId: '3d-spatial',
+    collectionId: 'interior-design',
+    client: 'Highland Villa Spa Retreat',
+    year: '2025',
+    role: 'Lead 3D Visualizer & Spatial Artist',
+    coverImage: '/images/portfolio/lux-bathrooms/layout-g/main.webp',
+    clayImage: '/images/portfolio/lux-bathrooms/layout-g/viewport.webp',
+    finalImage: '/images/portfolio/lux-bathrooms/layout-g/main.webp',
+    badge: 'Nordic Spa Retreat',
+    featured: true,
+    aspectRatio: 'wide',
+    designThinking: LUX_BATHROOM_LAYOUT_G_DESIGN_THINKING,
+    shortDescription: 'Nordic-inspired wellness bath suite fusing horizontal cedar slats, obsidian Nero Marquina stone slabs, matte black sanitaryware, and ultra-warm amber lighting.',
+    fullOverview: 'Conceived as a private highland spa retreat. The interior wraps walls in horizontal Nordic cedar slats, creating natural warmth and acoustic serenity. Monolithic flamed Nero Marquina slate paves the wet area floor, offset by sculptural matte black sanitaryware and 2400K amber architectural lighting.',
+    technicalDecisions: [
+      'Micro-displacement on thermal flamed Nero Marquina stone slabs for physically realistic anti-slip tactile texture.',
+      'Ultra-warm 2400K amber cove illumination creating relaxing sauna retreat ambiance.',
+      'High-poly quad modeling of matte black sanitaryware with silky non-reflective glaze.',
+      'Full 3-camera architectural sequence documenting overall room atmosphere and close timber details.'
+    ],
+    specs: {
+      software: ['Cinema 4D', 'Corona Render Engine', 'Photoshop'],
+      polyCount: '5.4M Polygons (Subdivided Quad Geometry)',
+      renderEngine: 'Corona Physical GI & Volumetric Light Scatter',
+      lightingSetup: '2400K Concealed Linear Amber LED Emitters & Ambient Daylight Sockets',
+      deliveryFormat: 'Ultra HD Multi-Camera Suite (3000 x 1950 px)'
+    },
+    metrics: [
+      { label: 'Render Quality', value: 'Ultra HD Master' },
+      { label: 'Resolution', value: '3000 x 1950 px' },
+      { label: 'Concept', value: 'Nordic Cedar Spa' },
+      { label: 'Proof', value: 'C4D Viewport Validated' }
+    ],
+    galleryImages: [
+      '/images/portfolio/lux-bathrooms/layout-g/main.webp',
+      '/images/portfolio/lux-bathrooms/layout-g/angle-1.webp',
+      '/images/portfolio/lux-bathrooms/layout-g/angle-2.webp',
+      '/images/portfolio/lux-bathrooms/layout-g/viewport.webp',
+    ],
+    views: [
+      {
+        id: 'lux-layout-g-v1',
+        camNumber: 'CAM 01',
+        name: 'Master Spa Retreat Perspective',
+        tag: 'Master Full View',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-g/main.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-g/high-res/main.webp',
+        description: 'Comprehensive architectural view displaying horizontal cedar slatted walls, Nero Marquina slate, and amber lighting.'
+      },
+      {
+        id: 'lux-layout-g-angle1',
+        camNumber: 'CAM 02',
+        name: 'Vanity Countertop & Cedar Detail',
+        tag: 'Joinery Perspective',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-g/angle-1.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-g/high-res/angle-1.webp',
+        description: 'Closer framing showcasing cedar millwork precision joinery, stone plinth transition, and matte black vessel sink.'
+      },
+      {
+        id: 'lux-layout-g-angle2',
+        camNumber: 'CAM 03',
+        name: 'Wet Area Glass & Nero Marble',
+        tag: 'Wet Zone Perspective',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-g/angle-2.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-g/high-res/angle-2.webp',
+        description: 'Atmospheric angle across the walk-in steam shower enclosure with water glass reflections and warm amber cove light.'
+      },
+      {
+        id: 'lux-layout-g-viewport',
+        camNumber: 'VIEWPORT',
+        name: 'Cinema 4D Viewport Proof',
+        tag: 'C4D Wireframe Proof',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-g/viewport.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-g/high-res/viewport.webp',
+        description: 'Direct Cinema 4D workspace capture authenticating native scene geometry, lights hierarchy, and camera settings.'
       }
     ]
   },

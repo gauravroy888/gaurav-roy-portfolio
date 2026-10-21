@@ -100,30 +100,24 @@ export const CategoryCollageModal: React.FC<CategoryCollageModalProps> = ({
             </span>
           </div>
 
-          {/* The Glassmorphic Multi-Project Collage Grid */}
-          <div
-            className={`grid gap-4 sm:gap-7 ${
-              category.id === 'commercial-campaigns' || category.id === 'motion-graphics'
-                ? 'grid-cols-1 md:grid-cols-2'
-                : category.id === 'premium-kitchen-interiors'
-                ? 'grid-cols-1 sm:grid-cols-2'
-                : 'grid-cols-1 md:grid-cols-2'
-            }`}
-          >
-            {projects.map((project) => {
+          {/* Glassmorphic Multi-Project Collage Layout */}
+          {(() => {
+            const isMasonry = category.id === 'interior-design';
+
+            const renderProjectCard = (project: ProjectItem) => {
               const isWide = project.aspectRatio === 'wide';
               const isTall = project.aspectRatio === 'tall';
               const isSquare = project.aspectRatio === 'square';
 
-              let spanClass = 'col-span-1 aspect-[16/10]';
+              let spanClass = 'w-full aspect-[16/10]';
               if (category.id === 'commercial-campaigns' || category.id === 'motion-graphics') {
-                spanClass = 'col-span-1 aspect-[16/10]';
+                spanClass = 'w-full aspect-[16/10]';
               } else if (isWide) {
-                spanClass = 'col-span-1 aspect-[16/10]';
+                spanClass = 'w-full aspect-[16/10]';
               } else if (isTall) {
-                spanClass = 'col-span-1 aspect-[4/5] sm:aspect-[3/4]';
+                spanClass = 'w-full aspect-[4/5] sm:aspect-[3/4]';
               } else if (isSquare) {
-                spanClass = 'col-span-1 aspect-square';
+                spanClass = 'w-full aspect-square';
               }
 
               return (
@@ -221,8 +215,56 @@ export const CategoryCollageModal: React.FC<CategoryCollageModalProps> = ({
                   <div className="absolute inset-0 rounded-2xl sm:rounded-3xl border-2 border-transparent group-hover:border-cyan-400/30 transition-all pointer-events-none" />
                 </div>
               );
-            })}
-          </div>
+            };
+
+            if (isMasonry) {
+              const col1Projects: ProjectItem[] = [];
+              const col2Projects: ProjectItem[] = [];
+
+              projects.forEach((proj, idx) => {
+                // Balanced distribution where Col 1 and Col 2 have alternating aspect ratios
+                // and virtually identical column heights
+                if (idx === 14 || idx % 4 === 0 || idx % 4 === 3) {
+                  col1Projects.push(proj);
+                } else {
+                  col2Projects.push(proj);
+                }
+              });
+
+              return (
+                <>
+                  {/* Mobile Single Column: natural fluid vertical scroll with alternating rhythm */}
+                  <div className="flex md:hidden flex-col gap-4">
+                    {projects.map(renderProjectCard)}
+                  </div>
+
+                  {/* Desktop Dual Column: staggered masonry collage with balanced wide & tall rhythm */}
+                  <div className="hidden md:flex gap-7 items-start">
+                    <div className="flex-1 flex flex-col gap-7">
+                      {col1Projects.map(renderProjectCard)}
+                    </div>
+                    <div className="flex-1 flex flex-col gap-7">
+                      {col2Projects.map(renderProjectCard)}
+                    </div>
+                  </div>
+                </>
+              );
+            }
+
+            return (
+              <div
+                className={`grid gap-4 sm:gap-7 ${
+                  category.id === 'commercial-campaigns' || category.id === 'motion-graphics'
+                    ? 'grid-cols-1 md:grid-cols-2'
+                    : category.id === 'premium-kitchen-interiors'
+                    ? 'grid-cols-1 sm:grid-cols-2'
+                    : 'grid-cols-1 md:grid-cols-2'
+                }`}
+              >
+                {projects.map(renderProjectCard)}
+              </div>
+            );
+          })()}
         </div>
       </div>
     </div>
