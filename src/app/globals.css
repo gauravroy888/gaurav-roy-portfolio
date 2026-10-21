@@ -116,6 +116,12 @@ body {
   animation: modal-pop-in 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Fluid scroll reveal transition */
+.transition-reveal {
+  transition-property: opacity, transform;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 /* Complete background scroll lock & overscroll containment when any modal is active */
 html.modal-is-open,
 body.modal-is-open {

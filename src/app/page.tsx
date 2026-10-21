@@ -13,6 +13,7 @@ import { PortfolioSection } from '../components/PortfolioSection';
 import { CapabilitiesSection } from '../components/CapabilitiesSection';
 import { DesignProcess } from '../components/DesignProcess';
 import { ContactFooter } from '../components/ContactFooter';
+import { ScrollReveal } from '../components/ScrollReveal';
 import { useModalScrollLock } from '../utils/modalScrollLock';
 
 // Dynamically imported interactive components & modals (SSR false, lazy chunks)
@@ -199,43 +200,57 @@ export default function Home() {
           />
 
           {/* 2. Metrics Bar (Directly connected beneath Hero) */}
-          <MetricsBar />
+          <ScrollReveal yOffset={24} duration={650}>
+            <MetricsBar />
+          </ScrollReveal>
 
           {/* 3. Companies & Enterprise Brands Section */}
-          <div className="mt-4">
-            <CompanyLogosSection />
-          </div>
+          <ScrollReveal yOffset={28} duration={700}>
+            <div className="mt-4">
+              <CompanyLogosSection />
+            </div>
+          </ScrollReveal>
 
           {/* 4. SERVICES: My Specialties */}
-          <div className="mt-4">
-            <SpecialtiesSection />
-          </div>
+          <ScrollReveal yOffset={28} duration={700}>
+            <div className="mt-4">
+              <SpecialtiesSection />
+            </div>
+          </ScrollReveal>
 
           {/* 5. TIER 1: PORTFOLIO ARCHIVES & CATEGORIES */}
-          <div className="mt-4">
-            <PortfolioSection
-              onSelectProject={(proj) => setSelectedProject(proj)}
-              onSelectCategory={handleSelectCategory}
-            />
-          </div>
+          <ScrollReveal yOffset={28} duration={700}>
+            <div className="mt-4">
+              <PortfolioSection
+                onSelectProject={(proj) => setSelectedProject(proj)}
+                onSelectCategory={handleSelectCategory}
+              />
+            </div>
+          </ScrollReveal>
 
           {/* 6. Capabilities & Tools Deck */}
-          <div className="mt-4">
-            <CapabilitiesSection />
-          </div>
+          <ScrollReveal yOffset={28} duration={700}>
+            <div className="mt-4">
+              <CapabilitiesSection />
+            </div>
+          </ScrollReveal>
 
           {/* 7. My Design Process */}
-          <div className="mt-4">
-            <DesignProcess />
-          </div>
+          <ScrollReveal yOffset={28} duration={700}>
+            <div className="mt-4">
+              <DesignProcess />
+            </div>
+          </ScrollReveal>
         </main>
 
         {/* 8. Metallic Banner & Footer */}
-        <div className="relative z-10 mt-6">
-          <ContactFooter
-            onOpenResume={() => setResumeOpen(true)}
-          />
-        </div>
+        <ScrollReveal yOffset={28} duration={700}>
+          <div className="relative z-10 mt-6">
+            <ContactFooter
+              onOpenResume={() => setResumeOpen(true)}
+            />
+          </div>
+        </ScrollReveal>
       </div>
 
       {/* PERSISTENT BLUR BACKDROP: Keeps background website blurred across all modal transitions */}
