@@ -1141,7 +1141,7 @@ export const COLLECTIONS: CollectionItem[] = [
     folderName: 'Luxury Bathrooms',
     description: 'High-end architectural renders, custom sanitaryware suites, and ambient spatial lighting.',
     itemCount: 15,
-    thumbnail: '/images/portfolio/teakberry/master.webp',
+    thumbnail: '/images/portfolio/lux-bathrooms/layout-d/main.webp',
     badge: 'Architectural CGI',
   },
   {
@@ -1215,95 +1215,85 @@ export const COLLECTIONS: CollectionItem[] = [
 
 export const PROJECTS: ProjectItem[] = [
   {
-    id: 'proj-kohler-teakberry-layout-1',
-    slug: 'kohler-teakberry-layout-1-luxury-bath',
-    title: 'Layout 1: Teakberry Luxury Bath Suite',
-    subtitle: 'Kohler x India Design 2025 • Warm Earth & Quiet Luxury Concept',
+    id: 'proj-lux-bathroom-layout-d',
+    slug: 'lux-bathroom-layout-d-lush-honed-suite-phase-2',
+    title: 'Layout D: Lush Honed Master Suite - Phase 02',
+    subtitle: 'Dual Tone Honed Finish, Walk-In Wet Zone & Brushed Titanium Fixtures',
     domainId: '3d-spatial',
     collectionId: 'interior-design',
-    client: 'Kohler x India Design 2025',
+    client: 'Kohler x Luxury Master Development',
     year: '2025',
     role: 'Lead 3D Interior & Sanitaryware CGI Artist',
-    coverImage: '/images/portfolio/teakberry/master.webp',
-    clayImage: '/images/portfolio/teakberry/c4d-viewport.webp',
-    finalImage: '/images/portfolio/teakberry/master.webp',
-    badge: 'Kohler x ID 2025',
+    coverImage: '/images/portfolio/lux-bathrooms/layout-d/main.webp',
+    clayImage: '/images/portfolio/lux-bathrooms/layout-d/viewport.webp',
+    finalImage: '/images/portfolio/lux-bathrooms/layout-d/main.webp',
+    badge: 'Lush Honed Master II',
     featured: true,
     aspectRatio: 'wide',
-    designThinking: TEAKBERRY_DESIGN_THINKING,
-    shortDescription: 'Earthy warmth meets timeless elegance — featuring custom Kohler Teakberry gloss sanitaryware, fluted walnut walls, Calacatta marble vanity, and an illuminated oval mirror.',
-    fullOverview: 'Developed for the Kohler x India Design 2025 initiative (An Ogaan Media Initiative). This luxury bathroom layout synthesizes the new Teakberry gloss and Lush honed finishes with warm earthy textures, fluted walnut woodwork, and backlit Calacatta marble surfaces to create a calm, spa-like sanctuary. Rendered with Redshift GPU photorealistic global illumination, physically calibrated PBR glaze absorption, and 2700K warm IES ambient light zoning.',
+    designThinking: LUX_BATHROOM_LAYOUT_D_DESIGN_THINKING,
+    shortDescription: 'Expanded master bathroom suite featuring an integrated walk-in wet room, fluted oak millwork, Lush honed sanitaryware, and brushed titanium trim.',
+    fullOverview: 'Phase 02 expands the master suite into an open-plan wet sanctuary. Dark Pietra Grey honed stone lines the shower enclosure while warm fluted oak millwork surrounds the vanity. Unbiased Corona caustics calculate water and glass interactions seamlessly, creating an authentic luxury resort spa experience.',
     technicalDecisions: [
-      'Multi-layer PBR ceramic glaze shader for Teakberry (gloss purple-brown) and Lush (honed forest green) with calibrated subsurface absorption.',
-      'Physically modeled IES warm cove and backlight profiles (2700K) balanced with soft natural fill.',
-      'Procedural fluted walnut timber displacement and vein-cut Calacatta Gold marble micro-roughness.',
-      'High-resolution master output with simultaneous multi-camera layout sheets and mood board concept integration.'
+      'Complex glass refraction and secondary caustics across full-height walk-in shower glass divider.',
+      'Dual tone material contrast balancing light absorption of dark Pietra Grey with reflective oak wax.',
+      'Directional brushed titanium PVD shader with microscopic roughness maps for tactile metal feel.',
+      'Multi-camera coverage capturing overall architectural volume and oblique vanity details.'
     ],
     specs: {
-      software: ['Autodesk Maya', 'Cinema 4D', 'Redshift GPU', 'Photoshop', 'Marvelous Designer'],
-      polyCount: '5.2M Polygons (Subdivided Quad Geometry)',
-      renderEngine: 'Redshift GPU Photorealistic GI',
-      lightingSetup: 'Multi-layer 2700K IES Portal, Halo Backlit Mirror & Soft Daylight Fill',
-      deliveryFormat: 'Master Stills & Multi-Camera Architectural Layouts'
+      software: ['Cinema 4D', 'Corona Render Engine', 'Photoshop'],
+      polyCount: '5.1M Polygons (Subdivided Quad Geometry)',
+      renderEngine: 'Corona Unbiased GI & Secondary Glass Caustics',
+      lightingSetup: 'Multi-layer Recessed LED Channels, Spot Fixtures & Natural Ingress',
+      deliveryFormat: 'Ultra HD Multi-Camera Suite (3600 x 2400 px)'
     },
     metrics: [
       { label: 'Render Quality', value: 'Master Ultra HD' },
-      { label: 'Exhibition', value: 'India Design 2025' },
-      { label: 'Material Accuracy', value: '100% PBR Ceramic' },
-      { label: 'Client / Initiative', value: 'Kohler x ID 2025' }
+      { label: 'Resolution', value: '3600 x 2400 px' },
+      { label: 'Wet Zone', value: 'Walk-In Spa' },
+      { label: 'Proof', value: 'C4D Viewport Validated' }
     ],
     galleryImages: [
-      '/images/portfolio/teakberry/master.webp',
-      '/images/portfolio/teakberry/angle-1.webp',
-      '/images/portfolio/teakberry/angle-2.webp',
-      '/images/portfolio/teakberry/angle-3.webp',
-      '/images/portfolio/teakberry/moodboard.webp',
+      '/images/portfolio/lux-bathrooms/layout-d/main.webp',
+      '/images/portfolio/lux-bathrooms/layout-d/angle-1.webp',
+      '/images/portfolio/lux-bathrooms/layout-d/angle-2.webp',
+      '/images/portfolio/lux-bathrooms/layout-d/viewport.webp',
     ],
     views: [
       {
-        id: 'teakberry-v1',
+        id: 'lux-layout-d-v1',
         camNumber: 'CAM 01',
-        name: 'Master Bath Suite Perspective',
+        name: 'Wide Angle Master Perspective',
         tag: 'Master Full View',
-        imageUrl: '/images/portfolio/teakberry/master.webp',
-        highResUrl: '/images/portfolio/teakberry/high-res/master-original.webp',
-        description: 'Full architectural perspective showing the Teakberry vessel basin vanity, backlit oval mirror, floating wall-hung toilet, herringbone wood floor, and freestanding bathtub wet zone.'
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-d/main.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-d/high-res/main.webp',
+        description: 'Comprehensive architectural view displaying the full bathroom spatial flow from vanity plinth to the walk-in wet zone.'
       },
       {
-        id: 'teakberry-v2',
+        id: 'lux-layout-d-angle1',
         camNumber: 'CAM 02',
-        name: 'Vanity Suite & Recessed Niches',
-        tag: 'Vanity & Storage Flow',
-        imageUrl: '/images/portfolio/teakberry/angle-1.webp',
-        highResUrl: '/images/portfolio/teakberry/high-res/angle-1-original.webp',
-        description: 'Front-oblique perspective focusing on the cantilevered vanity counter, backlit circular mirror, Teakberry wall-hung toilet, and recessed wooden storage niches.'
+        name: 'Oblique Vanity Perspective',
+        tag: 'Vanity Detail View',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-d/angle-1.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-d/high-res/angle-1.webp',
+        description: 'Angular perspective focusing on the fluted oak cabinetry, Lush basin, and brushed titanium mixer.'
       },
       {
-        id: 'teakberry-v3',
+        id: 'lux-layout-d-angle2',
         camNumber: 'CAM 03',
-        name: 'Teakberry Basin Macro & Faucet Detail',
-        tag: 'Overhead Macro PBR',
-        imageUrl: '/images/portfolio/teakberry/angle-2.webp',
-        highResUrl: '/images/portfolio/teakberry/high-res/angle-2-original.webp',
-        description: 'High-angle macro study showing the Teakberry vessel basin gloss reflections, Calacatta marble grain, matte black wall-mounted faucet, and natural eucalyptus accent.'
+        name: 'Wet Zone Variation View',
+        tag: 'Spatial Evolution',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-d/angle-2.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-d/high-res/angle-2.webp',
+        description: 'Alternative spatial framing demonstrating wet-room partition glass and dark Pietra Grey wall textures.'
       },
       {
-        id: 'teakberry-v4',
-        camNumber: 'CAM 04',
-        name: 'Countertop Perspective & Halo Mirror',
-        tag: 'Eye-level Basin Focus',
-        imageUrl: '/images/portfolio/teakberry/angle-3.webp',
-        highResUrl: '/images/portfolio/teakberry/high-res/angle-3-original.webp',
-        description: 'Eye-level oblique close-up highlighting the dense purple-brown Teakberry glaze sheen, LED mirror halo glow, and fluted textured wall paneling.'
-      },
-      {
-        id: 'teakberry-v0',
-        camNumber: 'CAM 05',
-        name: 'Concept Mood Board // Warm Earth & Quiet Luxury',
-        tag: 'Design Concept & Palette',
-        imageUrl: '/images/portfolio/teakberry/moodboard.webp',
-        highResUrl: '/images/portfolio/teakberry/high-res/moodboard-original.webp',
-        description: 'Interior Design Concept Mood Board — "Warm Earth, Quiet Luxury". Blends natural textures, warm earthy tones, Teakberry sanitaryware, and Calacatta marble into a calm, spa-like sanctuary.'
+        id: 'lux-layout-d-viewport',
+        camNumber: 'VIEWPORT',
+        name: 'Cinema 4D Viewport Proof',
+        tag: 'C4D Wireframe Proof',
+        imageUrl: '/images/portfolio/lux-bathrooms/layout-d/viewport.webp',
+        highResUrl: '/images/portfolio/lux-bathrooms/layout-d/high-res/viewport.webp',
+        description: 'Cinema 4D shaded wireframe viewport capture showing complete polygonal modeling hierarchy and camera setup.'
       }
     ]
   },
@@ -1809,85 +1799,95 @@ export const PROJECTS: ProjectItem[] = [
     ]
   },
   {
-    id: 'proj-lux-bathroom-layout-d',
-    slug: 'lux-bathroom-layout-d-lush-honed-suite-phase-2',
-    title: 'Layout D: Lush Honed Master Suite - Phase 02',
-    subtitle: 'Dual Tone Honed Finish, Walk-In Wet Zone & Brushed Titanium Fixtures',
+    id: 'proj-kohler-teakberry-layout-1',
+    slug: 'kohler-teakberry-layout-1-luxury-bath',
+    title: 'Layout 1: Teakberry Luxury Bath Suite',
+    subtitle: 'Kohler x India Design 2025 • Warm Earth & Quiet Luxury Concept',
     domainId: '3d-spatial',
     collectionId: 'interior-design',
-    client: 'Kohler x Luxury Master Development',
+    client: 'Kohler x India Design 2025',
     year: '2025',
     role: 'Lead 3D Interior & Sanitaryware CGI Artist',
-    coverImage: '/images/portfolio/lux-bathrooms/layout-d/main.webp',
-    clayImage: '/images/portfolio/lux-bathrooms/layout-d/viewport.webp',
-    finalImage: '/images/portfolio/lux-bathrooms/layout-d/main.webp',
-    badge: 'Lush Honed Master II',
+    coverImage: '/images/portfolio/teakberry/master.webp',
+    clayImage: '/images/portfolio/teakberry/c4d-viewport.webp',
+    finalImage: '/images/portfolio/teakberry/master.webp',
+    badge: 'Kohler x ID 2025',
     featured: true,
     aspectRatio: 'wide',
-    designThinking: LUX_BATHROOM_LAYOUT_D_DESIGN_THINKING,
-    shortDescription: 'Expanded master bathroom suite featuring an integrated walk-in wet room, fluted oak millwork, Lush honed sanitaryware, and brushed titanium trim.',
-    fullOverview: 'Phase 02 expands the master suite into an open-plan wet sanctuary. Dark Pietra Grey honed stone lines the shower enclosure while warm fluted oak millwork surrounds the vanity. Unbiased Corona caustics calculate water and glass interactions seamlessly, creating an authentic luxury resort spa experience.',
+    designThinking: TEAKBERRY_DESIGN_THINKING,
+    shortDescription: 'Earthy warmth meets timeless elegance — featuring custom Kohler Teakberry gloss sanitaryware, fluted walnut walls, Calacatta marble vanity, and an illuminated oval mirror.',
+    fullOverview: 'Developed for the Kohler x India Design 2025 initiative (An Ogaan Media Initiative). This luxury bathroom layout synthesizes the new Teakberry gloss and Lush honed finishes with warm earthy textures, fluted walnut woodwork, and backlit Calacatta marble surfaces to create a calm, spa-like sanctuary. Rendered with Redshift GPU photorealistic global illumination, physically calibrated PBR glaze absorption, and 2700K warm IES ambient light zoning.',
     technicalDecisions: [
-      'Complex glass refraction and secondary caustics across full-height walk-in shower glass divider.',
-      'Dual tone material contrast balancing light absorption of dark Pietra Grey with reflective oak wax.',
-      'Directional brushed titanium PVD shader with microscopic roughness maps for tactile metal feel.',
-      'Multi-camera coverage capturing overall architectural volume and oblique vanity details.'
+      'Multi-layer PBR ceramic glaze shader for Teakberry (gloss purple-brown) and Lush (honed forest green) with calibrated subsurface absorption.',
+      'Physically modeled IES warm cove and backlight profiles (2700K) balanced with soft natural fill.',
+      'Procedural fluted walnut timber displacement and vein-cut Calacatta Gold marble micro-roughness.',
+      'High-resolution master output with simultaneous multi-camera layout sheets and mood board concept integration.'
     ],
     specs: {
-      software: ['Cinema 4D', 'Corona Render Engine', 'Photoshop'],
-      polyCount: '5.1M Polygons (Subdivided Quad Geometry)',
-      renderEngine: 'Corona Unbiased GI & Secondary Glass Caustics',
-      lightingSetup: 'Multi-layer Recessed LED Channels, Spot Fixtures & Natural Ingress',
-      deliveryFormat: 'Ultra HD Multi-Camera Suite (3600 x 2400 px)'
+      software: ['Autodesk Maya', 'Cinema 4D', 'Redshift GPU', 'Photoshop', 'Marvelous Designer'],
+      polyCount: '5.2M Polygons (Subdivided Quad Geometry)',
+      renderEngine: 'Redshift GPU Photorealistic GI',
+      lightingSetup: 'Multi-layer 2700K IES Portal, Halo Backlit Mirror & Soft Daylight Fill',
+      deliveryFormat: 'Master Stills & Multi-Camera Architectural Layouts'
     },
     metrics: [
       { label: 'Render Quality', value: 'Master Ultra HD' },
-      { label: 'Resolution', value: '3600 x 2400 px' },
-      { label: 'Wet Zone', value: 'Walk-In Spa' },
-      { label: 'Proof', value: 'C4D Viewport Validated' }
+      { label: 'Exhibition', value: 'India Design 2025' },
+      { label: 'Material Accuracy', value: '100% PBR Ceramic' },
+      { label: 'Client / Initiative', value: 'Kohler x ID 2025' }
     ],
     galleryImages: [
-      '/images/portfolio/lux-bathrooms/layout-d/main.webp',
-      '/images/portfolio/lux-bathrooms/layout-d/angle-1.webp',
-      '/images/portfolio/lux-bathrooms/layout-d/angle-2.webp',
-      '/images/portfolio/lux-bathrooms/layout-d/viewport.webp',
+      '/images/portfolio/teakberry/master.webp',
+      '/images/portfolio/teakberry/angle-1.webp',
+      '/images/portfolio/teakberry/angle-2.webp',
+      '/images/portfolio/teakberry/angle-3.webp',
+      '/images/portfolio/teakberry/moodboard.webp',
     ],
     views: [
       {
-        id: 'lux-layout-d-v1',
+        id: 'teakberry-v1',
         camNumber: 'CAM 01',
-        name: 'Wide Angle Master Perspective',
+        name: 'Master Bath Suite Perspective',
         tag: 'Master Full View',
-        imageUrl: '/images/portfolio/lux-bathrooms/layout-d/main.webp',
-        highResUrl: '/images/portfolio/lux-bathrooms/layout-d/high-res/main.webp',
-        description: 'Comprehensive architectural view displaying the full bathroom spatial flow from vanity plinth to the walk-in wet zone.'
+        imageUrl: '/images/portfolio/teakberry/master.webp',
+        highResUrl: '/images/portfolio/teakberry/high-res/master-original.webp',
+        description: 'Full architectural perspective showing the Teakberry vessel basin vanity, backlit oval mirror, floating wall-hung toilet, herringbone wood floor, and freestanding bathtub wet zone.'
       },
       {
-        id: 'lux-layout-d-angle1',
+        id: 'teakberry-v2',
         camNumber: 'CAM 02',
-        name: 'Oblique Vanity Perspective',
-        tag: 'Vanity Detail View',
-        imageUrl: '/images/portfolio/lux-bathrooms/layout-d/angle-1.webp',
-        highResUrl: '/images/portfolio/lux-bathrooms/layout-d/high-res/angle-1.webp',
-        description: 'Angular perspective focusing on the fluted oak cabinetry, Lush basin, and brushed titanium mixer.'
+        name: 'Vanity Suite & Recessed Niches',
+        tag: 'Vanity & Storage Flow',
+        imageUrl: '/images/portfolio/teakberry/angle-1.webp',
+        highResUrl: '/images/portfolio/teakberry/high-res/angle-1-original.webp',
+        description: 'Front-oblique perspective focusing on the cantilevered vanity counter, backlit circular mirror, Teakberry wall-hung toilet, and recessed wooden storage niches.'
       },
       {
-        id: 'lux-layout-d-angle2',
+        id: 'teakberry-v3',
         camNumber: 'CAM 03',
-        name: 'Wet Zone Variation View',
-        tag: 'Spatial Evolution',
-        imageUrl: '/images/portfolio/lux-bathrooms/layout-d/angle-2.webp',
-        highResUrl: '/images/portfolio/lux-bathrooms/layout-d/high-res/angle-2.webp',
-        description: 'Alternative spatial framing demonstrating wet-room partition glass and dark Pietra Grey wall textures.'
+        name: 'Teakberry Basin Macro & Faucet Detail',
+        tag: 'Overhead Macro PBR',
+        imageUrl: '/images/portfolio/teakberry/angle-2.webp',
+        highResUrl: '/images/portfolio/teakberry/high-res/angle-2-original.webp',
+        description: 'High-angle macro study showing the Teakberry vessel basin gloss reflections, Calacatta marble grain, matte black wall-mounted faucet, and natural eucalyptus accent.'
       },
       {
-        id: 'lux-layout-d-viewport',
-        camNumber: 'VIEWPORT',
-        name: 'Cinema 4D Viewport Proof',
-        tag: 'C4D Wireframe Proof',
-        imageUrl: '/images/portfolio/lux-bathrooms/layout-d/viewport.webp',
-        highResUrl: '/images/portfolio/lux-bathrooms/layout-d/high-res/viewport.webp',
-        description: 'Cinema 4D shaded wireframe viewport capture showing complete polygonal modeling hierarchy and camera setup.'
+        id: 'teakberry-v4',
+        camNumber: 'CAM 04',
+        name: 'Countertop Perspective & Halo Mirror',
+        tag: 'Eye-level Basin Focus',
+        imageUrl: '/images/portfolio/teakberry/angle-3.webp',
+        highResUrl: '/images/portfolio/teakberry/high-res/angle-3-original.webp',
+        description: 'Eye-level oblique close-up highlighting the dense purple-brown Teakberry glaze sheen, LED mirror halo glow, and fluted textured wall paneling.'
+      },
+      {
+        id: 'teakberry-v0',
+        camNumber: 'CAM 05',
+        name: 'Concept Mood Board // Warm Earth & Quiet Luxury',
+        tag: 'Design Concept & Palette',
+        imageUrl: '/images/portfolio/teakberry/moodboard.webp',
+        highResUrl: '/images/portfolio/teakberry/high-res/moodboard-original.webp',
+        description: 'Interior Design Concept Mood Board — "Warm Earth, Quiet Luxury". Blends natural textures, warm earthy tones, Teakberry sanitaryware, and Calacatta marble into a calm, spa-like sanctuary.'
       }
     ]
   },
