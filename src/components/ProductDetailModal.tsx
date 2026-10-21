@@ -20,6 +20,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { useModalScrollLock } from '../utils/modalScrollLock';
+import { assetPath } from '../utils/assetPath';
 
 interface ProductDetailModalProps {
   project: ProjectItem | null;
@@ -412,7 +413,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                         >
                           <div className="relative aspect-[16/10] overflow-hidden bg-black">
                             <img
-                              src={v.imageUrl}
+                              src={assetPath(v.imageUrl)}
                               alt={v.name}
                               loading="lazy"
                               decoding="async"
@@ -475,7 +476,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                           className="group relative aspect-[16/10] rounded-xl overflow-hidden bg-black/60 border border-white/10 hover:border-purple-400/50 cursor-pointer transition-all duration-300 shadow-md hover:scale-[1.02]"
                         >
                           <img
-                            src={still.imageUrl}
+                            src={assetPath(still.imageUrl)}
                             alt={still.title}
                             loading="lazy"
                             decoding="async"
@@ -528,7 +529,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     >
                       <div className="relative aspect-[16/10] overflow-hidden bg-black">
                         <img
-                          src={still.imageUrl}
+                          src={assetPath(still.imageUrl)}
                           alt={still.title}
                           loading="lazy"
                           decoding="async"
@@ -581,7 +582,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 }}
               >
                 <img
-                  src={project.coverImage}
+                  src={assetPath(project.coverImage)}
                   alt={project.title}
                   loading="lazy"
                   decoding="async"
@@ -612,7 +613,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       className="group relative aspect-[16/10] rounded-xl overflow-hidden bg-black/60 border border-white/10 hover:border-purple-400/50 cursor-pointer transition-all duration-300 shadow-md hover:scale-[1.02]"
                     >
                       <img
-                        src={img}
+                        src={assetPath(img)}
                         alt={`${project.title} - ${idx + 1}`}
                         loading="lazy"
                         decoding="async"
@@ -664,7 +665,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     >
                       <div className="relative aspect-[16/10] rounded-xl overflow-hidden mb-3 bg-black border border-white/10">
                         <img
-                          src={plan.image}
+                          src={assetPath(plan.image)}
                           alt={plan.title}
                           loading="lazy"
                           decoding="async"
@@ -713,7 +714,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             {activeTab === 'clay-slider' && project.clayImage && (
               <div className="relative rounded-2xl overflow-hidden border border-emerald-500/30 bg-black shadow-2xl aspect-[16/10] group flex items-center justify-center">
                 <img
-                  src={project.clayImage}
+                  src={assetPath(project.clayImage)}
                   alt="Cinema 4D Viewport Screenshot"
                   loading="lazy"
                   decoding="async"
@@ -752,7 +753,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     >
                       <div className="relative aspect-[16/10] rounded-xl overflow-hidden mb-3 bg-black border border-white/10">
                         <img
-                          src={v.imageUrl}
+                          src={assetPath(v.imageUrl)}
                           alt={v.name}
                           loading="lazy"
                           decoding="async"
@@ -908,7 +909,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             </button>
 
             <img
-              src={lightboxItem.url}
+              src={assetPath(lightboxItem.url)}
               alt={lightboxItem.title}
               decoding="async"
               className="max-w-full max-h-[75vh] object-contain rounded-2xl border border-white/20 shadow-2xl"

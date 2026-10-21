@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { PROJECTS, COLLECTIONS, CollectionItem, ProjectItem } from '../data/portfolioData';
 import { ChevronLeft, ChevronRight, ArrowUpRight, Layers, Play } from 'lucide-react';
 import { GlowBorderCard } from './GlowBorderCard';
+import { assetPath } from '../utils/assetPath';
 
 interface PortfolioSectionProps {
   onSelectProject: (project: ProjectItem) => void;
@@ -208,7 +209,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                       </div>
                     ) : (
                       <img
-                        src={project.coverImage}
+                        src={assetPath(project.coverImage)}
                         alt={project.title}
                         loading="lazy"
                         decoding="async"
@@ -256,7 +257,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                       {category.youtubeId ? (
                         <div className="relative w-full h-full group/video">
                           <img
-                            src={category.thumbnail || `https://img.youtube.com/vi/${category.youtubeId}/hqdefault.jpg`}
+                            src={assetPath(category.thumbnail) || `https://img.youtube.com/vi/${category.youtubeId}/hqdefault.jpg`}
                             alt={category.title}
                             loading="lazy"
                             decoding="async"
@@ -274,7 +275,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                         </div>
                       ) : (
                         <img
-                          src={category.thumbnail}
+                          src={assetPath(category.thumbnail)}
                           alt={category.title}
                           loading="lazy"
                           decoding="async"

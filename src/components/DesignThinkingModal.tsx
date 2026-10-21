@@ -16,6 +16,7 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 import { useModalScrollLock } from '../utils/modalScrollLock';
+import { assetPath } from '../utils/assetPath';
 
 const SOFTWARE_MAP: Record<string, { icon?: string; name: string; tag?: string }> = {
   'Cinema 4D': { icon: '/logos/c4d.png', name: 'Cinema 4D', tag: '3D Modeling' },
@@ -287,7 +288,7 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
             {activeViewMode === 'single' && currentView && (
               <div className={`relative w-full bg-black group flex items-center justify-center overflow-hidden ${project.aspectRatio === 'tall' ? 'max-h-[76vh] py-2' : 'aspect-[16/10]'}`}>
                 <img
-                  src={currentView.imageUrl}
+                  src={assetPath(currentView.imageUrl)}
                   alt={currentView.name}
                   loading="lazy"
                   decoding="async"
@@ -352,7 +353,7 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
             {activeViewMode === 'clay' && project.clayImage && (
               <div className={`relative w-full bg-black group flex items-center justify-center overflow-hidden ${project.aspectRatio === 'tall' ? 'max-h-[76vh] py-2' : 'aspect-[16/10]'}`}>
                 <img
-                  src={project.clayImage}
+                  src={assetPath(project.clayImage)}
                   alt="Cinema 4D Viewport Screenshot"
                   loading="lazy"
                   decoding="async"
@@ -415,7 +416,7 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
                       className={`group relative rounded-2xl overflow-hidden border border-white/10 hover:border-cyan-400/50 cursor-pointer bg-black ${project.aspectRatio === 'tall' ? 'aspect-[3/4]' : 'aspect-[16/10]'} transition-all duration-300 hover:scale-[1.01] shadow-lg`}
                     >
                       <img
-                        src={angle.imageUrl}
+                        src={assetPath(angle.imageUrl)}
                         alt={angle.name}
                         loading="lazy"
                         decoding="async"
@@ -449,7 +450,7 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
                       className={`group relative rounded-2xl overflow-hidden border border-emerald-500/30 hover:border-emerald-400 cursor-pointer bg-black ${project.aspectRatio === 'tall' ? 'aspect-[3/4]' : 'aspect-[16/10]'} transition-all duration-300 hover:scale-[1.01] shadow-lg`}
                     >
                       <img
-                        src={project.clayImage}
+                        src={assetPath(project.clayImage)}
                         alt="Cinema 4D Viewport Screenshot"
                         loading="lazy"
                         decoding="async"
@@ -507,7 +508,7 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
                   >
                     <div className={`relative w-full rounded-lg overflow-hidden bg-black ${project.aspectRatio === 'tall' ? 'aspect-[3/4]' : 'aspect-[16/10]'}`}>
                       <img
-                        src={angle.imageUrl.endsWith('.webp') ? angle.imageUrl.replace('.webp', '-thumb.webp') : angle.imageUrl}
+                        src={assetPath(angle.imageUrl.endsWith('.webp') ? angle.imageUrl.replace('.webp', '-thumb.webp') : angle.imageUrl)}
                         onError={(e) => {
                           const target = e.currentTarget;
                           if (target.src !== angle.imageUrl) {
@@ -547,7 +548,7 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
                 >
                   <div className={`relative w-full rounded-lg overflow-hidden bg-black ${project.aspectRatio === 'tall' ? 'aspect-[3/4]' : 'aspect-[16/10]'}`}>
                     <img
-                      src={project.clayImage.endsWith('.webp') ? project.clayImage.replace('.webp', '-thumb.webp') : project.clayImage}
+                      src={assetPath(project.clayImage.endsWith('.webp') ? project.clayImage.replace('.webp', '-thumb.webp') : project.clayImage)}
                       onError={(e) => {
                         const target = e.currentTarget;
                         if (target.src !== project.clayImage) {
@@ -634,7 +635,7 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
                     >
                       {meta.icon ? (
                         <img
-                          src={meta.icon}
+                          src={assetPath(meta.icon)}
                           alt={meta.name}
                           loading="lazy"
                           decoding="async"
@@ -745,7 +746,7 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
 
             {/* Maximum-coverage Raw Image */}
             <img
-              src={lightboxImage.url}
+              src={assetPath(lightboxImage.url)}
               alt={lightboxImage.title}
               decoding="async"
               className="w-full h-full max-w-full max-h-full object-contain rounded-xl sm:rounded-2xl border border-white/10 shadow-[0_25px_100px_rgba(0,0,0,0.95)]"

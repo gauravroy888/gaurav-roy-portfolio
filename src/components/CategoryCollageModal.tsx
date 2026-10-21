@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { CollectionItem, ProjectItem, DOMAINS } from '../data/portfolioData';
 import { X, Layers, ArrowUpRight, Play } from 'lucide-react';
 import { useModalScrollLock } from '../utils/modalScrollLock';
+import { assetPath } from '../utils/assetPath';
 
 interface CategoryCollageModalProps {
   isOpen: boolean;
@@ -146,15 +147,15 @@ export const CategoryCollageModal: React.FC<CategoryCollageModalProps> = ({
                           <img
                             src={
                               project.coverImage && !project.coverImage.includes('youtube.com')
-                                ? (project.coverImage.endsWith('.webp') && !project.coverImage.includes('-thumb.webp')
+                                ? assetPath(project.coverImage.endsWith('.webp') && !project.coverImage.includes('-thumb.webp')
                                     ? project.coverImage.replace('.webp', '-thumb.webp')
                                     : project.coverImage)
                                 : `https://img.youtube.com/vi/${project.youtubeId}/hqdefault.jpg`
                             }
                             onError={(e) => {
                               const target = e.currentTarget as HTMLImageElement;
-                              if (project.coverImage && target.src !== project.coverImage) {
-                                target.src = project.coverImage;
+                              if (project.coverImage && target.src !== assetPath(project.coverImage)) {
+                                target.src = assetPath(project.coverImage);
                               }
                             }}
                             alt={project.title}
@@ -171,14 +172,14 @@ export const CategoryCollageModal: React.FC<CategoryCollageModalProps> = ({
                       ) : (
                         <img
                           src={
-                            project.coverImage.endsWith('.webp') && !project.coverImage.includes('-thumb.webp')
+                            assetPath(project.coverImage.endsWith('.webp') && !project.coverImage.includes('-thumb.webp')
                               ? project.coverImage.replace('.webp', '-thumb.webp')
-                              : project.coverImage
+                              : project.coverImage)
                           }
                           onError={(e) => {
                             const target = e.currentTarget as HTMLImageElement;
-                            if (target.src !== project.coverImage) {
-                              target.src = project.coverImage;
+                            if (target.src !== assetPath(project.coverImage)) {
+                              target.src = assetPath(project.coverImage);
                             }
                           }}
                           alt={project.title}

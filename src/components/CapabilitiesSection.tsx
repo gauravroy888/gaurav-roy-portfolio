@@ -1,4 +1,5 @@
 'use client';
+import { assetPath } from '../utils/assetPath';
 
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
@@ -404,7 +405,7 @@ export const CapabilitiesSection: React.FC = () => {
           className={`${size} rounded-lg ${item.bg} border ${item.border} ${item.padding || 'p-1'} flex items-center justify-center shrink-0 shadow-sm overflow-hidden group-hover:scale-105 transition-transform`}
         >
           <img
-            src={item.src}
+            src={assetPath(item.src)}
             alt={item.alt}
             className="w-full h-full object-contain filter drop-shadow-sm"
             loading="lazy"

@@ -17,6 +17,7 @@ import {
   Maximize2
 } from 'lucide-react';
 import { useModalScrollLock } from '../utils/modalScrollLock';
+import { assetPath } from '../utils/assetPath';
 
 interface StoryTimelineModalProps {
   isOpen: boolean;
@@ -409,7 +410,7 @@ export const StoryTimelineModal: React.FC<StoryTimelineModalProps> = ({ isOpen, 
                   className="absolute inset-0 w-full h-full cursor-pointer group/poster flex items-center justify-center overflow-hidden"
                 >
                   <img
-                    src={INTRO_VIDEO_CONFIG.posterUrl}
+                    src={assetPath(INTRO_VIDEO_CONFIG.posterUrl)}
                     alt="Intro Reel Poster"
                     loading="lazy"
                     decoding="async"
@@ -518,7 +519,7 @@ export const StoryTimelineModal: React.FC<StoryTimelineModalProps> = ({ isOpen, 
                               {item.imageUrl ? (
                                 <>
                                   <img
-                                    src={item.imageUrl}
+                                    src={assetPath(item.imageUrl)}
                                     alt={item.title}
                                     loading="lazy"
                                     decoding="async"
@@ -602,7 +603,7 @@ export const StoryTimelineModal: React.FC<StoryTimelineModalProps> = ({ isOpen, 
                               {item.imageUrl ? (
                                 <>
                                   <img
-                                    src={item.imageUrl}
+                                    src={assetPath(item.imageUrl)}
                                     alt={item.title}
                                     loading="lazy"
                                     decoding="async"
@@ -675,7 +676,7 @@ export const StoryTimelineModal: React.FC<StoryTimelineModalProps> = ({ isOpen, 
                           {item.imageUrl ? (
                             <>
                               <img
-                                src={item.imageUrl}
+                                src={assetPath(item.imageUrl)}
                                 alt={item.title}
                                 loading="lazy"
                                 decoding="async"
@@ -803,7 +804,7 @@ export const StoryTimelineModal: React.FC<StoryTimelineModalProps> = ({ isOpen, 
                         className="sm:col-span-7 relative min-h-[220px] sm:min-h-0 h-full rounded-2xl overflow-hidden border border-white/15 group/tile cursor-pointer bg-[#070A12] shadow-lg"
                       >
                         <img
-                          src={selectedMilestone.gallery[0]}
+                          src={assetPath(selectedMilestone.gallery[0])}
                           alt="Hero Showcase"
                           loading="lazy"
                           decoding="async"
@@ -833,7 +834,7 @@ export const StoryTimelineModal: React.FC<StoryTimelineModalProps> = ({ isOpen, 
                             className="relative h-full rounded-2xl overflow-hidden border border-white/15 group/tile cursor-pointer bg-[#070A12] shadow-lg min-h-[140px] sm:min-h-0"
                           >
                             <img
-                              src={imgUrl}
+                              src={assetPath(imgUrl)}
                               alt={`Detail photo ${idx + 2}`}
                               loading="lazy"
                               decoding="async"
@@ -910,7 +911,7 @@ export const StoryTimelineModal: React.FC<StoryTimelineModalProps> = ({ isOpen, 
                       {/* Full-width spotlight image display with navigation */}
                       <div className="relative aspect-[16/10] sm:aspect-[16/9] rounded-2xl overflow-hidden border border-white/15 bg-black/60 shadow-2xl mb-3">
                         <img
-                          src={selectedMilestone.gallery[activePhotoIndex]}
+                          src={assetPath(selectedMilestone.gallery[activePhotoIndex])}
                           alt={`Photo ${activePhotoIndex + 1}`}
                           loading="lazy"
                           decoding="async"
@@ -953,7 +954,7 @@ export const StoryTimelineModal: React.FC<StoryTimelineModalProps> = ({ isOpen, 
                               }`}
                             >
                               <img
-                                src={thumb}
+                                src={assetPath(thumb)}
                                 alt={`Thumbnail ${idx + 1}`}
                                 loading="lazy"
                                 decoding="async"
