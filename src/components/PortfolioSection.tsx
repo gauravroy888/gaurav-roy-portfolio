@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { PROJECTS, COLLECTIONS, CollectionItem, ProjectItem } from '../data/portfolioData';
 import { ChevronLeft, ChevronRight, ArrowUpRight, Layers, Play } from 'lucide-react';
 import { GlowBorderCard } from './GlowBorderCard';
@@ -19,6 +19,32 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
 }) => {
   const [activeFilter, setActiveFilter] = useState<'all' | '3d-design' | 'ads' | 'ai-projects' | 'webxr-unreal'>('all');
   const [currentPage, setCurrentPage] = useState(0);
+  const tabsRef = useRef<HTMLDivElement | null>(null);
+  const [tabsInView, setTabsInView] = useState(false);
+
+  // Scroll detection: trigger fade-in animation when scrolling down to the tabs
+  useEffect(() => {
+    const el = tabsRef.current;
+    if (!el) return;
+
+    // Check if element is already in viewport on mount (e.g. reload or anchor jump)
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      setTabsInView(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTabsInView(true);
+        }
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -30px 0px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   const filterTabs = [
     { id: 'all', label: 'All Disciplines' },
@@ -105,15 +131,29 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
             </p>
           </div>
 
-          {/* Clean Filter Tabs (Without category count numbers) */}
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8 px-2">
-            {filterTabs.map((tab) => {
+          {/* Clean Filter Tabs (Animated & Fade-in on scroll) */}
+          <div
+            ref={tabsRef}
+            className={`flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8 px-2 transition-all duration-700 ease-out transform ${
+              tabsInView
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 translate-y-8 pointer-events-none'
+            }`}
+          >
+            {filterTabs.map((tab, idx) => {
               const isActive = activeFilter === tab.id;
               return (
                 <button
                   key={tab.id}
                   onClick={() => handleFilterChange(tab.id)}
-                  className={`px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold tracking-wider transition-all duration-200 ${
+                  style={{
+                    transitionDelay: tabsInView ? `${idx * 80}ms` : '0ms',
+                  }}
+                  className={`px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold tracking-wider transition-all duration-500 ease-out transform ${
+                    tabsInView
+                      ? 'opacity-100 translate-y-0 scale-100'
+                      : 'opacity-0 translate-y-4 scale-95'
+                  } ${
                     isActive
                       ? 'bg-white text-black shadow-lg shadow-white/10 scale-105'
                       : 'bg-white/[0.05] text-gray-300 hover:text-white hover:bg-white/[0.1] backdrop-blur-md border border-white/10'
@@ -183,7 +223,11 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
 
           {/* TIER 1: PROJECT CARDS / CATEGORY CARDS */}
           {isWebxrUnreal ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8">
+            <div
+              className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8 transition-all duration-700 delay-200 transform ${
+                tabsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+              }`}
+            >
               {displayedWebxrProjects.map((project) => (
                 <div
                   key={project.id}
@@ -244,7 +288,11 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8">
+            <div
+              className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8 transition-all duration-700 delay-200 transform ${
+                tabsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+              }`}
+            >
               {displayedCategories.map((category) => {
                 return (
                   <div
