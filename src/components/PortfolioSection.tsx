@@ -106,14 +106,14 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
           </div>
 
           {/* Clean Filter Tabs (Without category count numbers) */}
-          <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 mb-8">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8 px-2">
             {filterTabs.map((tab) => {
               const isActive = activeFilter === tab.id;
               return (
                 <button
                   key={tab.id}
                   onClick={() => handleFilterChange(tab.id)}
-                  className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold tracking-wider transition-all duration-200 ${
+                  className={`px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold tracking-wider transition-all duration-200 ${
                     isActive
                       ? 'bg-white text-black shadow-lg shadow-white/10 scale-105'
                       : 'bg-white/[0.05] text-gray-300 hover:text-white hover:bg-white/[0.1] backdrop-blur-md border border-white/10'
@@ -288,7 +288,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                       )}
 
                       {/* Floating Category Pill in bottom-right of thumbnail */}
-                      <div className="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-black/80 backdrop-blur-md text-[10px] font-mono text-cyan-300 border border-cyan-500/30 flex items-center gap-1.5 shadow-md">
+                      <div className="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-black/80 backdrop-blur-md text-[10px] font-mono text-cyan-300 border border-cyan-500/30 hidden sm:flex items-center gap-1.5 shadow-md">
                         <Layers className="w-3 h-3 text-cyan-400" />
                         <span>Explore Tab</span>
                         <ArrowUpRight className="w-3 h-3 text-cyan-400 group-hover/card:translate-x-0.5 group-hover/card:-translate-y-0.5 transition-transform" />

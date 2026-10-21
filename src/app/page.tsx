@@ -85,6 +85,29 @@ export default function Home() {
   // Global root modal scroll lock and interaction blocker
   useModalScrollLock(isAnyModalOpen);
 
+  // Idle preload primary modals so when a user clicks on mobile or desktop, the modal opens INSTANTLY with 0 lag
+  useEffect(() => {
+    const idlePreload = () => {
+      import('../components/CategoryCollageModal');
+      import('../components/ProductDetailModal');
+      import('../components/DesignThinkingModal');
+    };
+
+    if (typeof window !== 'undefined') {
+      if ('requestIdleCallback' in window) {
+        const id = (window as unknown as { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => number }).requestIdleCallback(idlePreload, { timeout: 2500 });
+        return () => {
+          if ('cancelIdleCallback' in window) {
+            (window as unknown as { cancelIdleCallback: (id: number) => void }).cancelIdleCallback(id);
+          }
+        };
+      } else {
+        const timer = setTimeout(idlePreload, 1500);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, []);
+
   // Global Cmd+K / Ctrl+K keyboard shortcut
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

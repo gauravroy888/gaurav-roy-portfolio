@@ -100,6 +100,22 @@ body {
   animation: shrink-timer 10s linear forwards;
 }
 
+/* GPU-accelerated instant modal pop-in with fluid cubic-bezier (no framer-motion hitch) */
+@keyframes modal-pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-modal-pop {
+  animation: modal-pop-in 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 /* Complete background scroll lock & overscroll containment when any modal is active */
 html.modal-is-open,
 body.modal-is-open {

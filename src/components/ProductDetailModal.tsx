@@ -101,12 +101,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-[100010] flex items-center justify-center p-3 sm:p-5 md:p-8 pt-6 sm:pt-8 bg-black/90 backdrop-blur-2xl overflow-y-auto overscroll-contain animate-fadeIn"
+      className="fixed inset-0 z-[100010] flex items-center justify-center p-2 sm:p-5 md:p-8 pt-4 sm:pt-8 bg-black/90 backdrop-blur-md overflow-y-auto overscroll-contain animate-fadeIn"
       data-modal-scrollable
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-5xl bg-[#0F121C] border border-white/15 rounded-3xl overflow-hidden shadow-2xl shadow-black my-auto flex flex-col max-h-[92vh] text-white"
+        className="relative w-full max-w-5xl bg-[#0F121C] border border-white/15 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl shadow-black my-auto flex flex-col max-h-[92vh] text-white animate-modal-pop"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header Bar */}
@@ -139,11 +139,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 <span className="sm:hidden">Back</span>
               </button>
             )}
-            <span className="text-[11px] font-mono uppercase px-3 py-1 rounded-full bg-white/10 border border-white/15 font-bold text-white">
+            <span className="hidden sm:inline-block text-[11px] font-mono uppercase px-3 py-1 rounded-full bg-white/10 border border-white/15 font-bold text-white">
               {project.badge}
             </span>
             {project.client && (
-              <span className="text-xs font-mono text-gray-300 bg-white/[0.04] px-2.5 py-1 rounded-full border border-white/[0.08]">
+              <span className="hidden md:inline-block text-xs font-mono text-gray-300 bg-white/[0.04] px-2.5 py-1 rounded-full border border-white/[0.08]">
                 Client: {project.client}
               </span>
             )}
@@ -191,7 +191,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         </div>
 
         {/* Scrollable Content */}
-        <div className="overflow-y-auto p-6 sm:p-8 space-y-6">
+        <div className="overflow-y-auto p-4 sm:p-8 space-y-5 sm:space-y-6">
           
           {/* Title and Subtitle */}
           <div className="space-y-1.5">
@@ -203,37 +203,41 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             </p>
           </div>
 
-          {/* Interactive Media View Tab Switcher (Bigger & Strictly 2 Tabs Per Section) */}
-          <div className="flex flex-wrap items-center gap-3 border-b border-white/[0.08] pb-4">
+          {/* Interactive Media View Tab Switcher (Horizontally scrollable and perfectly aligned on mobile) */}
+          <div className="flex items-center gap-2 sm:gap-3 border-b border-white/[0.08] pb-3 sm:pb-4 overflow-x-auto no-scrollbar">
             {project.youtubeId ? (
               <>
                 <button
                   onClick={() => setActiveTab('video')}
-                  className={`px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all flex items-center gap-2.5 ${
+                  className={`px-3.5 sm:px-6 py-2 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all flex items-center gap-2 sm:gap-2.5 shrink-0 whitespace-nowrap ${
                     activeTab === 'video'
                       ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30 ring-1 ring-purple-400/50'
                       : 'text-gray-300 hover:text-white bg-white/[0.06] hover:bg-white/10 border border-white/10'
                   }`}
                 >
-                  <Play className="w-4 h-4 fill-current text-white" />
-                  <span>
+                  <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current text-white" />
+                  <span className="hidden sm:inline">
                     {project.collectionId === 'motion-graphics'
                       ? 'Motion Graphic Video'
                       : 'Commercial Video'}
+                  </span>
+                  <span className="sm:hidden">
+                    {project.collectionId === 'motion-graphics' ? 'Motion Video' : 'Video'}
                   </span>
                 </button>
 
                 {isAdvertisement && (
                   <button
                     onClick={() => setActiveTab('stills')}
-                    className={`px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all flex items-center gap-2.5 ${
+                    className={`px-3.5 sm:px-6 py-2 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all flex items-center gap-2 sm:gap-2.5 shrink-0 whitespace-nowrap ${
                       activeTab === 'stills'
                         ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30 ring-1 ring-purple-400/50'
                         : 'text-gray-300 hover:text-white bg-white/[0.06] hover:bg-white/10 border border-white/10'
                     }`}
                   >
-                    <ImageIcon className="w-4 h-4 text-purple-300" />
-                    <span>Stills / Renders</span>
+                    <ImageIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-300" />
+                    <span className="hidden sm:inline">Stills / Renders</span>
+                    <span className="sm:hidden">Stills</span>
                   </button>
                 )}
 
@@ -242,12 +246,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     href={project.storyboardUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all flex items-center gap-2 bg-gradient-to-r from-amber-500/20 to-orange-500/20 hover:from-amber-500/30 hover:to-orange-500/30 text-amber-300 border border-amber-500/40 hover:border-amber-400 shadow-md group active:scale-95"
+                    className="px-3.5 sm:px-6 py-2 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all flex items-center gap-2 bg-gradient-to-r from-amber-500/20 to-orange-500/20 hover:from-amber-500/30 hover:to-orange-500/30 text-amber-300 border border-amber-500/40 hover:border-amber-400 shadow-md group active:scale-95 shrink-0 whitespace-nowrap"
                     title="Open interactive storyboard in a new browser tab"
                   >
-                    <BookOpen className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
+                    <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400 group-hover:scale-110 transition-transform" />
                     <span>Storyboard</span>
-                    <ExternalLink className="w-3.5 h-3.5 text-amber-400 ml-0.5" />
+                    <ExternalLink className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-amber-400 ml-0.5" />
                   </a>
                 )}
               </>
@@ -255,39 +259,41 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               <>
                 <button
                   onClick={() => setActiveTab('overview')}
-                  className={`px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all flex items-center gap-2.5 ${
+                  className={`px-3.5 sm:px-6 py-2 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all flex items-center gap-2 sm:gap-2.5 shrink-0 whitespace-nowrap ${
                     activeTab === 'overview'
                       ? 'bg-white text-black font-bold shadow-lg shadow-white/10'
                       : 'text-gray-300 hover:text-white bg-white/[0.06] hover:bg-white/10 border border-white/10'
                   }`}
                 >
-                  <Eye className="w-4 h-4" />
+                  <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   <span>Master Render</span>
                 </button>
 
                 {project.views && project.views.length > 0 ? (
                   <button
                     onClick={() => setActiveTab('views')}
-                    className={`px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all flex items-center gap-2.5 ${
+                    className={`px-3.5 sm:px-6 py-2 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all flex items-center gap-2 sm:gap-2.5 shrink-0 whitespace-nowrap ${
                       activeTab === 'views'
                         ? 'bg-emerald-500 text-white font-bold shadow-lg shadow-emerald-500/20'
                         : 'text-gray-300 hover:text-white bg-white/[0.06] hover:bg-white/10 border border-white/10'
                     }`}
                   >
-                    <Sparkles className="w-4 h-4" />
-                    <span>3D Views & Details ({project.views.length})</span>
+                    <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <span className="hidden sm:inline">3D Views & Details ({project.views.length})</span>
+                    <span className="sm:hidden">Views ({project.views.length})</span>
                   </button>
                 ) : galleryList.length > 0 ? (
                   <button
                     onClick={() => setActiveTab('gallery')}
-                    className={`px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all flex items-center gap-2.5 ${
+                    className={`px-3.5 sm:px-6 py-2 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all flex items-center gap-2 sm:gap-2.5 shrink-0 whitespace-nowrap ${
                       activeTab === 'gallery'
                         ? 'bg-white text-black font-bold shadow-lg'
                         : 'text-gray-300 hover:text-white bg-white/[0.06] hover:bg-white/10 border border-white/10'
                     }`}
                   >
-                    <ImageIcon className="w-4 h-4" />
-                    <span>Images & Stills ({galleryList.length})</span>
+                    <ImageIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <span className="hidden sm:inline">Images & Stills ({galleryList.length})</span>
+                    <span className="sm:hidden">Gallery ({galleryList.length})</span>
                   </button>
                 ) : null}
               </>
@@ -423,7 +429,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                               <Maximize2 className="w-4 h-4 text-emerald-300" />
                               <span>Inspect High-Poly Proof</span>
                             </div>
-                            <div className="absolute top-2 left-2 px-2.5 py-0.5 rounded bg-black/80 backdrop-blur-md text-[10px] font-mono text-emerald-300 border border-emerald-500/30">
+                            <div className="absolute top-2 left-2 px-2.5 py-0.5 rounded bg-black/80 backdrop-blur-md text-[10px] font-mono text-emerald-300 border border-emerald-500/30 hidden sm:block">
                               {v.camNumber}
                             </div>
                           </div>
@@ -540,7 +546,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                           <span>Inspect Full Resolution</span>
                         </div>
                         {still.tag && (
-                          <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-md text-[10px] font-mono font-bold text-purple-300 border border-purple-500/30">
+                          <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-md text-[10px] font-mono font-bold text-purple-300 border border-purple-500/30 hidden sm:block">
                             {still.tag}
                           </div>
                         )}
@@ -623,7 +629,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                         <Maximize2 className="w-4 h-4" />
                         <span>Expand View</span>
                       </div>
-                      <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/70 backdrop-blur-md text-[10px] font-mono text-gray-300 border border-white/10">
+                      <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/70 backdrop-blur-md text-[10px] font-mono text-gray-300 border border-white/10 hidden sm:block">
                         Frame {idx + 1}
                       </div>
                     </div>
@@ -676,7 +682,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                           <span>Inspect Blueprint</span>
                         </div>
                         {plan.scale && (
-                          <div className="absolute top-2 right-2 px-2.5 py-0.5 rounded bg-black/80 backdrop-blur-md text-[10px] font-mono text-cyan-300 border border-cyan-500/30">
+                          <div className="absolute top-2 right-2 px-2.5 py-0.5 rounded bg-black/80 backdrop-blur-md text-[10px] font-mono text-cyan-300 border border-cyan-500/30 hidden sm:block">
                             {plan.scale}
                           </div>
                         )}
@@ -720,7 +726,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   decoding="async"
                   className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                 />
-                <div className="absolute top-4 left-4 z-10 flex items-center gap-2 bg-black/80 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-emerald-500/30 shadow-lg">
+                <div className="absolute top-4 left-4 z-10 hidden sm:flex items-center gap-2 bg-black/80 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-emerald-500/30 shadow-lg">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                   <span className="text-xs font-mono font-bold text-emerald-300">
                     Cinema 4D Viewport Screenshot (Authenticity Proof — Not AI)
@@ -763,7 +769,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                           <Maximize2 className="w-4 h-4 text-emerald-300" />
                           <span>Inspect Viewport Proof</span>
                         </div>
-                        <div className="absolute top-2 left-2 px-2.5 py-0.5 rounded bg-black/80 backdrop-blur-md text-[10px] font-mono text-emerald-300 border border-emerald-500/30">
+                        <div className="absolute top-2 left-2 px-2.5 py-0.5 rounded bg-black/80 backdrop-blur-md text-[10px] font-mono text-emerald-300 border border-emerald-500/30 hidden sm:block">
                           {v.camNumber}
                         </div>
                       </div>

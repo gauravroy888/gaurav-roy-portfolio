@@ -198,6 +198,13 @@ export const CuteSpiderCompanion: React.FC = () => {
   const [isAudioUnlocked, setIsAudioUnlocked] = useState(false);
 
   useEffect(() => {
+    // Enable spider creature voice by default on mobile view as requested
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    if (isMobile) {
+      setSoundEnabled(true);
+      setSoundOn(true);
+    }
+
     setIsAudioUnlocked(isAutoplayUnlocked());
 
     const handleGlobalActivation = () => {
@@ -208,6 +215,7 @@ export const CuteSpiderCompanion: React.FC = () => {
       setIsAudioUnlocked(true);
     };
     window.addEventListener('pointerdown', handleGlobalActivation, { capture: true, passive: true });
+    window.addEventListener('touchstart', handleGlobalActivation, { capture: true, passive: true });
     window.addEventListener('click', handleGlobalActivation, { capture: true, passive: true });
     window.addEventListener('keydown', handleGlobalActivation, { capture: true, passive: true });
     window.addEventListener('creature-audio-unlocked', handleUnlockedEvent);
@@ -2031,6 +2039,7 @@ export const CuteSpiderCompanion: React.FC = () => {
 
     return () => {
       window.removeEventListener('pointerdown', handleGlobalActivation, true);
+      window.removeEventListener('touchstart', handleGlobalActivation, true);
       window.removeEventListener('click', handleGlobalActivation, true);
       window.removeEventListener('keydown', handleGlobalActivation, true);
       window.removeEventListener('creature-audio-unlocked', handleUnlockedEvent);
@@ -2095,7 +2104,7 @@ export const CuteSpiderCompanion: React.FC = () => {
         title="Click Gaurav's spatial spider! ♡"
       />
 
-      {/* Glassmorphic Thought / Speech Bubble Component (z-[40]) */}
+      {/* Glassmorphic Thought / Speech Bubble Component (Hidden on mobile per user request) */}
       {activeSpeech.visible && activeSpeech.text && (
         <div
           ref={speechBubbleRef}
@@ -2105,7 +2114,7 @@ export const CuteSpiderCompanion: React.FC = () => {
               setIsAudioUnlocked(true);
             }
           }}
-          className="fixed pointer-events-auto z-[40] select-none cursor-pointer"
+          className="fixed pointer-events-auto z-[40] select-none cursor-pointer hidden md:block"
           style={{
             right: activeSpeech.x > (typeof window !== 'undefined' ? window.innerWidth * 0.5 : 500)
               ? `${Math.max(16, (typeof window !== 'undefined' ? window.innerWidth : 1200) - activeSpeech.x + 22)}px`

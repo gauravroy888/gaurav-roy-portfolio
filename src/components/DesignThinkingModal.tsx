@@ -158,16 +158,16 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-6xl bg-[#090D18] border border-cyan-500/25 rounded-3xl overflow-hidden shadow-[0_30px_100px_rgba(0,0,0,0.95)] my-auto flex flex-col max-h-[92vh] text-white"
+        className="relative w-full max-w-6xl bg-[#090D18] border border-cyan-500/25 rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_30px_100px_rgba(0,0,0,0.95)] my-auto flex flex-col max-h-[94vh] sm:max-h-[92vh] text-white animate-modal-pop"
         onClick={(e) => e.stopPropagation()}
       >
         {/* 1. TOP CONTROL BAR */}
-        <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 border-b border-cyan-500/20 bg-[#0C1222]/90 sticky top-0 z-30 backdrop-blur-xl gap-2">
-          <div className="flex items-center gap-2.5 sm:gap-3">
+        <div className="flex items-center justify-between px-3 sm:px-6 py-2.5 sm:py-4 border-b border-cyan-500/20 bg-[#0C1222]/90 sticky top-0 z-30 backdrop-blur-xl gap-2">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             {onBack && (
               <button
                 onClick={onBack}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 hover:text-cyan-200 border border-cyan-500/30 hover:border-cyan-400/60 text-xs font-mono font-bold transition-all group shadow-sm active:scale-95 flex-shrink-0"
+                className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 hover:text-cyan-200 border border-cyan-500/30 hover:border-cyan-400/60 text-xs font-mono font-bold transition-all group shadow-sm active:scale-95 shrink-0"
                 title={`Back to ${project.collectionId === 'product-renders' ? 'All Products' : 'All Layouts'}`}
               >
                 <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform text-cyan-400" />
@@ -177,7 +177,7 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
                 <span className="sm:hidden">Back</span>
               </button>
             )}
-            <span className="text-[11px] font-mono uppercase px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 font-bold text-cyan-300">
+            <span className="text-[11px] font-mono uppercase px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 font-bold text-cyan-300 hidden sm:inline-block">
               {project.badge || '3D Architecture'}
             </span>
             {project.client && (
@@ -191,7 +191,7 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
           </div>
 
           {/* Layout Switcher (Prev / Next) + Close */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {onNavigatePrev && (
               <button
                 onClick={onNavigatePrev}
@@ -204,7 +204,7 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
             )}
 
             {currentIndex !== undefined && totalCount !== undefined && (
-              <span className="text-xs font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-md border border-cyan-500/20 font-bold">
+              <span className="text-xs font-mono text-cyan-400 bg-cyan-500/10 px-2 sm:px-2.5 py-1 rounded-md border border-cyan-500/20 font-bold">
                 {currentIndex + 1} / {totalCount}
               </span>
             )}
@@ -220,11 +220,11 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
               </button>
             )}
 
-            <div className="h-4 w-px bg-white/15 mx-1" />
+            <div className="h-4 w-px bg-white/15 mx-0.5 sm:mx-1" />
 
             <button
               onClick={onClose}
-              className="p-1.5 text-gray-400 hover:text-white rounded-full hover:bg-white/10 transition-colors ml-1"
+              className="p-1.5 text-gray-400 hover:text-white rounded-full hover:bg-white/10 transition-colors ml-0.5 sm:ml-1"
               title="Close (Esc)"
             >
               <X className="w-5 h-5" />
@@ -282,11 +282,11 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
           </div>
 
           {/* 3. THE MAIN MULTI-VIEW VIEWPORT */}
-          <div className="relative rounded-2xl overflow-hidden border border-cyan-500/25 bg-black shadow-2xl min-h-[360px]">
+          <div className="relative rounded-2xl overflow-hidden border border-cyan-500/25 bg-black shadow-2xl min-h-0 sm:min-h-[360px]">
             
             {/* MODE A: SINGLE CAMERA VIEW */}
             {activeViewMode === 'single' && currentView && (
-              <div className={`relative w-full bg-black group flex items-center justify-center overflow-hidden ${project.aspectRatio === 'tall' ? 'max-h-[76vh] py-2' : 'aspect-[16/10]'}`}>
+              <div className={`relative w-full bg-black group flex items-center justify-center overflow-hidden ${project.aspectRatio === 'tall' ? 'max-h-[76vh] py-2' : 'aspect-[4/3] sm:aspect-[16/10]'}`}>
                 <img
                   src={assetPath(currentView.imageUrl)}
                   alt={currentView.name}
@@ -295,8 +295,8 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
                   className={`w-full object-contain ${project.aspectRatio === 'tall' ? 'max-h-[74vh] w-auto mx-auto' : 'h-full object-cover'} transition-transform duration-700 ease-out group-hover:scale-[1.01]`}
                 />
 
-                {/* Top-Left Camera HUD Badge */}
-                <div className="absolute top-4 left-4 z-10 flex items-center gap-2 bg-black/80 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-cyan-500/30 shadow-lg">
+                {/* Top-Left Camera HUD Badge - hidden on mobile view per user request */}
+                <div className="absolute top-4 left-4 z-10 hidden sm:flex items-center gap-2 bg-black/80 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-cyan-500/30 shadow-lg">
                   <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
                   <span className="text-xs font-mono font-bold text-cyan-300">
                     {currentView.camNumber} // {currentView.name}
@@ -312,10 +312,11 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
                 {/* Click-to-Zoom Button Overlay */}
                 <button
                   onClick={() => setLightboxImage({ url: currentView.highResUrl || currentView.imageUrl, title: currentView.name, subtitle: currentView.description })}
-                  className="absolute bottom-4 right-4 z-10 px-3.5 py-2 rounded-xl bg-black/80 hover:bg-black text-xs font-mono text-cyan-300 border border-cyan-500/40 backdrop-blur-md flex items-center gap-1.5 shadow-lg transition-transform hover:scale-105"
+                  className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 z-10 px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-black/80 hover:bg-black text-[11px] sm:text-xs font-mono text-cyan-300 border border-cyan-500/40 backdrop-blur-md flex items-center gap-1.5 shadow-lg transition-transform hover:scale-105"
                 >
                   <Maximize2 className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>{currentView.highResUrl ? 'Full Raw Image' : 'Full View'}</span>
+                  <span className="hidden sm:inline">{currentView.highResUrl ? 'Full Raw Image' : 'Full View'}</span>
+                  <span className="sm:hidden">Zoom</span>
                 </button>
 
                 {/* In-viewport Prev/Next Camera Arrow Buttons */}
@@ -351,7 +352,7 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
 
             {/* MODE B: VIEWPORT SCREENSHOT DIRECT IMAGE VIEW (NO SLIDER) */}
             {activeViewMode === 'clay' && project.clayImage && (
-              <div className={`relative w-full bg-black group flex items-center justify-center overflow-hidden ${project.aspectRatio === 'tall' ? 'max-h-[76vh] py-2' : 'aspect-[16/10]'}`}>
+              <div className={`relative w-full bg-black group flex items-center justify-center overflow-hidden ${project.aspectRatio === 'tall' ? 'max-h-[76vh] py-2' : 'aspect-[4/3] sm:aspect-[16/10]'}`}>
                 <img
                   src={assetPath(project.clayImage)}
                   alt="Cinema 4D Viewport Screenshot"
@@ -360,8 +361,8 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
                   className={`w-full object-contain ${project.aspectRatio === 'tall' ? 'max-h-[74vh] w-auto mx-auto' : 'h-full object-cover'} transition-transform duration-700 ease-out group-hover:scale-[1.02]`}
                 />
 
-                {/* Top-Left Viewport HUD Badge */}
-                <div className="absolute top-4 left-4 z-10 flex items-center gap-2 bg-black/80 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-emerald-500/30 shadow-lg">
+                {/* Top-Left Viewport HUD Badge - hidden on mobile view per user request */}
+                <div className="absolute top-4 left-4 z-10 hidden sm:flex items-center gap-2 bg-black/80 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-emerald-500/30 shadow-lg">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                   <span className="text-xs font-mono font-bold text-emerald-300">
                     VIEWPORT // Cinema 4D Viewport Screenshot
@@ -379,10 +380,11 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
                     title: "Cinema 4D Viewport Screenshot",
                     subtitle: "Authenticity Proof — Modeled in Cinema 4D with Native Geometry, Lighting & Shaders (Not AI)"
                   })}
-                  className="absolute bottom-4 right-4 z-10 px-3.5 py-2 rounded-xl bg-black/80 hover:bg-black text-xs font-mono text-emerald-300 border border-emerald-500/40 backdrop-blur-md flex items-center gap-1.5 shadow-lg transition-transform hover:scale-105"
+                  className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 z-10 px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-black/80 hover:bg-black text-[11px] sm:text-xs font-mono text-emerald-300 border border-emerald-500/40 backdrop-blur-md flex items-center gap-1.5 shadow-lg transition-transform hover:scale-105"
                 >
                   <Maximize2 className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Full Raw Image</span>
+                  <span className="hidden sm:inline">Inspect Viewport</span>
+                  <span className="sm:hidden">Zoom</span>
                 </button>
 
                 {/* Subtle vignette */}
@@ -483,14 +485,15 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
             <div className="flex items-center justify-between text-xs font-mono text-gray-400">
               <span className="flex items-center gap-1.5">
                 <Camera className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Layout Camera Filmstrip (Click to switch view):</span>
+                <span className="hidden sm:inline">Layout Camera Filmstrip (Click to switch view):</span>
+                <span className="sm:hidden">Cameras ({viewAngles.length})</span>
               </span>
-              <span className="text-[11px] text-cyan-400">
+              <span className="text-[11px] text-cyan-400 truncate max-w-[150px] sm:max-w-none">
                 {currentView?.name}
               </span>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-8 gap-2.5">
+            <div className="flex sm:grid sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-8 gap-2 sm:gap-2.5 overflow-x-auto no-scrollbar pb-2 sm:pb-0">
               {viewAngles.map((angle, idx) => {
                 const isSelected = activeViewMode === 'single' && selectedViewIndex === idx;
                 return (
@@ -500,7 +503,7 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
                       setSelectedViewIndex(idx);
                       setActiveViewMode('single');
                     }}
-                    className={`relative rounded-xl overflow-hidden border text-left p-1.5 transition-all duration-200 flex flex-col gap-1.5 ${
+                    className={`shrink-0 w-[115px] sm:w-auto relative rounded-xl overflow-hidden border text-left p-1.5 transition-all duration-200 flex flex-col gap-1.5 ${
                       isSelected
                         ? 'border-cyan-400 bg-cyan-500/10 shadow-lg shadow-cyan-500/20 scale-[1.02]'
                         : 'border-white/10 hover:border-white/30 bg-white/[0.03] hover:bg-white/[0.06]'
@@ -540,7 +543,7 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
               {project.clayImage && !hasViewportInViews && (
                 <button
                   onClick={() => setActiveViewMode('clay')}
-                  className={`relative rounded-xl overflow-hidden border text-left p-1.5 transition-all duration-200 flex flex-col gap-1.5 ${
+                  className={`shrink-0 w-[115px] sm:w-auto relative rounded-xl overflow-hidden border text-left p-1.5 transition-all duration-200 flex flex-col gap-1.5 ${
                     activeViewMode === 'clay'
                       ? 'border-emerald-400 bg-emerald-500/10 shadow-lg shadow-emerald-500/20 scale-[1.02]'
                       : 'border-white/10 hover:border-emerald-400/40 bg-white/[0.03] hover:bg-white/[0.06]'
@@ -579,7 +582,7 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
               {viewAngles.length > 1 && (
                 <button
                   onClick={() => setActiveViewMode('grid')}
-                  className={`relative rounded-xl overflow-hidden border text-left p-1.5 transition-all duration-200 flex flex-col gap-1.5 ${
+                  className={`shrink-0 w-[115px] sm:w-auto relative rounded-xl overflow-hidden border text-left p-1.5 transition-all duration-200 flex flex-col gap-1.5 ${
                     activeViewMode === 'grid'
                       ? 'border-white bg-white/10 shadow-lg shadow-white/20 scale-[1.02]'
                       : 'border-white/10 hover:border-white/30 bg-white/[0.03] hover:bg-white/[0.06]'
