@@ -108,118 +108,67 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onOpenSt
             
             <div className="relative w-full max-w-[340px] sm:max-w-[390px] md:max-w-[430px] lg:max-w-[460px] flex flex-col items-center justify-end">
               
-              {/* --- VOLUMETRIC COSMIC NEBULA EMITTERS (DIRECTLY BEHIND TORSO & HEAD) --- */}
-              {/* 1. Centered Celestial Core Aura */}
+              {/* --- MINIMAL LUXURY AMBIENT SEPARATION LIGHT (ULTRA-DIFFUSE, ZERO HARSH HALOS) --- */}
               <div
-                className="absolute top-[32%] left-[50%] lg:left-[54%] -translate-x-1/2 -translate-y-1/2 w-[420px] sm:w-[520px] md:w-[600px] lg:w-[680px] h-[420px] sm:h-[520px] md:h-[600px] lg:h-[680px] rounded-full pointer-events-none z-0"
+                className="absolute top-[35%] left-[50%] lg:left-[54%] -translate-x-1/2 -translate-y-1/2 w-[550px] sm:w-[700px] md:w-[820px] lg:w-[920px] h-[550px] sm:h-[700px] md:h-[820px] lg:h-[920px] rounded-full pointer-events-none z-0"
                 style={{
-                  background: 'radial-gradient(circle at 48% 44%, rgba(139, 92, 246, 0.48) 0%, rgba(59, 130, 246, 0.35) 28%, rgba(6, 182, 212, 0.2) 55%, transparent 75%)',
-                  filter: 'blur(24px)',
-                }}
-              />
-              {/* 2. Camera-Left Electric Cyan Flare (Tracing Silhouette) */}
-              <div
-                className="absolute top-[32%] left-[20%] sm:left-[24%] -translate-x-1/2 -translate-y-1/2 w-[260px] sm:w-[340px] h-[320px] sm:h-[400px] rounded-full pointer-events-none z-0 opacity-90"
-                style={{
-                  background: 'radial-gradient(ellipse at center, rgba(6, 182, 212, 0.52) 0%, rgba(14, 165, 233, 0.25) 42%, transparent 72%)',
-                  filter: 'blur(22px)',
-                }}
-              />
-              {/* 3. Camera-Right Radiant Violet Nebula Cloud (Matches Reference) */}
-              <div
-                className="absolute top-[28%] right-[-14%] sm:right-[-8%] w-[320px] sm:w-[440px] md:w-[520px] h-[360px] sm:h-[460px] md:h-[540px] rounded-full pointer-events-none z-0 opacity-90"
-                style={{
-                  background: 'radial-gradient(ellipse at 42% 48%, rgba(168, 85, 247, 0.55) 0%, rgba(139, 92, 246, 0.32) 36%, rgba(124, 58, 237, 0.15) 60%, transparent 76%)',
-                  filter: 'blur(28px)',
+                  background: 'radial-gradient(circle at center, rgba(99, 102, 241, 0.16) 0%, rgba(59, 130, 246, 0.09) 30%, rgba(14, 165, 233, 0.04) 50%, transparent 72%)',
                 }}
               />
 
-              {/* --- MULTI-LAYERED EDITORIAL GEOMETRY & BACKLIGHT HALO --- */}
+              {/* --- MULTI-LAYERED ARCHITECTURAL ASTROLABE GEOMETRY --- */}
               <div
                 id="hero-portrait-circle"
-                className="absolute top-[31%] left-[50%] lg:left-[54%] -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0"
+                className="absolute top-[32%] left-[50%] lg:left-[54%] -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0"
               >
                 
                 {/* 1. Outer Delicate Dashed Orbital Ring */}
-                <div className="w-[310px] sm:w-[400px] md:w-[480px] lg:w-[540px] xl:w-[570px] h-[310px] sm:h-[400px] md:h-[480px] lg:h-[540px] xl:h-[570px] rounded-full border border-dashed border-cyan-400/25 animate-[spin_120s_linear_infinite]" />
+                <div className="w-[310px] sm:w-[400px] md:w-[480px] lg:w-[540px] xl:w-[570px] h-[310px] sm:h-[400px] md:h-[480px] lg:h-[540px] xl:h-[570px] rounded-full border border-dashed border-white/12 animate-[spin_160s_linear_infinite]" />
                 
                 {/* 2. Inner Solid Architectural Orbit */}
-                <div className="absolute inset-4 sm:inset-5 rounded-full border border-purple-400/30" />
+                <div className="absolute inset-4 sm:inset-5 rounded-full border border-white/10" />
                 
                 {/* 3. Soft Glowing Core Aperture Disc */}
-                <div className="absolute inset-12 sm:inset-16 rounded-full bg-gradient-radial from-white/[0.06] via-transparent to-transparent" />
+                <div className="absolute inset-12 sm:inset-16 rounded-full bg-gradient-radial from-white/[0.03] via-transparent to-transparent" />
 
                 {/* 4. Fine Spatial Crosshairs & Micro Telemetry */}
-                <div className="absolute -top-2 left-1/2 -translate-x-1/2 text-[9px] sm:text-[10px] font-mono text-cyan-300/85 tracking-widest uppercase">
+                <div className="absolute -top-2 left-1/2 -translate-x-1/2 text-[9px] sm:text-[10px] font-mono text-white/40 tracking-widest uppercase">
                   + 01 // SPATIAL
                 </div>
-                <div className="absolute top-1/2 -right-3 sm:-right-4 -translate-y-1/2 text-[8px] sm:text-[9px] font-mono text-purple-300/85 tracking-widest uppercase">
+                <div className="absolute top-1/2 -right-3 sm:-right-4 -translate-y-1/2 text-[8px] sm:text-[9px] font-mono text-purple-300/60 tracking-widest uppercase">
                   360°
                 </div>
-                <div className="absolute top-1/2 -left-3 sm:-left-4 -translate-y-1/2 text-[8px] sm:text-[9px] font-mono text-cyan-300/85 tracking-widest uppercase">
+                <div className="absolute top-1/2 -left-3 sm:-left-4 -translate-y-1/2 text-[8px] sm:text-[9px] font-mono text-cyan-300/60 tracking-widest uppercase">
                   DEPTH
                 </div>
 
               </div>
 
-              {/* Seamless Cutout Portrait with Dual-Tone Rim Lighting & Bottom Fade */}
+              {/* Seamless Cutout Portrait (Minimal, High-Definition, Zero Fake Outlines) */}
               <div
                 className="relative z-10 w-full flex justify-center items-end"
                 style={{
-                  WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 98%)',
-                  maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 98%)',
+                  WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 84%, rgba(0,0,0,0) 98%)',
+                  maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 84%, rgba(0,0,0,0) 98%)',
                 }}
               >
                 {(() => {
                   const portraitUrl = assetPath('/images/gaurav_portrait.webp');
                   return (
-                    <>
-                      {/* 1. Electric Cyan & Radiant Violet Dual-Tone Contour Rim Light Silhouette */}
-                      <img
-                        src={portraitUrl}
-                        alt=""
-                        aria-hidden="true"
-                        width={1024}
-                        height={1536}
-                        className="w-full max-w-[290px] sm:max-w-[340px] md:max-w-[380px] lg:max-w-[420px] h-auto object-contain block absolute inset-0 mx-auto translate-y-7 sm:translate-y-10 lg:translate-y-14 pointer-events-none select-none z-0"
-                        style={{
-                          filter: 'drop-shadow(-3px -1px 4px rgba(34, 211, 238, 1)) drop-shadow(-8px -3px 16px rgba(6, 182, 212, 0.9)) drop-shadow(-16px -6px 30px rgba(14, 165, 233, 0.7)) drop-shadow(4px 1px 5px rgba(216, 180, 254, 0.95)) drop-shadow(8px 3px 16px rgba(168, 85, 247, 0.85)) drop-shadow(18px 8px 36px rgba(139, 92, 246, 0.6))',
-                          opacity: 0.95,
-                        }}
-                      />
-
-                      {/* 2. Base Portrait Image (Natural warm skin tones, crisp charcoal suit contrast) */}
-                      <img
-                        id="hero-portrait-img"
-                        src={portraitUrl}
-                        alt="Gaurav Roy — Creative Technologist Portrait"
-                        width={1024}
-                        height={1536}
-                        // @ts-ignore fetchPriority support
-                        fetchPriority="high"
-                        decoding="async"
-                        className="w-full max-w-[290px] sm:max-w-[340px] md:max-w-[380px] lg:max-w-[420px] h-auto object-contain block relative z-10 translate-y-7 sm:translate-y-10 lg:translate-y-14 transition-all duration-500 hover:brightness-105"
-                        style={{
-                          filter: 'contrast(106%) brightness(102%) saturate(104%) drop-shadow(0 0 25px rgba(6, 182, 212, 0.25)) drop-shadow(0 20px 45px rgba(0, 0, 0, 0.95))',
-                        }}
-                      />
-
-                      {/* 3. Subtle Rim Grazing Tint Masked Directly to Portrait Silhouette (Leaving face natural) */}
-                      <div
-                        className="absolute inset-0 pointer-events-none mix-blend-screen opacity-45 translate-y-7 sm:translate-y-10 lg:translate-y-14 z-20"
-                        style={{
-                          background: 'linear-gradient(90deg, rgba(6, 182, 212, 0.35) 0%, rgba(6, 182, 212, 0.08) 18%, transparent 35%, transparent 65%, rgba(168, 85, 247, 0.1) 82%, rgba(168, 85, 247, 0.38) 100%)',
-                          WebkitMaskImage: `url(${portraitUrl})`,
-                          WebkitMaskSize: 'contain',
-                          WebkitMaskPosition: 'bottom center',
-                          WebkitMaskRepeat: 'no-repeat',
-                          maskImage: `url(${portraitUrl})`,
-                          maskSize: 'contain',
-                          maskPosition: 'bottom center',
-                          maskRepeat: 'no-repeat',
-                        }}
-                      />
-                    </>
+                    <img
+                      id="hero-portrait-img"
+                      src={portraitUrl}
+                      alt="Gaurav Roy — Creative Technologist Portrait"
+                      width={1024}
+                      height={1536}
+                      // @ts-ignore fetchPriority support
+                      fetchPriority="high"
+                      decoding="async"
+                      className="w-full max-w-[290px] sm:max-w-[340px] md:max-w-[380px] lg:max-w-[420px] h-auto object-contain block relative z-10 translate-y-7 sm:translate-y-10 lg:translate-y-14 transition-all duration-500 hover:brightness-105"
+                      style={{
+                        filter: 'contrast(105%) brightness(102%) saturate(102%) drop-shadow(0 25px 50px rgba(0, 0, 0, 0.9))',
+                      }}
+                    />
                   );
                 })()}
               </div>
