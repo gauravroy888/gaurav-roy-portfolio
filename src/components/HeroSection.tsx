@@ -28,11 +28,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onOpenSt
         }}
       />
 
-      {/* 3. Deep Atmospheric Ambient Backdrop Lighting */}
+      {/* 3. Deep Atmospheric Ambient Backdrop Lighting (Subtle, 50% reduced) */}
       <div
-        className="absolute top-[18%] right-[5%] lg:right-[12%] w-[650px] sm:w-[850px] h-[650px] sm:h-[850px] rounded-full pointer-events-none -z-10 opacity-75"
+        className="absolute top-[18%] right-[5%] lg:right-[12%] w-[650px] sm:w-[850px] h-[650px] sm:h-[850px] rounded-full pointer-events-none -z-10 opacity-35"
         style={{
-          background: 'radial-gradient(circle, rgba(124, 58, 237, 0.28) 0%, rgba(37, 99, 235, 0.18) 38%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, rgba(37, 99, 235, 0.09) 38%, transparent 70%)',
         }}
       />
 
@@ -108,37 +108,37 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onOpenSt
             
             <div className="relative w-full max-w-[340px] sm:max-w-[390px] md:max-w-[430px] lg:max-w-[460px] flex flex-col items-center justify-end">
               
-              {/* --- MINIMAL LUXURY AMBIENT SEPARATION LIGHT (ULTRA-DIFFUSE, ZERO HARSH HALOS) --- */}
+              {/* --- MINIMAL LUXURY AMBIENT SEPARATION LIGHT (50% LESS INTENSITY) --- */}
               <div
                 className="absolute top-[35%] left-[50%] lg:left-[54%] -translate-x-1/2 -translate-y-1/2 w-[550px] sm:w-[700px] md:w-[820px] lg:w-[920px] h-[550px] sm:h-[700px] md:h-[820px] lg:h-[920px] rounded-full pointer-events-none z-0"
                 style={{
-                  background: 'radial-gradient(circle at center, rgba(99, 102, 241, 0.16) 0%, rgba(59, 130, 246, 0.09) 30%, rgba(14, 165, 233, 0.04) 50%, transparent 72%)',
+                  background: 'radial-gradient(circle at center, rgba(99, 102, 241, 0.08) 0%, rgba(59, 130, 246, 0.04) 30%, transparent 65%)',
                 }}
               />
 
-              {/* --- MULTI-LAYERED ARCHITECTURAL ASTROLABE GEOMETRY --- */}
+              {/* --- MULTI-LAYERED ARCHITECTURAL ASTROLABE GEOMETRY (50% LESS OPACITY) --- */}
               <div
                 id="hero-portrait-circle"
                 className="absolute top-[32%] left-[50%] lg:left-[54%] -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0"
               >
                 
                 {/* 1. Outer Delicate Dashed Orbital Ring */}
-                <div className="w-[310px] sm:w-[400px] md:w-[480px] lg:w-[540px] xl:w-[570px] h-[310px] sm:h-[400px] md:h-[480px] lg:h-[540px] xl:h-[570px] rounded-full border border-dashed border-white/12 animate-[spin_160s_linear_infinite]" />
+                <div className="w-[310px] sm:w-[400px] md:w-[480px] lg:w-[540px] xl:w-[570px] h-[310px] sm:h-[400px] md:h-[480px] lg:h-[540px] xl:h-[570px] rounded-full border border-dashed border-white/[0.06] animate-[spin_160s_linear_infinite]" />
                 
                 {/* 2. Inner Solid Architectural Orbit */}
-                <div className="absolute inset-4 sm:inset-5 rounded-full border border-white/10" />
+                <div className="absolute inset-4 sm:inset-5 rounded-full border border-white/[0.05]" />
                 
                 {/* 3. Soft Glowing Core Aperture Disc */}
-                <div className="absolute inset-12 sm:inset-16 rounded-full bg-gradient-radial from-white/[0.03] via-transparent to-transparent" />
+                <div className="absolute inset-12 sm:inset-16 rounded-full bg-gradient-radial from-white/[0.015] via-transparent to-transparent" />
 
                 {/* 4. Fine Spatial Crosshairs & Micro Telemetry */}
-                <div className="absolute -top-2 left-1/2 -translate-x-1/2 text-[9px] sm:text-[10px] font-mono text-white/40 tracking-widest uppercase">
+                <div className="absolute -top-2 left-1/2 -translate-x-1/2 text-[9px] sm:text-[10px] font-mono text-white/20 tracking-widest uppercase">
                   + 01 // SPATIAL
                 </div>
-                <div className="absolute top-1/2 -right-3 sm:-right-4 -translate-y-1/2 text-[8px] sm:text-[9px] font-mono text-purple-300/60 tracking-widest uppercase">
+                <div className="absolute top-1/2 -right-3 sm:-right-4 -translate-y-1/2 text-[8px] sm:text-[9px] font-mono text-purple-300/30 tracking-widest uppercase">
                   360°
                 </div>
-                <div className="absolute top-1/2 -left-3 sm:-left-4 -translate-y-1/2 text-[8px] sm:text-[9px] font-mono text-cyan-300/60 tracking-widest uppercase">
+                <div className="absolute top-1/2 -left-3 sm:-left-4 -translate-y-1/2 text-[8px] sm:text-[9px] font-mono text-cyan-300/30 tracking-widest uppercase">
                   DEPTH
                 </div>
 
