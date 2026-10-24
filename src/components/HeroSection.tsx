@@ -159,8 +159,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onOpenSt
                         id="hero-portrait-img"
                         src={portraitUrl}
                         alt="Gaurav Roy — Creative Technologist Portrait"
-                        width={682}
-                        height={1024}
+                        width={1024}
+                        height={1536}
                         // @ts-ignore fetchPriority support
                         fetchPriority="high"
                         decoding="async"
