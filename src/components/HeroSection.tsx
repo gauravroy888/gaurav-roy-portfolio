@@ -144,7 +144,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onOpenSt
 
               </div>
 
-              {/* Seamless Cutout Portrait (Minimal, High-Definition, Zero Fake Outlines) */}
+              {/* Seamless Cutout Portrait with Deep Oceanic Blue Atmospheric Wash */}
               <div
                 className="relative z-10 w-full flex justify-center items-end"
                 style={{
@@ -155,20 +155,39 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onOpenSt
                 {(() => {
                   const portraitUrl = assetPath('/images/gaurav_portrait.webp');
                   return (
-                    <img
-                      id="hero-portrait-img"
-                      src={portraitUrl}
-                      alt="Gaurav Roy — Creative Technologist Portrait"
-                      width={1024}
-                      height={1536}
-                      // @ts-ignore fetchPriority support
-                      fetchPriority="high"
-                      decoding="async"
-                      className="w-full max-w-[290px] sm:max-w-[340px] md:max-w-[380px] lg:max-w-[420px] h-auto object-contain block relative z-10 translate-y-7 sm:translate-y-10 lg:translate-y-14 transition-all duration-500 hover:brightness-105"
-                      style={{
-                        filter: 'contrast(105%) brightness(102%) saturate(102%) drop-shadow(0 25px 50px rgba(0, 0, 0, 0.9))',
-                      }}
-                    />
+                    <>
+                      {/* 1. Base Portrait Image */}
+                      <img
+                        id="hero-portrait-img"
+                        src={portraitUrl}
+                        alt="Gaurav Roy — Creative Technologist Portrait"
+                        width={1024}
+                        height={1536}
+                        // @ts-ignore fetchPriority support
+                        fetchPriority="high"
+                        decoding="async"
+                        className="w-full max-w-[290px] sm:max-w-[340px] md:max-w-[380px] lg:max-w-[420px] h-auto object-contain block relative z-10 drop-shadow-[0_0_35px_rgba(14,165,233,0.18)] drop-shadow-[0_20px_45px_rgba(0,0,0,0.95)] translate-y-7 sm:translate-y-10 lg:translate-y-14 transition-all duration-500 hover:brightness-105"
+                        style={{
+                          filter: 'contrast(106%) brightness(99%)',
+                        }}
+                      />
+
+                      {/* 2. Deep Oceanic Blue Atmospheric Tone Wash Masked Directly to Portrait Silhouette */}
+                      <div
+                        className="absolute inset-0 pointer-events-none mix-blend-soft-light opacity-70 translate-y-7 sm:translate-y-10 lg:translate-y-14 z-20"
+                        style={{
+                          background: 'linear-gradient(135deg, rgba(14,165,233,0.22) 0%, rgba(30,58,138,0.48) 50%, rgba(15,23,42,0.65) 100%)',
+                          WebkitMaskImage: `url(${portraitUrl})`,
+                          WebkitMaskSize: 'contain',
+                          WebkitMaskPosition: 'bottom center',
+                          WebkitMaskRepeat: 'no-repeat',
+                          maskImage: `url(${portraitUrl})`,
+                          maskSize: 'contain',
+                          maskPosition: 'bottom center',
+                          maskRepeat: 'no-repeat',
+                        }}
+                      />
+                    </>
                   );
                 })()}
               </div>
