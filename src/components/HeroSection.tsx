@@ -168,7 +168,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onOpenSt
                         decoding="async"
                         className="w-full max-w-[290px] sm:max-w-[340px] md:max-w-[380px] lg:max-w-[420px] h-auto object-contain block relative z-10 drop-shadow-[0_0_35px_rgba(14,165,233,0.18)] drop-shadow-[0_20px_45px_rgba(0,0,0,0.95)] translate-y-7 sm:translate-y-10 lg:translate-y-14 transition-all duration-500 hover:brightness-105"
                         style={{
-                          filter: 'contrast(106%) brightness(99%)',
+                          filter: 'contrast(105%) brightness(120%)',
                         }}
                       />
 
