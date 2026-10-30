@@ -23,9 +23,19 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onOpenContact, onO
   ];
 
   useEffect(() => {
-    // --- scrolled state: passive scroll listener ---
+    // --- scrolled state: rAF-throttled scroll listener (prevents re-render spam) ---
+    let scrollRafId: number | null = null;
+    let lastScrolledState = false;
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      if (scrollRafId) return; // Already scheduled — skip
+      scrollRafId = requestAnimationFrame(() => {
+        scrollRafId = null;
+        const isScrolled = window.scrollY > 20;
+        if (isScrolled !== lastScrolledState) {
+          lastScrolledState = isScrolled;
+          setScrolled(isScrolled);
+        }
+      });
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
 
@@ -58,6 +68,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onOpenContact, onO
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      if (scrollRafId) cancelAnimationFrame(scrollRafId);
       observers.forEach((obs) => obs.disconnect());
     };
   }, []);

@@ -87,6 +87,7 @@ export default function Home() {
   useModalScrollLock(isAnyModalOpen);
 
   // Idle preload primary modals so when a user clicks on mobile or desktop, the modal opens INSTANTLY with 0 lag
+  // Delayed to 6s so background webpack chunks do not compete with initial scroll interactions
   useEffect(() => {
     const idlePreload = () => {
       import('../components/CategoryCollageModal');
@@ -95,17 +96,8 @@ export default function Home() {
     };
 
     if (typeof window !== 'undefined') {
-      if ('requestIdleCallback' in window) {
-        const id = (window as unknown as { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => number }).requestIdleCallback(idlePreload, { timeout: 2500 });
-        return () => {
-          if ('cancelIdleCallback' in window) {
-            (window as unknown as { cancelIdleCallback: (id: number) => void }).cancelIdleCallback(id);
-          }
-        };
-      } else {
-        const timer = setTimeout(idlePreload, 1500);
-        return () => clearTimeout(timer);
-      }
+      const timer = setTimeout(idlePreload, 6000);
+      return () => clearTimeout(timer);
     }
   }, []);
 

@@ -178,21 +178,16 @@ export const CuteSpiderCompanion: React.FC = () => {
   const speechBubbleRef = useRef<HTMLDivElement | null>(null);
   const triggerSpiderCelebrateRef = useRef<() => void>(() => {});
   const dismissSpeechRef = useRef<() => void>(() => {});
+  const speechTextRef = useRef<HTMLParagraphElement | null>(null);
+  const tailRightRef = useRef<HTMLDivElement | null>(null);
+  const tailLeftRef = useRef<HTMLDivElement | null>(null);
+  const activeSectionRef = useRef<string>('hero');
 
-  // Speech bubble UI state
-  const [activeSpeech, setActiveSpeech] = useState<{
-    section: string;
-    text: string;
-    visible: boolean;
-    x: number;
-    y: number;
-  }>({
-    section: 'hero',
-    text: '',
-    visible: false,
-    x: 0,
-    y: 0,
-  });
+  const hideSpeechBubble = () => {
+    if (speechBubbleRef.current) {
+      speechBubbleRef.current.style.display = 'none';
+    }
+  };
 
   const [soundOn, setSoundOn] = useState(false);
   const [isAudioUnlocked, setIsAudioUnlocked] = useState(false);
@@ -428,6 +423,7 @@ export const CuteSpiderCompanion: React.FC = () => {
     triggerSpiderCelebrateRef.current = triggerSpiderClickCelebrate;
     dismissSpeechRef.current = () => {
       isSpeechActive = false;
+      hideSpeechBubble();
       stopAllSpiderVoices();
     };
 
@@ -479,7 +475,7 @@ export const CuteSpiderCompanion: React.FC = () => {
       if (isModalActive) {
         stopAllSpiderVoices();
         isSpeechActive = false;
-        setActiveSpeech((prev) => ({ ...prev, visible: false }));
+        hideSpeechBubble();
       }
     };
 
@@ -528,6 +524,19 @@ export const CuteSpiderCompanion: React.FC = () => {
     let cachedSectionHeadingTop = -1;
     let cachedCompaniesContainerRight = -1;
     let lastLayoutMeasureTime = 0;
+    let cachedDocHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+    let isUserScrolling = false;
+    let scrollIdleTimer: ReturnType<typeof setTimeout> | null = null;
+
+    // Track scroll activity to defer layout measurements away from active scrolling
+    const onScrollActivity = () => {
+      isUserScrolling = true;
+      if (scrollIdleTimer) clearTimeout(scrollIdleTimer);
+      scrollIdleTimer = setTimeout(() => {
+        isUserScrolling = false;
+      }, 200);
+    };
+    window.addEventListener('scroll', onScrollActivity, { passive: true });
 
     const measureLayout = () => {
       const creativeEl = document.getElementById('hero-word-creative');
@@ -618,9 +627,10 @@ export const CuteSpiderCompanion: React.FC = () => {
 
       const scrollY = window.scrollY;
 
-      // Re-measure layout at low frequency (once every 400ms when in hero, or when cache is empty)
-      if (now - lastLayoutMeasureTime > 400 && currentActiveSection === 'hero') {
+      // Re-measure layout at low frequency (once every 1500ms, ONLY when user is NOT actively scrolling)
+      if (!isUserScrolling && now - lastLayoutMeasureTime > 1500 && currentActiveSection === 'hero') {
         measureLayout();
+        cachedDocHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
         lastLayoutMeasureTime = now;
       }
 
@@ -639,7 +649,7 @@ export const CuteSpiderCompanion: React.FC = () => {
         let detectedSection = currentActiveSection;
 
         const isAtPageBottom =
-          window.innerHeight + scrollY >= (document.documentElement.scrollHeight || document.body.scrollHeight) - 60;
+          window.innerHeight + scrollY >= cachedDocHeight - 60;
 
         if (isAtPageBottom) {
           detectedSection = 'contact';
@@ -736,6 +746,7 @@ export const CuteSpiderCompanion: React.FC = () => {
           // Section dialogue appears STRICTLY ONCE per section during the session
           if (!spokenSections.has(detectedSection)) {
             spokenSections.add(detectedSection);
+            activeSectionRef.current = detectedSection;
             speechTimer = 0;
             isSpeechActive = true;
             typewriterIndex = 0;
@@ -743,12 +754,19 @@ export const CuteSpiderCompanion: React.FC = () => {
             const info = SECTION_COMMENTARY[detectedSection] || SECTION_COMMENTARY.hero;
             typewriterTargetText = info.text;
 
+            if (speechBubbleRef.current) {
+              speechBubbleRef.current.style.display = 'block';
+            }
+            if (speechTextRef.current) {
+              speechTextRef.current.textContent = '';
+            }
+
             // Play studio Gemini Zephyr voice
             playSectionVoice(detectedSection);
           } else {
             // Already appeared once: silence voice narration and hide speech bubble
             isSpeechActive = false;
-            setActiveSpeech((prev) => ({ ...prev, visible: false }));
+            hideSpeechBubble();
             stopAllSpiderVoices();
           }
         }
@@ -773,7 +791,7 @@ export const CuteSpiderCompanion: React.FC = () => {
           webAnchorY = 0;
           playWebShootSound();
           isSpeechActive = false;
-          setActiveSpeech((prev) => ({ ...prev, visible: false }));
+          hideSpeechBubble();
         }
       }
 
@@ -787,27 +805,16 @@ export const CuteSpiderCompanion: React.FC = () => {
         const maxSpeechDuration = isAutoplayUnlocked() ? 10.0 : 25.0;
         if (speechTimer >= maxSpeechDuration) {
           isSpeechActive = false;
-          setActiveSpeech((prev) => ({ ...prev, visible: false }));
+          hideSpeechBubble();
         } else if (typewriterTargetText.length > 0) {
           typewriterIndex = Math.min(typewriterTargetText.length, typewriterIndex + 0.45 * dt);
           const currentSlice = typewriterTargetText.slice(0, Math.max(1, Math.floor(typewriterIndex)));
-          setActiveSpeech((prev) => {
-            if (
-              prev.visible &&
-              prev.text === currentSlice &&
-              Math.abs(prev.x - spiderX) < 1 &&
-              Math.abs(prev.y - spiderY) < 1
-            ) {
-              return prev;
-            }
-            return {
-              section: currentActiveSection,
-              text: currentSlice,
-              visible: true,
-              x: spiderX,
-              y: spiderY,
-            };
-          });
+          if (speechTextRef.current && speechTextRef.current.textContent !== currentSlice) {
+            speechTextRef.current.textContent = currentSlice;
+          }
+          if (speechBubbleRef.current && speechBubbleRef.current.style.display !== 'block') {
+            speechBubbleRef.current.style.display = 'block';
+          }
         }
       }
 
@@ -820,10 +827,14 @@ export const CuteSpiderCompanion: React.FC = () => {
           // Spider is on right side: stick bubble firmly to the LEFT of the spider!
           speechBubbleRef.current.style.left = 'auto';
           speechBubbleRef.current.style.right = `${Math.max(16, width - spiderX + 22)}px`;
+          if (tailRightRef.current) tailRightRef.current.style.display = 'block';
+          if (tailLeftRef.current) tailLeftRef.current.style.display = 'none';
         } else {
           // Spider is on left side: stick bubble firmly to the RIGHT of the spider!
           speechBubbleRef.current.style.right = 'auto';
           speechBubbleRef.current.style.left = `${Math.max(16, spiderX + 22)}px`;
+          if (tailRightRef.current) tailRightRef.current.style.display = 'none';
+          if (tailLeftRef.current) tailLeftRef.current.style.display = 'block';
         }
       }
 
@@ -1228,7 +1239,7 @@ export const CuteSpiderCompanion: React.FC = () => {
           webAnchorY = 0;
           playWebShootSound();
           isSpeechActive = false;
-          setActiveSpeech((prev) => ({ ...prev, visible: false }));
+          hideSpeechBubble();
         }
       } else if (spiderState === 'RAPPEL_UP_TO_LETTERS') {
         // Step 11: Seamlessly climbs glowing thread back up to typography
@@ -2044,6 +2055,8 @@ export const CuteSpiderCompanion: React.FC = () => {
       window.removeEventListener('keydown', handleGlobalActivation, true);
       window.removeEventListener('creature-audio-unlocked', handleUnlockedEvent);
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('scroll', onScrollActivity);
+      if (scrollIdleTimer) clearTimeout(scrollIdleTimer);
       window.removeEventListener('click', handleClick, true);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('spider-event', handleSpiderEvent);
@@ -2059,8 +2072,8 @@ export const CuteSpiderCompanion: React.FC = () => {
     if (next) {
       unlockAudio();
       setIsAudioUnlocked(true);
-      if (activeSpeech.section) {
-        playSectionVoice(activeSpeech.section);
+      if (activeSectionRef.current) {
+        playSectionVoice(activeSectionRef.current);
       }
     } else {
       stopAllSpiderVoices();
@@ -2068,7 +2081,7 @@ export const CuteSpiderCompanion: React.FC = () => {
   };
 
   const handleDismissSpeech = () => {
-    setActiveSpeech((prev) => ({ ...prev, visible: false }));
+    hideSpeechBubble();
     dismissSpeechRef.current();
   };
 
@@ -2104,95 +2117,72 @@ export const CuteSpiderCompanion: React.FC = () => {
         title="Click Gaurav's spatial spider! ♡"
       />
 
-      {/* Glassmorphic Thought / Speech Bubble Component (Hidden on mobile per user request) */}
-      {activeSpeech.visible && activeSpeech.text && (
-        <div
-          ref={speechBubbleRef}
-          onClick={() => {
-            if (!isAudioUnlocked) {
-              unlockAudio();
-              setIsAudioUnlocked(true);
-            }
-          }}
-          className="fixed pointer-events-auto z-[40] select-none cursor-pointer hidden md:block"
-          style={{
-            right: activeSpeech.x > (typeof window !== 'undefined' ? window.innerWidth * 0.5 : 500)
-              ? `${Math.max(16, (typeof window !== 'undefined' ? window.innerWidth : 1200) - activeSpeech.x + 22)}px`
-              : 'auto',
-            left: activeSpeech.x <= (typeof window !== 'undefined' ? window.innerWidth * 0.5 : 500)
-              ? `${Math.max(16, activeSpeech.x + 22)}px`
-              : 'auto',
-            top: `${Math.max(76, Math.min((typeof window !== 'undefined' ? window.innerHeight : 800) - 180, activeSpeech.y - 35))}px`,
-          }}
-        >
-          <div className="relative max-w-[270px] sm:max-w-[310px] bg-[#0E111E]/95 border border-purple-400/40 rounded-2xl px-3.5 py-2.5 shadow-[0_12px_36px_rgba(0,0,0,0.85)] shadow-purple-500/10 backdrop-blur-xl animate-in zoom-in-95 duration-150">
-            {/* Header tag with Sound Toggle and Dismiss (✕) Button */}
-            <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-1 mb-1.5">
-              <div className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-pink-400 animate-pulse" />
-                <span className="text-[10px] font-mono font-bold tracking-wider uppercase text-purple-300">
-                  Spider Guide
-                </span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                {(!soundOn || !isAudioUnlocked) && (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      unlockAudio();
-                      setIsAudioUnlocked(true);
-                      setSoundOn(true);
-                      setSoundEnabled(true);
-                      if (activeSpeech.section) {
-                        playSectionVoice(activeSpeech.section);
-                      }
-                    }}
-                    className="text-[10px] font-mono font-bold text-purple-200 hover:text-white transition-all flex items-center gap-1.5 bg-gradient-to-r from-purple-600/35 via-fuchsia-600/25 to-purple-600/35 hover:from-purple-600/50 hover:via-fuchsia-600/40 hover:to-purple-600/50 border border-purple-400/50 hover:border-purple-300 px-2.5 py-0.5 rounded-full shadow-[0_0_12px_rgba(168,85,247,0.35)] hover:shadow-[0_0_18px_rgba(192,132,252,0.55)] animate-pulse"
-                    title="Tap to listen to spider companion voice"
-                  >
-                    <Volume2 className="w-3 h-3 text-purple-300 flex-shrink-0" />
-                    <span>Tap to Listen</span>
-                  </button>
-                )}
-                <button
-                  onClick={handleToggleSound}
-                  className="text-[10px] text-gray-400 hover:text-white transition-colors flex items-center gap-1 bg-white/[0.06] hover:bg-white/[0.12] px-1.5 py-0.5 rounded-md"
-                  title={soundOn ? 'Mute Creature Voice' : 'Unmute Creature Voice'}
-                >
-                  <span>{soundOn ? '🔊 Sound' : '🔇 Muted'}</span>
-                </button>
-                <button
-                  onClick={handleDismissSpeech}
-                  className="text-[11px] text-gray-400 hover:text-white transition-colors flex items-center justify-center bg-white/[0.06] hover:bg-white/[0.12] w-5 h-5 rounded-md leading-none"
-                  title="Dismiss message"
-                >
-                  ✕
-                </button>
-              </div>
+      {/* Glassmorphic Thought / Speech Bubble Component (Zero React re-render DOM ref, pass-through pointer events) */}
+      <div
+        ref={speechBubbleRef}
+        className="fixed pointer-events-none z-[40] select-none hidden md:block"
+        style={{ display: 'none' }}
+      >
+        <div className="relative max-w-[270px] sm:max-w-[310px] bg-[#0E111E]/95 border border-purple-400/40 rounded-2xl px-3.5 py-2.5 shadow-[0_12px_36px_rgba(0,0,0,0.85)] shadow-purple-500/10 backdrop-blur-xl animate-in zoom-in-95 duration-150">
+          {/* Header tag with Sound Toggle and Dismiss (✕) Button */}
+          <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-1 mb-1.5">
+            <div className="flex items-center gap-1.5 pointer-events-none">
+              <span className="w-1.5 h-1.5 rounded-full bg-pink-400 animate-pulse" />
+              <span className="text-[10px] font-mono font-bold tracking-wider uppercase text-purple-300">
+                Spider Guide
+              </span>
             </div>
+            <div className="flex items-center gap-1.5 pointer-events-auto">
+              {(!soundOn || !isAudioUnlocked) && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    unlockAudio();
+                    setIsAudioUnlocked(true);
+                    setSoundOn(true);
+                    setSoundEnabled(true);
+                    if (activeSectionRef.current) {
+                      playSectionVoice(activeSectionRef.current);
+                    }
+                  }}
+                  className="text-[10px] font-mono font-bold text-purple-200 hover:text-white transition-all flex items-center gap-1.5 bg-gradient-to-r from-purple-600/35 via-fuchsia-600/25 to-purple-600/35 hover:from-purple-600/50 hover:via-fuchsia-600/40 hover:to-purple-600/50 border border-purple-400/50 hover:border-purple-300 px-2.5 py-0.5 rounded-full shadow-[0_0_12px_rgba(168,85,247,0.35)] hover:shadow-[0_0_18px_rgba(192,132,252,0.55)] animate-pulse"
+                  title="Tap to listen to spider companion voice"
+                >
+                  <Volume2 className="w-3 h-3 text-purple-300 flex-shrink-0" />
+                  <span>Tap to Listen</span>
+                </button>
+              )}
+              <button
+                onClick={handleToggleSound}
+                className="text-[10px] text-gray-400 hover:text-white transition-colors flex items-center gap-1 bg-white/[0.06] hover:bg-white/[0.12] px-1.5 py-0.5 rounded-md"
+                title={soundOn ? 'Mute Creature Voice' : 'Unmute Creature Voice'}
+              >
+                <span>{soundOn ? '🔊 Sound' : '🔇 Muted'}</span>
+              </button>
+              <button
+                onClick={handleDismissSpeech}
+                className="text-[11px] text-gray-400 hover:text-white transition-colors flex items-center justify-center bg-white/[0.06] hover:bg-white/[0.12] w-5 h-5 rounded-md leading-none"
+                title="Dismiss message"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
 
-            {/* Creature Dialogue Typewriter */}
-            <p className="text-xs text-gray-200 font-sans leading-relaxed min-h-[36px]">
-              {activeSpeech.text}
-            </p>
+          {/* Creature Dialogue Typewriter (0 React re-renders, direct DOM textContent) */}
+          <p ref={speechTextRef} className="text-xs text-gray-200 font-sans leading-relaxed min-h-[36px] pointer-events-none" />
 
-            {/* Comic speech bubble tail pointing to spider */}
-            {activeSpeech.x > (typeof window !== 'undefined' ? window.innerWidth * 0.5 : 500) ? (
-              // Right-pointing tail towards spider (since bubble sits to the left of spider)
-              <>
-                <div className="absolute top-8 -right-2 w-0 h-0 border-y-[6px] border-y-transparent border-l-[8px] border-l-purple-400/40" />
-                <div className="absolute top-8 -right-1.5 w-0 h-0 border-y-[5px] border-y-transparent border-l-[7px] border-l-[#0E111E]" />
-              </>
-            ) : (
-              // Left-pointing tail towards spider (since bubble sits to the right of spider)
-              <>
-                <div className="absolute top-8 -left-2 w-0 h-0 border-y-[6px] border-y-transparent border-r-[8px] border-r-purple-400/40" />
-                <div className="absolute top-8 -left-1.5 w-0 h-0 border-y-[5px] border-y-transparent border-r-[7px] border-r-[#0E111E]" />
-              </>
-            )}
+          {/* Comic speech bubble tail pointing to spider */}
+          <div ref={tailRightRef} style={{ display: 'none' }}>
+            <div className="absolute top-8 -right-2 w-0 h-0 border-y-[6px] border-y-transparent border-l-[8px] border-l-purple-400/40" />
+            <div className="absolute top-8 -right-1.5 w-0 h-0 border-y-[5px] border-y-transparent border-l-[7px] border-l-[#0E111E]" />
+          </div>
+          <div ref={tailLeftRef} style={{ display: 'none' }}>
+            <div className="absolute top-8 -left-2 w-0 h-0 border-y-[6px] border-y-transparent border-r-[8px] border-r-purple-400/40" />
+            <div className="absolute top-8 -left-1.5 w-0 h-0 border-y-[5px] border-y-transparent border-r-[7px] border-r-[#0E111E]" />
           </div>
         </div>
-      )}
+      </div>
     </>
   );
 };

@@ -89,9 +89,18 @@ export const DeepSeaAtmosphere: React.FC = () => {
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
     let time = 0;
+    let frameSkip = 0; // Throttle to ~30fps — particles don't need 60fps
 
     const render = () => {
       if (isTabHidden) return;
+
+      // Skip every other frame to halve GPU/CPU cost
+      frameSkip++;
+      if (frameSkip % 2 !== 0) {
+        animationFrameId = requestAnimationFrame(render);
+        return;
+      }
+
       const now = performance.now();
       const rawDelta = (now - lastTime) / 1000;
       lastTime = now;
