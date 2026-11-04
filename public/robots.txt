@@ -6,4 +6,4 @@ Allow: /
 User-agent: OAI-SearchBot
 Allow: /
 
-Sitemap: https://gauravroy.dev/sitemap.xml
+Sitemap: https://gauravroy888.github.io/gaurav-roy-portfolio/sitemap.xml

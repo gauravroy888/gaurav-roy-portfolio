@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import { absoluteSiteUrl, SITE_NAME, SITE_URL } from '../utils/siteUrl';
+import { assetPath } from '../utils/assetPath';
 import { SOCIAL_PROFILES } from '../data/socialProfiles';
 
 export const viewport: Viewport = {
@@ -56,8 +57,8 @@ export const metadata: Metadata = {
   authors: [{ name: 'Gaurav Roy', url: 'https://gauravroy.dev' }],
   icons: {
     icon: [
-      { url: '/icon.svg', type: 'image/svg+xml' },
-      { url: '/favicon.ico' },
+      { url: assetPath('/icon.svg'), type: 'image/svg+xml' },
+      { url: assetPath('/favicon.ico') },
     ],
   },
   openGraph: {
