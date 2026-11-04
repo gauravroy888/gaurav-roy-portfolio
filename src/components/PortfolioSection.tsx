@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
 import { PROJECTS, COLLECTIONS, CollectionItem, ProjectItem } from '../data/portfolioData';
 import { ChevronLeft, ChevronRight, ArrowUpRight, Layers, Play } from 'lucide-react';
 import { GlowBorderCard } from './GlowBorderCard';
@@ -129,6 +130,12 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
             <p className="text-sm text-gray-300 max-w-xl mx-auto font-sans">
               Choose any discipline category below to view an artistic glassmorphic collage of all layouts, renders, and technical design thinking case studies.
             </p>
+            <Link
+              href="/work/"
+              className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/[0.06] px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-white transition-colors hover:border-cyan-300/50 hover:bg-white/[0.12]"
+            >
+              Browse all case studies
+            </Link>
           </div>
 
           {/* Clean Filter Tabs (Animated & Fade-in on scroll) */}
@@ -229,9 +236,14 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
               }`}
             >
               {displayedWebxrProjects.map((project) => (
-                <div
+                <Link
                   key={project.id}
-                  onClick={() => onSelectProject(project)}
+                  href={`/work/${project.slug}/`}
+                  onClick={(event) => {
+                    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                    event.preventDefault();
+                    onSelectProject(project);
+                  }}
                   className="group/webxr relative bg-[#0E111D]/60 hover:bg-[#141828]/80 backdrop-blur-2xl border border-white/10 hover:border-purple-400/50 rounded-3xl p-6 sm:p-7 cursor-pointer transition-colors duration-300 flex flex-col justify-between shadow-2xl hover:shadow-purple-500/10"
                 >
                   {/* Front-playing Video Poster / Cover */}
@@ -284,7 +296,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                       {project.subtitle}
                     </p>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           ) : (
@@ -295,10 +307,11 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
             >
               {displayedCategories.map((category) => {
                 return (
-                  <div
+                  <button
+                    type="button"
                     key={category.id}
                     onClick={() => onSelectCategory(category)}
-                    className="group/card relative bg-[#0E111D]/80 hover:bg-[#131A2E]/95 backdrop-blur-2xl border border-white/10 hover:border-cyan-400/50 rounded-3xl p-6 sm:p-7 cursor-pointer transition-colors duration-300 flex flex-col justify-between shadow-2xl hover:shadow-[0_20px_50px_rgba(6,182,212,0.15)]"
+                    className="group/card relative w-full appearance-none text-left bg-[#0E111D]/80 hover:bg-[#131A2E]/95 backdrop-blur-2xl border border-white/10 hover:border-cyan-400/50 rounded-3xl p-6 sm:p-7 cursor-pointer transition-colors duration-300 flex flex-col justify-between shadow-2xl hover:shadow-[0_20px_50px_rgba(6,182,212,0.15)]"
                   >
                     {/* Clean Category Thumbnail with hardware-level alpha mask */}
                     <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden mb-5 bg-black border border-white/10 group-hover/card:border-cyan-500/30 transition-colors">
@@ -357,7 +370,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                       </p>
                     </div>
 
-                  </div>
+                  </button>
                 );
               })}
             </div>

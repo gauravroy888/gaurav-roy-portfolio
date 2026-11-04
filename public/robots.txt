@@ -1,5 +1,9 @@
-# https://www.robotstxt.org/robotstxt.html
+# Public portfolio pages are available for search and citation.
 User-agent: *
+Allow: /
+
+# OpenAI search crawler. GPTBot has a separate purpose and policy.
+User-agent: OAI-SearchBot
 Allow: /
 
 Sitemap: https://gauravroy.dev/sitemap.xml

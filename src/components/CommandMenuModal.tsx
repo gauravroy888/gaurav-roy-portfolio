@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { PROJECTS, DOMAINS } from '../data/portfolioData';
+import React, { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
+import { PROJECTS, type ProjectItem } from '../data/portfolioData';
 import {
   Search,
   X,
@@ -19,12 +20,13 @@ import {
   Check
 } from 'lucide-react';
 import { useModalScrollLock } from '../utils/modalScrollLock';
+import { useDialogAccessibility } from '../utils/useDialogAccessibility';
 
 interface CommandMenuModalProps {
   isOpen: boolean;
   onClose: () => void;
   onOpenResume: () => void;
-  onSelectProject?: (project: any) => void;
+  onSelectProject?: (project: ProjectItem) => void;
 }
 
 export const CommandMenuModal: React.FC<CommandMenuModalProps> = ({
@@ -38,6 +40,8 @@ export const CommandMenuModal: React.FC<CommandMenuModalProps> = ({
 
   const [query, setQuery] = useState('');
   const [copied, setCopied] = useState(false);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useDialogAccessibility(isOpen, dialogRef);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -77,6 +81,11 @@ export const CommandMenuModal: React.FC<CommandMenuModalProps> = ({
       onClick={onClose}
     >
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Portfolio command menu"
+        tabIndex={-1}
         className="relative w-full max-w-2xl bg-[#0D101A] border border-white/15 rounded-3xl overflow-hidden shadow-2xl shadow-purple-950/60 flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
@@ -159,10 +168,16 @@ export const CommandMenuModal: React.FC<CommandMenuModalProps> = ({
               </span>
               <div className="space-y-1">
                 {filteredProjects.map((proj) => (
-                  <a
+                  <Link
                     key={proj.id}
-                    href="#russian-doll"
-                    onClick={onClose}
+                    href={`/work/${proj.slug}/`}
+                    onClick={(event) => {
+                      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                      if (!onSelectProject) return;
+                      event.preventDefault();
+                      onClose();
+                      onSelectProject(proj);
+                    }}
                     className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-white/[0.06] text-left text-xs text-gray-200 transition-colors group"
                   >
                     <div className="flex items-center gap-2.5">
@@ -175,7 +190,7 @@ export const CommandMenuModal: React.FC<CommandMenuModalProps> = ({
                       </div>
                     </div>
                     <ArrowRight className="w-3.5 h-3.5 text-gray-500 group-hover:text-white transition-colors" />
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>

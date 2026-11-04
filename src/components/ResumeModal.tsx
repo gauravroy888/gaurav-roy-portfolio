@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { X, Printer, Download, Copy, Check, FileText, Sparkles, Mail, Phone, MapPin, Globe } from 'lucide-react';
 import { useModalScrollLock } from '../utils/modalScrollLock';
+import { useDialogAccessibility } from '../utils/useDialogAccessibility';
 
 interface ResumeModalProps {
   isOpen: boolean;
@@ -10,8 +11,10 @@ interface ResumeModalProps {
 }
 
 export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => {
+  const dialogRef = useRef<HTMLDivElement>(null);
   // Global modal scroll lock & interaction blocker
   useModalScrollLock(isOpen);
+  useDialogAccessibility(isOpen, dialogRef);
 
   const [copied, setCopied] = useState(false);
 
@@ -64,6 +67,11 @@ EDUCATION
       onClick={onClose}
     >
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Resume and work experience"
+        tabIndex={-1}
         className="relative w-full max-w-4xl bg-[#0D101A] border border-white/10 rounded-3xl overflow-hidden shadow-2xl shadow-purple-950/40 my-auto flex flex-col max-h-[92vh]"
         onClick={(e) => e.stopPropagation()}
       >

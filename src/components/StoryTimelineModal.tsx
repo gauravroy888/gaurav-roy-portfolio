@@ -17,6 +17,7 @@ import {
   Maximize2
 } from 'lucide-react';
 import { useModalScrollLock } from '../utils/modalScrollLock';
+import { useDialogAccessibility } from '../utils/useDialogAccessibility';
 import { assetPath } from '../utils/assetPath';
 
 interface StoryTimelineModalProps {
@@ -250,8 +251,10 @@ export const TIMELINE_DATA: TimelineMilestone[] = [
 ];
 
 export const StoryTimelineModal: React.FC<StoryTimelineModalProps> = ({ isOpen, onClose }) => {
+  const dialogRef = useRef<HTMLDivElement>(null);
   // Global modal scroll lock & interaction blocker
   useModalScrollLock(isOpen);
+  useDialogAccessibility(isOpen, dialogRef);
 
   const [selectedMilestone, setSelectedMilestone] = useState<TimelineMilestone | null>(null);
   const [isPlayingIntro, setIsPlayingIntro] = useState(false);
@@ -331,6 +334,11 @@ export const StoryTimelineModal: React.FC<StoryTimelineModalProps> = ({ isOpen, 
       onClick={onClose}
     >
       <motion.div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Gaurav Roy career journey"
+        tabIndex={-1}
         initial={{ opacity: 0, scale: 0.96, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.96, y: 20 }}

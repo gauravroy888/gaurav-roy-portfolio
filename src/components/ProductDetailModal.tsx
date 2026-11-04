@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ProjectItem, ProjectPlanItem } from '../data/portfolioData';
 import {
   X,
@@ -20,6 +20,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { useModalScrollLock } from '../utils/modalScrollLock';
+import { useDialogAccessibility } from '../utils/useDialogAccessibility';
 import { assetPath } from '../utils/assetPath';
 
 interface ProductDetailModalProps {
@@ -54,9 +55,13 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const [activeTab, setActiveTab] = useState<ModalTab>('video');
   const [videoSource, setVideoSource] = useState<'main' | 'proof'>('main');
   const [lightboxItem, setLightboxItem] = useState<LightboxItem | null>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const lightboxDialogRef = useRef<HTMLDivElement>(null);
 
   // Global modal scroll lock & interaction blocker
   useModalScrollLock(Boolean(project || lightboxItem));
+  useDialogAccessibility(Boolean(project && !lightboxItem), dialogRef);
+  useDialogAccessibility(Boolean(project && lightboxItem), lightboxDialogRef);
 
   // Reset video source and set default active tab on project change
   useEffect(() => {
@@ -107,6 +112,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         onClick={onClose}
       >
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${project.title} project details`}
+        tabIndex={-1}
         className="relative w-full max-w-5xl bg-[#0F121C] border border-white/15 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl shadow-black my-auto flex flex-col max-h-[92vh] text-white animate-modal-pop"
         onClick={(e) => e.stopPropagation()}
       >
@@ -900,6 +910,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
       {/* Lightbox Overlay for Fullscreen Image or Blueprint Inspection (Sibling of modal, completely isolated from onClose) */}
       {lightboxItem && (
         <div
+          ref={lightboxDialogRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label={lightboxItem.title || 'Image preview'}
+          tabIndex={-1}
           className="fixed inset-0 z-[100020] bg-black flex items-center justify-center p-2 sm:p-4 select-none animate-fadeIn"
           onClick={(e) => {
             e.stopPropagation();

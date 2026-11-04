@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, Bebas_Neue, Cinzel } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css';
+import { absoluteSiteUrl, SITE_NAME, SITE_URL } from '../utils/siteUrl';
+import { SOCIAL_PROFILES } from '../data/socialProfiles';
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -8,28 +10,30 @@ export const viewport: Viewport = {
   themeColor: '#0E0F14',
 };
 
-const inter = Inter({
-  subsets: ['latin'],
+const inter = localFont({
+  src: './fonts/inter-latin.woff2',
   variable: '--font-inter',
   display: 'swap',
+  weight: '100 900',
 });
 
-const bebasNeue = Bebas_Neue({
-  weight: '400',
-  subsets: ['latin'],
+const bebasNeue = localFont({
+  src: './fonts/bebas-neue-latin.woff2',
   variable: '--font-bebas',
   display: 'swap',
+  weight: '400',
 });
 
-const cinzel = Cinzel({
-  subsets: ['latin'],
+const cinzel = localFont({
+  src: './fonts/cinzel-latin.woff2',
   variable: '--font-cinzel',
   display: 'swap',
-  weight: ['600', '700', '800'],
+  weight: '600 800',
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://gauravroy.dev'),
+  metadataBase: new URL(`${SITE_URL}/`),
+  alternates: { canonical: absoluteSiteUrl('/') },
   title: 'Gaurav Roy — Creative Technologist — 3D, Generative AI & Spatial Web',
   description: 'Portfolio of Gaurav Roy, Creative Technologist bridging 3D/CGI & Unreal Engine, ComfyUI generative AI workflows, motion design, and spatial web engineering.',
   keywords: [
@@ -59,12 +63,12 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Gaurav Roy — Creative Technologist — 3D, Generative AI & Spatial Web',
     description: 'Portfolio of Gaurav Roy, Creative Technologist bridging 3D/CGI & Unreal Engine, ComfyUI generative AI workflows, motion design, and spatial web engineering.',
-    url: 'https://gauravroy.dev',
-    siteName: 'Gaurav Roy Portfolio',
+    url: absoluteSiteUrl('/'),
+    siteName: SITE_NAME,
     type: 'website',
     images: [
       {
-        url: '/images/gaurav_portrait.png',
+        url: absoluteSiteUrl('/images/gaurav_portrait.png'),
         width: 1200,
         height: 630,
         alt: 'Gaurav Roy — Creative Technologist',
@@ -75,7 +79,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Gaurav Roy — Creative Technologist — 3D, Generative AI & Spatial Web',
     description: 'Portfolio of Gaurav Roy, Creative Technologist bridging 3D/CGI & Unreal Engine, ComfyUI generative AI workflows, motion design, and spatial web engineering.',
-    images: ['/images/gaurav_portrait.png'],
+    images: [absoluteSiteUrl('/images/gaurav_portrait.png')],
   },
 };
 
@@ -92,10 +96,6 @@ const jsonLd = {
     addressLocality: 'Delhi',
     addressCountry: 'India',
   },
-  sameAs: [
-    'https://www.linkedin.com',
-    'https://github.com',
-  ],
   knowsAbout: [
     '3D Spatial Computing',
     'Unreal Engine 5',
@@ -103,6 +103,7 @@ const jsonLd = {
     'Next.js Full-Stack WebXR',
     'CGI Architectural Visualisation',
   ],
+  ...(SOCIAL_PROFILES.length ? { sameAs: SOCIAL_PROFILES.map((profile) => profile.url) } : {}),
 };
 
 export default function RootLayout({

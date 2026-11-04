@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { ProjectItem, ProjectViewAngle } from '../data/portfolioData';
 import {
   X,
@@ -16,6 +16,7 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 import { useModalScrollLock } from '../utils/modalScrollLock';
+import { useDialogAccessibility } from '../utils/useDialogAccessibility';
 import { assetPath } from '../utils/assetPath';
 
 const SOFTWARE_MAP: Record<string, { icon?: string; name: string; tag?: string }> = {
@@ -73,9 +74,13 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
   const [activeViewMode, setActiveViewMode] = useState<'single' | 'clay' | 'grid'>('single');
   const [selectedViewIndex, setSelectedViewIndex] = useState<number>(0);
   const [lightboxImage, setLightboxImage] = useState<{ url: string; title: string; subtitle?: string } | null>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const lightboxDialogRef = useRef<HTMLDivElement>(null);
 
   // Global modal scroll lock & background interaction blocker
   useModalScrollLock(Boolean(project || lightboxImage));
+  useDialogAccessibility(Boolean(project && !lightboxImage), dialogRef);
+  useDialogAccessibility(Boolean(project && lightboxImage), lightboxDialogRef);
 
   // Keyboard navigation
   useEffect(() => {
@@ -159,6 +164,11 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
         onClick={onClose}
       >
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${project.title} design case study`}
+        tabIndex={-1}
         className="relative w-full max-w-6xl bg-[#090D18] border border-cyan-500/25 rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_30px_100px_rgba(0,0,0,0.95)] my-auto flex flex-col max-h-[94vh] sm:max-h-[92vh] text-white animate-modal-pop"
         onClick={(e) => e.stopPropagation()}
       >
@@ -733,6 +743,11 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
       {/* LIGHTBOX MODAL FOR FULL-RESOLUTION INSPECTION (Sibling of modal, completely isolated from onClose) */}
       {lightboxImage && (
         <div
+          ref={lightboxDialogRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label={lightboxImage.title || 'Image preview'}
+          tabIndex={-1}
           className="fixed inset-0 z-[100050] bg-black flex items-center justify-center p-2 sm:p-4 select-none animate-fadeIn"
           onClick={(e) => {
             e.stopPropagation();

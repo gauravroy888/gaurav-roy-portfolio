@@ -488,6 +488,14 @@ export const CuteSpiderCompanion: React.FC = () => {
     let lastTime = performance.now();
 
     // Cached element measurements to eliminate 60fps layout thrashing
+    let heroTitleAreaRect = {
+      left: width * 0.08,
+      top: height * 0.2,
+      width: width * 0.56,
+      height: height * 0.55,
+      right: width * 0.64,
+      bottom: height * 0.75,
+    };
     let creativeRect = {
       left: width * 0.12,
       top: height * 0.26,
@@ -539,11 +547,16 @@ export const CuteSpiderCompanion: React.FC = () => {
     window.addEventListener('scroll', onScrollActivity, { passive: true });
 
     const measureLayout = () => {
+      const heroTitleAreaEl = document.getElementById('hero-title-area');
       const creativeEl = document.getElementById('hero-word-creative');
       const technologistEl = document.getElementById('hero-word-technologist');
       const btnWorkEl = document.getElementById('hero-btn-work');
       const btnResumeEl = document.getElementById('hero-btn-resume');
 
+      if (heroTitleAreaEl) {
+        const r = heroTitleAreaEl.getBoundingClientRect();
+        heroTitleAreaRect = { left: r.left, top: r.top, width: r.width, height: r.height, right: r.right, bottom: r.bottom };
+      }
       if (creativeEl) {
         const r = creativeEl.getBoundingClientRect();
         creativeRect = { left: r.left, top: r.top, width: r.width, height: r.height, right: r.right, bottom: r.bottom };
@@ -604,6 +617,8 @@ export const CuteSpiderCompanion: React.FC = () => {
     // MAIN RENDER & TICK LOOP
     // =========================================================================
     const render = () => {
+      if (document.hidden) return;
+
       const now = performance.now();
       const rawDelta = (now - lastTime) / 1000;
       lastTime = now;
@@ -812,8 +827,10 @@ export const CuteSpiderCompanion: React.FC = () => {
           if (speechTextRef.current && speechTextRef.current.textContent !== currentSlice) {
             speechTextRef.current.textContent = currentSlice;
           }
-          if (speechBubbleRef.current && speechBubbleRef.current.style.display !== 'block') {
-            speechBubbleRef.current.style.display = 'block';
+          if (speechBubbleRef.current) {
+            // The bubble is intentionally desktop-only; avoid inline display styles
+            // overriding the responsive `hidden md:block` utility on small screens.
+            speechBubbleRef.current.style.display = width >= 768 ? 'block' : 'none';
           }
         }
       }
@@ -822,7 +839,19 @@ export const CuteSpiderCompanion: React.FC = () => {
       if (speechBubbleRef.current && isSpeechActive) {
         const isRightSide = spiderX > width * 0.5;
         const clampedTop = Math.max(76, Math.min(height - 180, spiderY - 35));
+        const bubbleWidth = 330;
+        const bubbleHeight = 140;
+        const bubbleLeft = isRightSide
+          ? width - Math.max(16, width - spiderX + 22) - bubbleWidth
+          : Math.max(16, spiderX + 22);
+        const overlapsHeroCopy = currentActiveSection === 'hero'
+          && bubbleLeft < heroTitleAreaRect.right
+          && bubbleLeft + bubbleWidth > heroTitleAreaRect.left
+          && clampedTop < heroTitleAreaRect.bottom
+          && clampedTop + bubbleHeight > heroTitleAreaRect.top;
+
         speechBubbleRef.current.style.top = `${clampedTop}px`;
+        speechBubbleRef.current.style.visibility = overlapsHeroCopy ? 'hidden' : 'visible';
         if (isRightSide) {
           // Spider is on right side: stick bubble firmly to the LEFT of the spider!
           speechBubbleRef.current.style.left = 'auto';
@@ -2046,9 +2075,22 @@ export const CuteSpiderCompanion: React.FC = () => {
       animationFrameId = requestAnimationFrame(render);
     };
 
-    render();
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(animationFrameId);
+        return;
+      }
+
+      // Avoid a large delta-time jump after the browser suspends a background tab.
+      lastTime = performance.now();
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    if (!document.hidden) render();
 
     return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('pointerdown', handleGlobalActivation, true);
       window.removeEventListener('touchstart', handleGlobalActivation, true);
       window.removeEventListener('click', handleGlobalActivation, true);

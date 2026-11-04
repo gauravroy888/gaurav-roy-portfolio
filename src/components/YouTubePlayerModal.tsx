@@ -1,8 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
 import { X, Play, Youtube, ExternalLink } from 'lucide-react';
 import { useModalScrollLock } from '../utils/modalScrollLock';
+import { useDialogAccessibility } from '../utils/useDialogAccessibility';
 
 interface YouTubePlayerModalProps {
   isOpen: boolean;
@@ -21,8 +22,10 @@ export const YouTubePlayerModal: React.FC<YouTubePlayerModalProps> = ({
   client,
   role,
 }) => {
+  const dialogRef = useRef<HTMLDivElement>(null);
   // Global modal scroll lock & interaction blocker
   useModalScrollLock(isOpen);
+  useDialogAccessibility(isOpen, dialogRef);
 
   if (!isOpen) return null;
 
@@ -33,6 +36,11 @@ export const YouTubePlayerModal: React.FC<YouTubePlayerModalProps> = ({
       onClick={onClose}
     >
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={title || 'Video player'}
+        tabIndex={-1}
         className="relative w-full max-w-5xl bg-[#0E111A] border border-white/10 rounded-3xl overflow-hidden shadow-2xl shadow-purple-950/40 flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >

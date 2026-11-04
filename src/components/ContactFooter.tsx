@@ -12,8 +12,10 @@ import {
   Instagram,
   Github,
   Check,
+  Copy,
   Calendar
 } from 'lucide-react';
+import { SOCIAL_PROFILES } from '../data/socialProfiles';
 
 const CreativeConsultationModal = dynamic(
   () => import('./CreativeConsultationModal').then((mod) => mod.CreativeConsultationModal),
@@ -25,45 +27,29 @@ interface ContactFooterProps {
 }
 
 export const ContactFooter: React.FC<ContactFooterProps> = ({ onOpenResume }) => {
-  const [copiedEmail, setCopiedEmail] = useState(false);
-  const [copiedPhone, setCopiedPhone] = useState(false);
+  const [copiedContact, setCopiedContact] = useState<'email' | 'phone' | null>(null);
+  const [copyError, setCopyError] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
 
-  const triggerConfetti = async (options: Parameters<typeof import('canvas-confetti')>[0]) => {
+  const copyContact = async (type: 'email' | 'phone') => {
+    const value = type === 'email' ? 'gauravroy476@gmail.com' : '+91 9069558564';
     try {
-      const confetti = (await import('canvas-confetti')).default;
-      confetti(options);
-    } catch (_) {}
+      if (!navigator.clipboard?.writeText) throw new Error('Clipboard API unavailable');
+      await navigator.clipboard.writeText(value);
+      setCopiedContact(type);
+      setCopyError(false);
+      window.setTimeout(() => setCopiedContact((current) => current === type ? null : current), 2200);
+    } catch {
+      setCopiedContact(null);
+      setCopyError(true);
+      window.setTimeout(() => setCopyError(false), 3000);
+    }
   };
 
-  const handleCopyEmail = (e: React.MouseEvent) => {
-    e.preventDefault();
-    navigator.clipboard.writeText('gauravroy476@gmail.com');
-    setCopiedEmail(true);
-
-    triggerConfetti({
-      particleCount: 50,
-      spread: 60,
-      origin: { y: 0.85 },
-      colors: ['#FFFFFF', '#D1D5DB', '#9CA3AF'],
-    });
-
-    setTimeout(() => setCopiedEmail(false), 2500);
-  };
-
-  const handleCopyPhone = (e: React.MouseEvent) => {
-    e.preventDefault();
-    navigator.clipboard.writeText('+91 9069558564');
-    setCopiedPhone(true);
-
-    triggerConfetti({
-      particleCount: 40,
-      spread: 50,
-      origin: { y: 0.85 },
-      colors: ['#00F5FF', '#C084FC', '#FFFFFF'],
-    });
-
-    setTimeout(() => setCopiedPhone(false), 2500);
+  const SocialIcon = ({ name }: { name: string }) => {
+    if (name === 'LinkedIn') return <Linkedin className="w-3.5 h-3.5" aria-hidden="true" />;
+    if (name === 'Instagram') return <Instagram className="w-3.5 h-3.5" aria-hidden="true" />;
+    return <Github className="w-3.5 h-3.5" aria-hidden="true" />;
   };
 
   return (
@@ -96,10 +82,9 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onOpenResume }) =>
               <div className="flex flex-wrap items-center gap-3">
                 <a
                   href="mailto:gauravroy476@gmail.com"
-                  onClick={handleCopyEmail}
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-black text-xs font-semibold tracking-wider uppercase hover:bg-gray-200 transition-all hover:scale-105 active:scale-95 shadow-md"
                 >
-                  <span>{copiedEmail ? 'Copied gauravroy476@gmail.com!' : "Let's Work Together"}</span>
+                  <span>Let&apos;s Work Together</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />
                 </a>
 
@@ -117,25 +102,28 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onOpenResume }) =>
 
             {/* Right Contact Info List (3 cols): Exact match to reference icons & text */}
             <div className="lg:col-span-3 space-y-2.5 text-[11px] font-mono text-gray-300">
-              <a
-                href="mailto:gauravroy476@gmail.com"
-                onClick={handleCopyEmail}
-                className="flex items-center gap-2 hover:text-white transition-colors"
-                title="Click to copy email"
-              >
-                {copiedEmail ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Mail className="w-3.5 h-3.5 text-gray-400" />}
-                <span>{copiedEmail ? 'Copied Email!' : 'gauravroy476@gmail.com'}</span>
-              </a>
+              <div className="flex items-center gap-2">
+                <a href="mailto:gauravroy476@gmail.com" className="flex min-w-0 items-center gap-2 hover:text-white transition-colors">
+                  <Mail className="w-3.5 h-3.5 shrink-0 text-gray-400" aria-hidden="true" />
+                  <span>gauravroy476@gmail.com</span>
+                </a>
+                <button type="button" onClick={() => void copyContact('email')} aria-label="Copy email address" title="Copy email address" className="rounded-md p-1 text-gray-400 hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-300">
+                  {copiedContact === 'email' ? <Check className="w-3.5 h-3.5 text-emerald-400" aria-hidden="true" /> : <Copy className="w-3.5 h-3.5" aria-hidden="true" />}
+                </button>
+              </div>
 
-              <a
-                href="tel:9069558564"
-                onClick={handleCopyPhone}
-                className="flex items-center gap-2 hover:text-white transition-colors"
-                title="Click to copy phone number"
-              >
-                {copiedPhone ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Phone className="w-3.5 h-3.5 text-gray-400" />}
-                <span>{copiedPhone ? 'Copied Phone!' : '+91 9069558564'}</span>
-              </a>
+              <div className="flex items-center gap-2">
+                <a href="tel:+919069558564" className="flex min-w-0 items-center gap-2 hover:text-white transition-colors">
+                  <Phone className="w-3.5 h-3.5 shrink-0 text-gray-400" aria-hidden="true" />
+                  <span>+91 9069558564</span>
+                </a>
+                <button type="button" onClick={() => void copyContact('phone')} aria-label="Copy phone number" title="Copy phone number" className="rounded-md p-1 text-gray-400 hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-300">
+                  {copiedContact === 'phone' ? <Check className="w-3.5 h-3.5 text-emerald-400" aria-hidden="true" /> : <Copy className="w-3.5 h-3.5" aria-hidden="true" />}
+                </button>
+              </div>
+              <p className="sr-only" role="status" aria-live="polite">
+                {copyError ? 'Could not copy. Select and copy the contact information instead.' : copiedContact ? `${copiedContact === 'email' ? 'Email address' : 'Phone number'} copied.` : ''}
+              </p>
 
               <div className="flex items-center gap-2 text-gray-400">
                 <MapPin className="w-3.5 h-3.5 text-gray-400" />
@@ -164,20 +152,18 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ onOpenResume }) =>
             © {new Date().getFullYear()} Gaurav Roy. All Rights Reserved.
           </div>
 
-          <div className="flex items-center gap-4">
-            <span className="text-gray-400 font-semibold">Let's Connect</span>
-            <div className="flex items-center gap-3 text-gray-400">
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" title="LinkedIn">
-                <Linkedin className="w-3.5 h-3.5" />
-              </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" title="Instagram">
-                <Instagram className="w-3.5 h-3.5" />
-              </a>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" title="GitHub">
-                <Github className="w-3.5 h-3.5" />
-              </a>
+          {SOCIAL_PROFILES.length > 0 && (
+            <div className="flex items-center gap-4">
+              <span className="text-gray-400 font-semibold">Let&apos;s Connect</span>
+              <div className="flex items-center gap-3 text-gray-400">
+                {SOCIAL_PROFILES.map((profile) => (
+                  <a key={profile.name} href={profile.url} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" aria-label={profile.name} title={profile.name}>
+                    <SocialIcon name={profile.name} />
+                  </a>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
         </div>
 

@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { CollectionItem, ProjectItem, DOMAINS } from '../data/portfolioData';
 import { X, Layers, ArrowUpRight, Play } from 'lucide-react';
 import { useModalScrollLock } from '../utils/modalScrollLock';
+import { useDialogAccessibility } from '../utils/useDialogAccessibility';
 import { assetPath } from '../utils/assetPath';
 
 interface CategoryCollageModalProps {
@@ -23,8 +25,10 @@ export const CategoryCollageModal: React.FC<CategoryCollageModalProps> = ({
   onSelectProject,
   isUnderlay = false,
 }) => {
+  const dialogRef = useRef<HTMLDivElement>(null);
   // Use global modal scroll lock & interaction blocker
   useModalScrollLock(isOpen && !isUnderlay);
+  useDialogAccessibility(Boolean(isOpen && category && !isUnderlay), dialogRef);
 
   // Close on Escape key press (only when active top modal)
   useEffect(() => {
@@ -51,6 +55,11 @@ export const CategoryCollageModal: React.FC<CategoryCollageModalProps> = ({
       onClick={onClose}
     >
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${category.title} project collection`}
+        tabIndex={-1}
         className="relative w-full max-w-6xl max-h-[92vh] sm:max-h-[88vh] bg-[#070A12] border border-cyan-500/25 rounded-2xl sm:rounded-3xl shadow-[0_30px_100px_rgba(0,0,0,0.95)] overflow-hidden flex flex-col my-auto animate-modal-pop"
         onClick={(e) => e.stopPropagation()}
       >
@@ -121,9 +130,12 @@ export const CategoryCollageModal: React.FC<CategoryCollageModalProps> = ({
               }
 
               return (
-                <div
+                <Link
                   key={project.id}
-                  onClick={() => {
+                  href={`/work/${project.slug}/`}
+                  onClick={(event) => {
+                    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                    event.preventDefault();
                     onSelectProject(project);
                   }}
                   className={`group relative rounded-2xl sm:rounded-3xl overflow-hidden cursor-pointer transition-all duration-300 bg-[#0E111D]/80 hover:bg-[#141B2E] backdrop-blur-md border border-white/10 hover:border-cyan-400/50 hover:shadow-[0_20px_50px_rgba(6,182,212,0.15)] ${spanClass} flex flex-col justify-end p-4 sm:p-7`}
@@ -213,7 +225,7 @@ export const CategoryCollageModal: React.FC<CategoryCollageModalProps> = ({
 
                   {/* Hover Border Glow */}
                   <div className="absolute inset-0 rounded-2xl sm:rounded-3xl border-2 border-transparent group-hover:border-cyan-400/30 transition-all pointer-events-none" />
-                </div>
+                </Link>
               );
             };
 

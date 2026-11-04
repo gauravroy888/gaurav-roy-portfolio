@@ -23,6 +23,7 @@ import {
   WorkflowNode,
 } from '../data/capabilitiesWorkflowData';
 import { useModalScrollLock } from '../utils/modalScrollLock';
+import { useDialogAccessibility } from '../utils/useDialogAccessibility';
 
 interface CapabilityWorkflowModalProps {
   initialCapabilityId: string | null;
@@ -43,6 +44,8 @@ export const CapabilityWorkflowModal: React.FC<CapabilityWorkflowModalProps> = (
   const [selectedNode, setSelectedNode] = useState<WorkflowNode | null>(null);
   const [mounted, setMounted] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useDialogAccessibility(Boolean(isOpen && mounted), dialogRef);
 
   useEffect(() => {
     setMounted(true);
@@ -197,6 +200,11 @@ export const CapabilityWorkflowModal: React.FC<CapabilityWorkflowModalProps> = (
       onClick={onClose}
     >
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${currentWorkflow.title} capability workflow`}
+        tabIndex={-1}
         className="relative w-full max-w-5xl bg-[#0B0D14]/95 border border-white/20 rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_25px_80px_rgba(0,0,0,0.9),0_0_50px_rgba(168,85,247,0.15)] my-auto flex flex-col h-[82vh] max-h-[82vh] sm:h-[80vh] sm:max-h-[80vh] backdrop-blur-2xl ring-1 ring-white/10"
         onClick={(e) => e.stopPropagation()}
       >
