@@ -1,8 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Calendar, Clock, Sparkles, Check, ArrowUpRight, Video, Mail, ShieldCheck } from 'lucide-react';
 import { useModalScrollLock } from '../utils/modalScrollLock';
+import { useDialogAccessibility } from '../utils/useDialogAccessibility';
 
 interface CreativeConsultationModalProps {
   isOpen: boolean;
@@ -10,8 +12,27 @@ interface CreativeConsultationModalProps {
 }
 
 export const CreativeConsultationModal: React.FC<CreativeConsultationModalProps> = ({ isOpen, onClose }) => {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Global modal scroll lock & interaction blocker
   useModalScrollLock(isOpen);
+  useDialogAccessibility(isOpen, dialogRef);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   const [selectedTopic, setSelectedTopic] = useState('3D CGI & Product Commercials');
   const [clientName, setClientName] = useState('');
@@ -20,7 +41,7 @@ export const CreativeConsultationModal: React.FC<CreativeConsultationModalProps>
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
   const topics = [
     {
@@ -36,8 +57,8 @@ export const CreativeConsultationModal: React.FC<CreativeConsultationModalProps>
       badge: 'Real-Time 3D',
     },
     {
-      id: 'comfyui-ai',
-      name: 'ComfyUI & Generative AI Pipelines',
+      id: 'genai-pipeline',
+      name: 'Generative AI Pipelines & Workflows',
       desc: 'Custom node workflows, LoRA training, video generation, pre-vis automation.',
       badge: 'AI Pipeline',
     },
@@ -102,14 +123,19 @@ export const CreativeConsultationModal: React.FC<CreativeConsultationModalProps>
     }, 600);
   };
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/90 backdrop-blur-2xl overflow-y-auto overscroll-contain animate-in fade-in duration-200"
+      className="fixed inset-0 z-[100000] flex items-center justify-center p-3 sm:p-6 bg-black/90 backdrop-blur-2xl overflow-y-auto overscroll-contain animate-in fade-in duration-200 pointer-events-auto"
       data-modal-scrollable
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-2xl bg-[#0F111A] border border-white/15 rounded-3xl p-6 sm:p-8 shadow-[0_20px_70px_rgba(0,0,0,0.9)] overflow-hidden my-auto"
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Book a creative consultation"
+        tabIndex={-1}
+        className="relative w-full max-w-2xl bg-[#0F111A] border border-white/15 rounded-3xl p-6 sm:p-8 shadow-[0_20px_70px_rgba(0,0,0,0.9)] overflow-hidden my-auto pointer-events-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Background ambient glow */}
@@ -136,11 +162,16 @@ export const CreativeConsultationModal: React.FC<CreativeConsultationModalProps>
           </div>
 
           <button
-            onClick={onClose}
-            className="p-2 rounded-full bg-white/5 hover:bg-white/15 text-gray-400 hover:text-white transition-colors"
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
+            className="p-2.5 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 text-gray-300 hover:text-white transition-all cursor-pointer relative z-30 pointer-events-auto"
             title="Close modal"
+            aria-label="Close modal"
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5 pointer-events-none" />
           </button>
         </div>
 
@@ -274,6 +305,7 @@ export const CreativeConsultationModal: React.FC<CreativeConsultationModalProps>
           </form>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
