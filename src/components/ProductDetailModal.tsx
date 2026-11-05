@@ -22,6 +22,7 @@ import {
 import { useModalScrollLock } from '../utils/modalScrollLock';
 import { useDialogAccessibility } from '../utils/useDialogAccessibility';
 import { assetPath } from '../utils/assetPath';
+import { portfolioImageProps } from '../utils/portfolioImageProps';
 
 interface ProductDetailModalProps {
   project: ProjectItem | null;
@@ -431,6 +432,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                           <div className="relative aspect-[16/10] overflow-hidden bg-black">
                             <img
                               src={assetPath(v.imageUrl)}
+                              {...portfolioImageProps(v.imageUrl, '(max-width: 639px) 100vw, 50vw')}
                               alt={v.name}
                               loading="lazy"
                               decoding="async"
@@ -494,6 +496,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                         >
                           <img
                             src={assetPath(still.imageUrl)}
+                            {...portfolioImageProps(still.imageUrl, '(max-width: 639px) 50vw, 25vw')}
                             alt={still.title}
                             loading="lazy"
                             decoding="async"
@@ -547,6 +550,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       <div className="relative aspect-[16/10] overflow-hidden bg-black">
                         <img
                           src={assetPath(still.imageUrl)}
+                          {...portfolioImageProps(still.imageUrl, '(max-width: 639px) 100vw, 50vw')}
                           alt={still.title}
                           loading="lazy"
                           decoding="async"
@@ -600,6 +604,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               >
                 <img
                   src={assetPath(project.coverImage)}
+                  {...portfolioImageProps(project.coverImage, '(max-width: 639px) 100vw, 80vw')}
                   alt={project.title}
                   loading="lazy"
                   decoding="async"
@@ -631,6 +636,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     >
                       <img
                         src={assetPath(img)}
+                        {...portfolioImageProps(img, '(max-width: 639px) 100vw, 50vw')}
                         alt={`${project.title} - ${idx + 1}`}
                         loading="lazy"
                         decoding="async"
@@ -683,6 +689,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       <div className="relative aspect-[16/10] rounded-xl overflow-hidden mb-3 bg-black border border-white/10">
                         <img
                           src={assetPath(plan.image)}
+                          {...portfolioImageProps(plan.image, '(max-width: 639px) 100vw, 50vw')}
                           alt={plan.title}
                           loading="lazy"
                           decoding="async"
@@ -732,6 +739,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               <div className="relative rounded-2xl overflow-hidden border border-emerald-500/30 bg-black shadow-2xl aspect-[16/10] group flex items-center justify-center">
                 <img
                   src={assetPath(project.clayImage)}
+                    {...portfolioImageProps(project.clayImage, '(max-width: 639px) 100vw, 80vw')}
                   alt="Cinema 4D Viewport Screenshot"
                   loading="lazy"
                   decoding="async"
@@ -771,6 +779,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       <div className="relative aspect-[16/10] rounded-xl overflow-hidden mb-3 bg-black border border-white/10">
                         <img
                           src={assetPath(v.imageUrl)}
+                        {...portfolioImageProps(v.imageUrl, '(max-width: 639px) 100vw, 50vw')}
                           alt={v.name}
                           loading="lazy"
                           decoding="async"

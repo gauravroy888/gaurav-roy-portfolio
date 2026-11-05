@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "optimize:images": "python scripts/optimize_portfolio_images.py",
     "export:sheet": "python scripts/export_portfolio_to_sheet.py",
     "sync:sheet": "python scripts/sync_portfolio_from_sheets.py",
     "sync:drive": "python scripts/sync_drive_assets.py"

@@ -6,6 +6,7 @@ import { PROJECTS, COLLECTIONS, CollectionItem, ProjectItem } from '../data/port
 import { ChevronLeft, ChevronRight, ArrowUpRight, Layers, Play } from 'lucide-react';
 import { GlowBorderCard } from './GlowBorderCard';
 import { assetPath } from '../utils/assetPath';
+import { portfolioImageProps } from '../utils/portfolioImageProps';
 
 interface PortfolioSectionProps {
   onSelectProject: (project: ProjectItem) => void;
@@ -266,6 +267,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                     ) : (
                       <img
                         src={assetPath(project.coverImage)}
+                        {...portfolioImageProps(project.coverImage, '(max-width: 767px) 100vw, 50vw')}
                         alt={project.title}
                         loading="lazy"
                         decoding="async"
@@ -319,6 +321,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                         <div className="relative w-full h-full group/video">
                           <img
                             src={assetPath(category.thumbnail) || `https://img.youtube.com/vi/${category.youtubeId}/hqdefault.jpg`}
+                            {...portfolioImageProps(category.thumbnail, '(max-width: 767px) 100vw, 50vw')}
                             alt={category.title}
                             loading="lazy"
                             decoding="async"
@@ -337,6 +340,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
                       ) : (
                         <img
                           src={assetPath(category.thumbnail)}
+                          {...portfolioImageProps(category.thumbnail, '(max-width: 767px) 100vw, 50vw')}
                           alt={category.title}
                           loading="lazy"
                           decoding="async"

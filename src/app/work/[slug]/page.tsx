@@ -5,6 +5,7 @@ import { COLLECTIONS } from '../../../data/portfolioData';
 import { getProjectBySlug, getProjectImages, getSearchableProjects } from '../../../data/searchIndex';
 import { assetPath } from '../../../utils/assetPath';
 import { absoluteSiteUrl, SITE_NAME } from '../../../utils/siteUrl';
+import { portfolioImageProps } from '../../../utils/portfolioImageProps';
 
 type ProjectPageProps = {
   params: { slug: string };
@@ -98,7 +99,8 @@ export default function ProjectCaseStudyPage({ params }: ProjectPageProps) {
         <figure className="mb-10 overflow-hidden rounded-3xl border border-white/10 bg-black">
           <img
             src={assetPath(project.coverImage)}
-                    alt={projectImages[0]?.alt || project.title}
+            {...portfolioImageProps(project.coverImage, '(max-width: 1023px) 100vw, 66vw')}
+            alt={projectImages[0]?.alt || project.title}
             fetchPriority="high"
             decoding="async"
             className="max-h-[72vh] w-full object-contain"
@@ -140,6 +142,7 @@ export default function ProjectCaseStudyPage({ params }: ProjectPageProps) {
                     <li key={src} className="overflow-hidden rounded-2xl border border-white/10 bg-black">
                       <img
                         src={assetPath(src)}
+                        {...portfolioImageProps(src, '(max-width: 639px) 100vw, 50vw')}
                         alt={alt}
                         loading="lazy"
                         decoding="async"

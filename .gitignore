@@ -35,6 +35,10 @@ next-env.d.ts
 # raw large design source archives
 Accets for info/
 archive/
+!archive/
+archive/*
+!archive/portfolio-image-sources/
+!archive/portfolio-image-sources/**
 public/images/portfolio/**/high-res/*.png
 
 # Large source PNG renders (web-optimized WebP equivalents are committed instead)

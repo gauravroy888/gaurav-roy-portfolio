@@ -7,6 +7,7 @@ import { X, Layers, ArrowUpRight, Play } from 'lucide-react';
 import { useModalScrollLock } from '../utils/modalScrollLock';
 import { useDialogAccessibility } from '../utils/useDialogAccessibility';
 import { assetPath } from '../utils/assetPath';
+import { portfolioImageProps } from '../utils/portfolioImageProps';
 
 interface CategoryCollageModalProps {
   isOpen: boolean;
@@ -152,6 +153,12 @@ export const CategoryCollageModal: React.FC<CategoryCollageModalProps> = ({
                                   : project.coverImage)
                               : `https://img.youtube.com/vi/${project.youtubeId}/hqdefault.jpg`
                           }
+                          {...portfolioImageProps(
+                            project.coverImage.endsWith('.webp') && !project.coverImage.includes('-thumb.webp')
+                              ? project.coverImage.replace('.webp', '-thumb.webp')
+                              : project.coverImage,
+                            '(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw',
+                          )}
                           onError={(e) => {
                             const target = e.currentTarget as HTMLImageElement;
                             if (project.coverImage && target.src !== assetPath(project.coverImage)) {
@@ -176,6 +183,12 @@ export const CategoryCollageModal: React.FC<CategoryCollageModalProps> = ({
                             ? project.coverImage.replace('.webp', '-thumb.webp')
                             : project.coverImage)
                         }
+                        {...portfolioImageProps(
+                          project.coverImage.endsWith('.webp') && !project.coverImage.includes('-thumb.webp')
+                            ? project.coverImage.replace('.webp', '-thumb.webp')
+                            : project.coverImage,
+                          '(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw',
+                        )}
                         onError={(e) => {
                           const target = e.currentTarget as HTMLImageElement;
                           if (target.src !== assetPath(project.coverImage)) {

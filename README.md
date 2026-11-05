@@ -28,13 +28,15 @@ npm run build
 - `src/data/searchIndex.ts` — validates projects and supplies the public work archive, case studies, and sitemap.
 - `src/data/socialProfiles.ts` — optional social profile links.
 - `scripts/generate-seo-files.cjs` — creates the sitemap and crawler rules from published project data.
-- `public/images/` — images served by the site. Portfolio PNG source images are kept under `archive/portfolio-original-png/` and are not included in deployment.
+- `public/images/` — optimized images served by the site. Portfolio source artwork is kept under `archive/portfolio-image-sources/` and is not included in deployment.
+- `scripts/optimize_portfolio_images.py` — responsive image variants and the source-artwork optimizer.
+- `WEBSITE_ARCHITECTURE_AND_IMAGE_WORKFLOW.md` — architecture notes and step-by-step instructions for adding projects and image assets.
 
 ## Add or update a project
 
 Edit a project in `src/data/portfolioData.ts`. Give it a unique lowercase kebab-case `slug`, a descriptive title and subtitle, a useful `shortDescription` and `fullOverview`, a role and year, an existing cover image, and meaningful alt text for gallery images. Keep the main case-study explanation in these data fields so it is available in the static HTML without opening a modal.
 
-The build creates a `/work/{slug}/` page and adds it to the sitemap automatically. Use optimized WebP images in `public/images/portfolio/`; avoid putting original PNG exports in `public/` because every public asset is copied into the deployment.
+The build creates a `/work/{slug}/` page and adds it to the sitemap automatically. Keep original project artwork in `archive/portfolio-image-sources/`, then run `npm run optimize:images` to generate the public WebP/JPEG display files and responsive variants. Avoid putting source exports in `public/` because every public asset is copied into the deployment. See [the architecture and image workflow guide](WEBSITE_ARCHITECTURE_AND_IMAGE_WORKFLOW.md) for the full process.
 
 ## Site URL and social profiles
 

@@ -16,6 +16,7 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 import { useModalScrollLock } from '../utils/modalScrollLock';
+import { portfolioImageProps } from '../utils/portfolioImageProps';
 import { useDialogAccessibility } from '../utils/useDialogAccessibility';
 import { assetPath } from '../utils/assetPath';
 
@@ -300,6 +301,7 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
               <div className={`relative w-full bg-black group flex items-center justify-center overflow-hidden ${project.aspectRatio === 'tall' ? 'max-h-[76vh] py-2' : 'aspect-[4/3] sm:aspect-[16/10]'}`}>
                 <img
                   src={assetPath(currentView.imageUrl)}
+                  {...portfolioImageProps(currentView.imageUrl, '(max-width: 767px) 100vw, 80vw')}
                   alt={currentView.name}
                   loading="lazy"
                   decoding="async"
@@ -366,6 +368,7 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
               <div className={`relative w-full bg-black group flex items-center justify-center overflow-hidden ${project.aspectRatio === 'tall' ? 'max-h-[76vh] py-2' : 'aspect-[4/3] sm:aspect-[16/10]'}`}>
                 <img
                   src={assetPath(project.clayImage)}
+                    {...portfolioImageProps(project.clayImage, '(max-width: 767px) 100vw, 80vw')}
                   alt="Cinema 4D Viewport Screenshot"
                   loading="lazy"
                   decoding="async"
@@ -430,6 +433,7 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
                     >
                       <img
                         src={assetPath(angle.imageUrl)}
+                        {...portfolioImageProps(angle.imageUrl, '(max-width: 639px) 100vw, 50vw')}
                         alt={angle.name}
                         loading="lazy"
                         decoding="async"
@@ -464,6 +468,7 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
                     >
                       <img
                         src={assetPath(project.clayImage)}
+                        {...portfolioImageProps(project.clayImage, '(max-width: 639px) 100vw, 50vw')}
                         alt="Cinema 4D Viewport Screenshot"
                         loading="lazy"
                         decoding="async"
@@ -522,13 +527,8 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
                   >
                     <div className={`relative w-full rounded-lg overflow-hidden bg-black ${project.aspectRatio === 'tall' ? 'aspect-[3/4]' : 'aspect-[16/10]'}`}>
                       <img
-                        src={assetPath(angle.imageUrl.endsWith('.webp') ? angle.imageUrl.replace('.webp', '-thumb.webp') : angle.imageUrl)}
-                        onError={(e) => {
-                          const target = e.currentTarget;
-                          if (target.src !== angle.imageUrl) {
-                            target.src = angle.imageUrl;
-                          }
-                        }}
+                      src={assetPath(angle.imageUrl)}
+                      {...portfolioImageProps(angle.imageUrl, '115px')}
                         alt={angle.name}
                         loading="lazy"
                         decoding="async"
@@ -562,13 +562,8 @@ export const DesignThinkingModal: React.FC<DesignThinkingModalProps> = ({
                 >
                   <div className={`relative w-full rounded-lg overflow-hidden bg-black ${project.aspectRatio === 'tall' ? 'aspect-[3/4]' : 'aspect-[16/10]'}`}>
                     <img
-                      src={assetPath(project.clayImage.endsWith('.webp') ? project.clayImage.replace('.webp', '-thumb.webp') : project.clayImage)}
-                      onError={(e) => {
-                        const target = e.currentTarget;
-                        if (target.src !== project.clayImage) {
-                          target.src = project.clayImage!;
-                        }
-                      }}
+                      src={assetPath(project.clayImage)}
+                      {...portfolioImageProps(project.clayImage, '115px')}
                       alt="Cinema 4D Viewport Screenshot"
                       loading="lazy"
                       decoding="async"

@@ -38,3 +38,10 @@ This document outlines mandatory rules and instructions that the AI assistant (A
 - After making code changes, always verify type safety with `npx tsc --noEmit`.
 - Verify that `npm run build` succeeds with zero errors.
 - Preserve existing comments, docstrings, and established architectural patterns.
+
+## 6. Portfolio Images & Site Architecture
+- Before adding or changing project content, read `WEBSITE_ARCHITECTURE_AND_IMAGE_WORKFLOW.md`.
+- Original portfolio renders belong under `archive/portfolio-image-sources/`; never add full-size masters to `public/`.
+- After changing portfolio source images, run `npm run optimize:images` and commit the generated public base files and responsive variants.
+- Use `portfolioImageProps()` for portfolio `<img>` elements so browsers can select responsive image variants.
+- Keep project details in `src/data/portfolioData.ts`; static routes, metadata, structured data, and sitemap entries are generated from it.

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { getSearchableProjects } from '../../data/searchIndex';
 import { assetPath } from '../../utils/assetPath';
 import { absoluteSiteUrl, SITE_NAME } from '../../utils/siteUrl';
+import { portfolioImageProps } from '../../utils/portfolioImageProps';
 
 export const metadata: Metadata = {
   title: 'Selected Work | Gaurav Roy — Creative Technologist',
@@ -54,6 +55,7 @@ export default function WorkIndexPage() {
                 <div className="aspect-[16/10] overflow-hidden bg-black">
                   <img
                     src={assetPath(project.coverImage)}
+                    {...portfolioImageProps(project.coverImage, '(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw')}
                     alt={`${project.title}${project.client ? ` for ${project.client}` : ''}`}
                     loading="lazy"
                     decoding="async"
